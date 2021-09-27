@@ -24,6 +24,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         //Regular Items
         builder(itemGenerated, "clay_soldier");
+        builder(itemGenerated, "basic_remote");
 
     }
 

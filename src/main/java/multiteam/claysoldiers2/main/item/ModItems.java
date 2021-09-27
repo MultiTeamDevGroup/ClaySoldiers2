@@ -9,5 +9,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> CLAY_SOLDIER = Registration.ITEMS.register("clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16)));
 
+    public static final RegistryObject<Item> BASIC_REMOTE = Registration.ITEMS.register("basic_remote", () -> new BasicRemoteItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(1)));
+
     public static void register(){}
 }

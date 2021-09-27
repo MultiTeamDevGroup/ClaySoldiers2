@@ -6,6 +6,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -49,4 +50,8 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         return new ItemStack(ModItems.CLAY_SOLDIER.get());
     }
 
+    public void removeSoldier(){
+        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.CLAY_SOLDIER.get())));
+        this.remove(RemovalReason.KILLED);
+    }
 }
