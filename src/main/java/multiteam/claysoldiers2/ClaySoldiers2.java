@@ -1,5 +1,10 @@
 package multiteam.claysoldiers2;
 
+import multiteam.claysoldiers2.main.Registration;
+import multiteam.claysoldiers2.main.entity.ModEntities;
+import multiteam.multicorelibport.ItemGroupTool;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,26 +19,35 @@ import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("claysoldiers2")
+@Mod(ClaySoldiers2.MOD_ID)
 public class ClaySoldiers2
 {
+    public static final String MOD_ID = "claysoldiers2";
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public static final ItemGroupTool CLAY_MENU = new ItemGroupTool(MOD_ID + "_creative_tab", () -> new ItemStack(Items.CLAY_BALL));
+
+
     public ClaySoldiers2() {
+
+        GeckoLib.initialize();
+        Registration.register();
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::applyAttributes);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

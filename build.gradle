@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.0'
+version = '0.0.0.0'
 group = 'multiteam.claysoldiers2' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'claysoldiers2'
 
@@ -59,7 +59,10 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'claysoldiers2', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'claysoldiers2', '--all',
+                    '--existing', file('src/main/resources/'),
+                    '-existing', file('src/generated/resources'),
+                    '--output', file('src/generated/resources/')
 
             mods {
                 claysoldiers2 {
@@ -75,11 +78,13 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.0.71'
 
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.17.1:3.0.2')
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
@@ -105,9 +110,8 @@ publishing {
             artifact jar
         }
     }
+
     repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
+        maven { url 'file://${project.projectDir}/mcmodsrepo' }
     }
 }
