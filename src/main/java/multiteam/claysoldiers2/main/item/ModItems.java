@@ -7,7 +7,7 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class ModItems {
 
-    public static final RegistryObject<Item> CLAY_SOLDIER = Registration.ITEMS.register("clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU)));
+    public static final RegistryObject<Item> CLAY_SOLDIER = Registration.ITEMS.register("clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16)));
 
     public static void register(){}
 }

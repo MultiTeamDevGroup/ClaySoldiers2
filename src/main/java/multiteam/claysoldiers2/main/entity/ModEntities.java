@@ -18,7 +18,7 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 @Mod.EventBusSubscriber(modid = ClaySoldiers2.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEntities {
 
-    public static final RegistryObject<EntityType<ClaySoldierEntity>> CLAY_SOLDIER = buildEntity(ClaySoldierEntity::new, ClaySoldierEntity.class, MathF.BlockToFloatScale(4), MathF.BlockToFloatScale(8), MobCategory.CREATURE, 8, 3); //8, 3 is default
+    public static final RegistryObject<EntityType<ClaySoldierEntity>> CLAY_SOLDIER = buildEntity("clay_soldier", ClaySoldierEntity::new, MathF.BlockToFloatScale(4), MathF.BlockToFloatScale(8), MobCategory.CREATURE, 8, 3); //8, 3 is default
 
 
     @SubscribeEvent
@@ -33,8 +33,7 @@ public class ModEntities {
 
     public static void register() { }
 
-    public static <T extends Entity> RegistryObject<EntityType<T>> buildEntity(EntityType.EntityFactory<T> entity, Class<T> entityClass, float width, float height, MobCategory classification, int trackingRange, int updateinterval) {
-        String name = entityClass.getSimpleName().toLowerCase();
+    public static <T extends Entity> RegistryObject<EntityType<T>> buildEntity(String name, EntityType.EntityFactory<T> entity, float width, float height, MobCategory classification, int trackingRange, int updateinterval) {
         return Registration.ENTITY_TYPES.register(name, () -> EntityType.Builder.of(entity, classification).sized(width, height).clientTrackingRange(trackingRange).updateInterval(updateinterval).build(name));
     }
 }
