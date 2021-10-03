@@ -1,5 +1,5 @@
 
-![CS2 Logo](https://raw.githubusercontent.com/MultiTeamDevGroup/ClaySoldiers2/main/src/main/resources/ClaySoldiers2Logo.png)
+![CS2 Logo](https://raw.githubusercontent.com/MultiTeamDevGroup/ClaySoldiers2/main/src/main/resources/ClaySoldiers2Logo.png?token=AH6UCII523ECGGZI3EHX7M3BLILJC)
 ### for Forge 1.17.1 - by MultiTeam
 
 ## About
