@@ -27,7 +27,7 @@ displayName="Clay Soldiers 2" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="claysoldiers2.png" #optional
+logoFile="ClaySoldiers2Logo.png" #optional
 credits="Made by MultiTeam" #optional
 authors="LazTheArtist [Code - Art]; Viper_ [Art]" #optional
 description='''
