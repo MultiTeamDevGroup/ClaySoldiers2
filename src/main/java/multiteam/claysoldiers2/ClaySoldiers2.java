@@ -2,11 +2,10 @@ package multiteam.claysoldiers2;
 
 import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ModEntities;
-import multiteam.multicorelibport.ItemGroupTool;
+import multiteam.multicore_lib.setup.utilities.ItemGroupTool;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
