@@ -1,14 +1,19 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
 import multiteam.claysoldiers2.main.item.ModItems;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.HitResult;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -18,7 +23,12 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
+
 public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
+
+    static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
+    static final int variantsNumber = 23;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -53,5 +63,39 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     public void removeSoldier(){
         this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.CLAY_SOLDIER.get())));
         this.remove(RemovalReason.KILLED);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_VARIANT_ID, 0);
+    }
+
+
+    public int getVariant() {
+        return Mth.clamp(this.entityData.get(DATA_VARIANT_ID), 0, variantsNumber-1);
+    }
+
+
+    public void setVariant(int id) {
+        this.entityData.set(DATA_VARIANT_ID, id);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag data) {
+        super.addAdditionalSaveData(data);
+        data.putInt("Variant", this.getVariant());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag data) {
+        super.readAdditionalSaveData(data);
+        this.setVariant(data.getInt("Variant"));
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) {
+        return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
     }
 }

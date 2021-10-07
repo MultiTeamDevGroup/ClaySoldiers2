@@ -15,8 +15,11 @@ import net.minecraft.world.level.block.Blocks;
 
 public class ClaySoldierItem extends Item {
 
-    public ClaySoldierItem(Properties properties) {
+    public int type;
+
+    public ClaySoldierItem(Properties properties, int type_) {
         super(properties);
+        this.type = type_;
     }
 
     @Override
@@ -34,6 +37,7 @@ public class ClaySoldierItem extends Item {
                     ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), worldin);
                     worldin.addFreshEntity(soldierEntity);
                     soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
+                    soldierEntity.setVariant(this.type);
                 }
                 stack.shrink(stackSize);
 
@@ -43,6 +47,7 @@ public class ClaySoldierItem extends Item {
                 ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), worldin);
                 worldin.addFreshEntity(soldierEntity);
                 soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
+                soldierEntity.setVariant(this.type);
 
                 if(!playerEntity.isCreative()){
                     stack.shrink(1);

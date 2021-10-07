@@ -33,7 +33,82 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implem
 
     @Override
     public ResourceLocation getTextureLocation(ClaySoldierEntity claySoldierEntity) {
-        return new ResourceLocation(ClaySoldiers2.MOD_ID, "textures/entity/clay/clayman.png");
+        String texLoc = "";
+        String texLocBase = "textures/entity/";
+        String subLocClayColor = "clayman_color/";
+        String subLocSpecial = "clayman_special/";
+        switch (claySoldierEntity.getVariant()){
+            default:
+                texLoc = texLocBase + "clayman.png";
+                break;
+            case 1:
+                texLoc = texLocBase + subLocClayColor + "clayman_white.png";
+                break;
+            case 2:
+                texLoc = texLocBase + subLocClayColor + "clayman_yellow.png";
+                break;
+            case 3:
+                texLoc = texLocBase + subLocClayColor + "clayman_red.png";
+                break;
+            case 4:
+                texLoc = texLocBase + subLocClayColor + "clayman_purple.png";
+                break;
+            case 5:
+                texLoc = texLocBase + subLocClayColor + "clayman_pink.png";
+                break;
+            case 6:
+                texLoc = texLocBase + subLocClayColor + "clayman_orange.png";
+                break;
+            case 7:
+                texLoc = texLocBase + subLocClayColor + "clayman_magenta.png";
+                break;
+            case 8:
+                texLoc = texLocBase + subLocClayColor + "clayman_lime.png";
+                break;
+            case 9:
+                texLoc = texLocBase + subLocClayColor + "clayman_light_gray.png";
+                break;
+            case 10:
+                texLoc = texLocBase + subLocClayColor + "clayman_light_blue.png";
+                break;
+            case 11:
+                texLoc = texLocBase + subLocClayColor + "clayman_green.png";
+                break;
+            case 12:
+                texLoc = texLocBase + subLocClayColor + "clayman_gray.png";
+                break;
+            case 13:
+                texLoc = texLocBase + subLocClayColor + "clayman_cyan.png";
+                break;
+            case 14:
+                texLoc = texLocBase + subLocClayColor + "clayman_brown.png";
+                break;
+            case 15:
+                texLoc = texLocBase + subLocClayColor + "clayman_blue.png";
+                break;
+            case 16:
+                texLoc = texLocBase + subLocClayColor + "clayman_black.png";
+                break;
+            case 17:
+                texLoc = texLocBase + subLocSpecial + "clayman_carrot.png";
+                break;
+            case 18:
+                texLoc = texLocBase + subLocSpecial + "clayman_potato.png";
+                break;
+            case 19:
+                texLoc = texLocBase + subLocSpecial + "clayman_poisonous_potato.png";
+                break;
+            case 20:
+                texLoc = texLocBase + subLocSpecial + "clayman_beetroot.png";
+                break;
+            case 21:
+                texLoc = texLocBase + subLocSpecial + "clayman_apple.png";
+                break;
+            case 22:
+                texLoc = texLocBase + subLocSpecial + "clayman_melon.png";
+                break;
+        }
+        return new ResourceLocation(ClaySoldiers2.MOD_ID, texLoc);
     }
 
     @Override
