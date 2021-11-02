@@ -1,11 +1,15 @@
 package multiteam.claysoldiers2.data.client;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
+import multiteam.claysoldiers2.main.Registration;
+import multiteam.claysoldiers2.main.item.ClaySoldierItem;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
 
@@ -23,8 +27,34 @@ public class ModItemModelProvider extends ItemModelProvider {
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
 
         //Regular Items
-        builder(itemGenerated, "clay_soldier");
         builder(itemGenerated, "basic_remote");
+
+        builder(itemGenerated, "clay_soldier");
+        builder(itemGenerated,"white_clay_soldier");
+        builder(itemGenerated,"yellow_clay_soldier");
+        builder(itemGenerated,"red_clay_soldier");
+        builder(itemGenerated,"purple_clay_soldier");
+        builder(itemGenerated,"pink_clay_soldier");
+        builder(itemGenerated,"orange_clay_soldier");
+        builder(itemGenerated,"magenta_clay_soldier");
+        builder(itemGenerated,"lime_clay_soldier");
+        builder(itemGenerated,"light_gray_clay_soldier");
+        builder(itemGenerated,"light_blue_clay_soldier");
+        builder(itemGenerated,"green_clay_soldier");
+        builder(itemGenerated,"gray_clay_soldier");
+        builder(itemGenerated,"cyan_clay_soldier");
+        builder(itemGenerated,"brown_clay_soldier");
+        builder(itemGenerated,"blue_clay_soldier");
+        builder(itemGenerated,"black_clay_soldier");
+        builder(itemGenerated,"carrot_clay_soldier");
+        builder(itemGenerated,"potato_clay_soldier");
+        builder(itemGenerated,"poisonous_potato_clay_soldier");
+        builder(itemGenerated,"beetroot_clay_soldier");
+        builder(itemGenerated,"apple_clay_soldier");
+        builder(itemGenerated,"melon_clay_soldier");
+
+        builder(itemGenerated,"bricked_soldier");
+
 
     }
 

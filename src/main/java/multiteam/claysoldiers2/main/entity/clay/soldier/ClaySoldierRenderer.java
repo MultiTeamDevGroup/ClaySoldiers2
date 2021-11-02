@@ -21,4 +21,8 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 
+    @Override
+    public void render(ClaySoldierEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
+        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+    }
 }

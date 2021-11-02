@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "claysoldiers2:item/gray_clay_soldier"
+  }
+}

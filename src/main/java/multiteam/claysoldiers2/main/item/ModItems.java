@@ -31,6 +31,8 @@ public class ModItems {
     public static final RegistryObject<Item> APPLE_CLAY_SOLDIER = Registration.ITEMS.register("apple_clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), 21));
     public static final RegistryObject<Item> MELON_CLAY_SOLDIER = Registration.ITEMS.register("melon_clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), 22));
 
+    public static final RegistryObject<Item> BRICKED_SOLDIER = Registration.ITEMS.register("bricked_soldier", () -> new Item(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(64)));
+
     public static final RegistryObject<Item> BASIC_REMOTE = Registration.ITEMS.register("basic_remote", () -> new BasicRemoteItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(1)));
 
     public static void register(){}

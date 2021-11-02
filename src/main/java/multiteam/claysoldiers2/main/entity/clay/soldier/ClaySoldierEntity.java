@@ -57,11 +57,11 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     @Override
     public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(ModItems.CLAY_SOLDIER.get());
+        return ClaySoldierAPI.getItemForm(this);
     }
 
     public void removeSoldier(){
-        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.CLAY_SOLDIER.get())));
+        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), ClaySoldierAPI.getItemForm(this)));
         this.remove(RemovalReason.KILLED);
     }
 
