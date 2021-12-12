@@ -123,7 +123,21 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implem
 
         LivingEntity entityIn = (LivingEntity) entity;
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
+
+        float limbSwing = customPredicate.getLimbSwing();
+        float limbSwingAmount = customPredicate.getLimbSwingAmount();
+
         head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+
+        IBone rightLeg = this.getAnimationProcessor().getBone("rightleg");
+        IBone leftLeg = this.getAnimationProcessor().getBone("leftleg");
+        IBone rightHand = this.getAnimationProcessor().getBone("righthand");
+        IBone leftHand = this.getAnimationProcessor().getBone("lefthand");
+
+        leftLeg.setRotationX((float) Math.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
+        rightLeg.setRotationX((float) Math.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount);
+        leftHand.setRotationX((float) Math.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
+        rightHand.setRotationX((float) Math.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount);
     }
 }
