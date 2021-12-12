@@ -1,11 +1,14 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
+import multiteam.claysoldiers2.main.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -112,15 +115,30 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 4, true, false, (targetEntity) -> {
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2, true));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
             if(targetEntity instanceof ClaySoldierEntity){
                 ClaySoldierEntity targetedSoldier = (ClaySoldierEntity) targetEntity;
                 return !targetedSoldier.isSoldierMatching(this);
             }
             return false;
         }));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    public ItemStack getPickResult() {
+        return ClaySoldierAPI.getItemForm(this);
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        if(damageSource.isFire()){
+            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.BRICKED_SOLDIER.get())));
+        }else{
+            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), ClaySoldierAPI.getItemForm( this )));
+        }
     }
 }

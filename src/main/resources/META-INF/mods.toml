@@ -26,3 +26,15 @@ Clay Soldiers 2 brings most features from the original mod to a modern version o
     versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.claysoldiers2]]
+    modId="multicore_lib"
+    mandatory=true
+    versionRange="[1.18-0.2.2.1,)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.claysoldiers2]]
+    modId="geckolib"
+    mandatory=true
+    versionRange="[1.18-forge-3.0.3,)"
+    ordering="AFTER"
+    side="BOTH"
