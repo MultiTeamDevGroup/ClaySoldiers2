@@ -3,7 +3,7 @@ package multiteam.claysoldiers2.main.item;
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.Registration;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems {
 

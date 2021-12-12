@@ -4,8 +4,7 @@ import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierRenderer;
-import multiteam.multicore_lib.setup.utilities.MathF;
-import multiteam.multicore_lib.setup.utilities.RegistrationTool;
+import multiteam.multicore_lib.setup.utilities.generic.MathF;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -14,8 +13,8 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = ClaySoldiers2.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEntities {

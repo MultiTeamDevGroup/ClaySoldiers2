@@ -1,15 +1,11 @@
 package multiteam.claysoldiers2.data.client;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
-import multiteam.claysoldiers2.main.Registration;
-import multiteam.claysoldiers2.main.item.ClaySoldierItem;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
 
