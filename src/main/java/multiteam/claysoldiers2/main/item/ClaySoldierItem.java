@@ -1,17 +1,26 @@
 package multiteam.claysoldiers2.main.item;
 
+import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
+import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ClaySoldierItem extends Item {
 
@@ -57,5 +66,10 @@ public class ClaySoldierItem extends Item {
             return InteractionResult.SUCCESS;
         }
         return super.useOn(context);
+    }
+
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material."+ ClaySoldierAPI.getSoldierMaterial(this.type).replace(" ", "_"))).withStyle(Style.EMPTY.withColor(ClaySoldierAPI.getSoldierColor(this.type).getRGB()))));
+
     }
 }

@@ -141,4 +141,6 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
             this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), ClaySoldierAPI.getItemForm( this )));
         }
     }
+
+
 }
