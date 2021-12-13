@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:clay"
+        },
+        {
+            "item": "minecraft:soul_sand"
+        }
+    ],
+    "result": {
+        "item": "claysoldiers2:clay_soldier",
+        "count": 4
+    }
+}

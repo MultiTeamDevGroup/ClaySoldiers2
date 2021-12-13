@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:carrot"
+        },
+        {
+            "tag": "claysoldiers2:clay_soldier_item"
+        },
+        {
+            "tag": "claysoldiers2:clay_soldier_item"
+        },
+        {
+            "tag": "claysoldiers2:clay_soldier_item"
+        },
+        {
+            "tag": "claysoldiers2:clay_soldier_item"
+        }
+    ],
+    "result": {
+        "item": "claysoldiers2:carrot_clay_soldier",
+        "count": 4
+    }
+}

@@ -70,6 +70,5 @@ public class ClaySoldierItem extends Item {
 
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material."+ ClaySoldierAPI.getSoldierMaterial(this.type).replace(" ", "_"))).withStyle(Style.EMPTY.withColor(ClaySoldierAPI.getSoldierColor(this.type).getRGB()))));
-
     }
 }
