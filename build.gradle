@@ -93,12 +93,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.5'
 
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
 
-    runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:1.18-0.2.2.1")
-    compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:1.18-0.2.2.1")
+    runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:1.18.1-0.2.3.0")
+    compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:1.18.1-0.2.3.0")
 
     runtimeOnly fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
     compileOnly fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')

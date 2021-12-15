@@ -234,6 +234,7 @@ public class ClaySoldierAPI {
                 break;
         }
         return material;
+
     }
 
 
@@ -359,5 +360,6 @@ public class ClaySoldierAPI {
         }
     }
     
+
 }
 

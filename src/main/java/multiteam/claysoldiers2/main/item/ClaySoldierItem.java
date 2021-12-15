@@ -4,6 +4,7 @@ import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.multicore_lib.setup.utilities.render.tooltip.itemtextcomp.ItemWithTextTooltipComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -12,19 +13,25 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClaySoldierItem extends Item {
 
     public int type;
+
 
     public ClaySoldierItem(Properties properties, int type_) {
         super(properties);
@@ -70,5 +77,19 @@ public class ClaySoldierItem extends Item {
 
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material."+ ClaySoldierAPI.getSoldierMaterial(this.type).replace(" ", "_"))).withStyle(Style.EMPTY.withColor(ClaySoldierAPI.getSoldierColor(this.type).getRGB()))));
+    }
+
+    @NotNull
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        List<ItemWithTextTooltipComponent.ItemTextCompoundRow> rowList = new ArrayList<>();;
+
+
+        //TODO a row is equal to a modifier. gate these with if statements, and there they go. this is just an example to see if the display thing works.
+        rowList.add(new ItemWithTextTooltipComponent.ItemTextCompoundRow(List.of(
+                new ItemStack(Items.GOLD_NUGGET)
+        ), (TranslatableComponent) new TranslatableComponent(" - King").withStyle(Style.EMPTY.withColor(0xffbb00))));
+
+
+        return Optional.of(new ItemWithTextTooltipComponent(rowList));
     }
 }
