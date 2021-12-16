@@ -33,12 +33,18 @@ import javax.annotation.Nullable;
 public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
-    static final int variantsNumber = 23;
+    final ClaySoldierAPI.ClaySoldierMaterial material;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
+    public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, ClaySoldierAPI.ClaySoldierMaterial material) {
+        super(entity, world);
+        this.material = material;
+    }
+
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world) {
         super(entity, world);
+        this.material = ClaySoldierAPI.ClaySoldierMaterial.CLAY_SOLDIER;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -61,13 +67,8 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         return this.factory;
     }
 
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return ClaySoldierAPI.getItemForm(this);
-    }
-
     public void removeSoldier(){
-        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), ClaySoldierAPI.getItemForm(this)));
+        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(this.material.getItemForm())));
         this.remove(RemovalReason.KILLED);
     }
 
@@ -78,25 +79,26 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
 
-    public int getVariant() {
-        return Mth.clamp(this.entityData.get(DATA_VARIANT_ID), 0, variantsNumber-1);
+
+    public ClaySoldierAPI.ClaySoldierMaterial getMaterial() {
+        return ClaySoldierAPI.ClaySoldierMaterial.values()[Mth.clamp(this.entityData.get(DATA_VARIANT_ID), 0, ClaySoldierAPI.ClaySoldierMaterial.values().length-1)];
     }
 
 
-    public void setVariant(int id) {
-        this.entityData.set(DATA_VARIANT_ID, id);
+    public void setMaterial(ClaySoldierAPI.ClaySoldierMaterial mat) {
+        this.entityData.set(DATA_VARIANT_ID, mat.ordinal());
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag data) {
         super.addAdditionalSaveData(data);
-        data.putInt("Variant", this.getVariant());
+        data.putInt("Variant", this.getMaterial().ordinal());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag data) {
         super.readAdditionalSaveData(data);
-        this.setVariant(data.getInt("Variant"));
+        this.setMaterial(ClaySoldierAPI.ClaySoldierMaterial.values()[data.getInt("Variant")]);
     }
 
     @Nullable
@@ -106,7 +108,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
     public boolean isSoldierMatching(ClaySoldierEntity soldierComparedWith){
-        if(this.getVariant() == soldierComparedWith.getVariant()){
+        if(this.getMaterial() == soldierComparedWith.getMaterial()){
             return true;
         }else{
             return false;
@@ -128,19 +130,17 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
     @Override
-    public ItemStack getPickResult() {
-        return ClaySoldierAPI.getItemForm(this);
-    }
-
-    @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
         if(damageSource.isFire()){
             this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.BRICKED_SOLDIER.get())));
         }else{
-            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), ClaySoldierAPI.getItemForm( this )));
+            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(this.material.getItemForm())));
         }
     }
 
-
+    @Override
+    public ItemStack getPickedResult(HitResult target) {
+        return new ItemStack(this.material.getItemForm());
+    }
 }

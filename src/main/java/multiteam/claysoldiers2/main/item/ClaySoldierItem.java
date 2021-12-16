@@ -30,12 +30,11 @@ import java.util.Optional;
 
 public class ClaySoldierItem extends Item {
 
-    public int type;
+    public ClaySoldierAPI.ClaySoldierMaterial material;
 
-
-    public ClaySoldierItem(Properties properties, int type_) {
+    public ClaySoldierItem(Properties properties, ClaySoldierAPI.ClaySoldierMaterial material_) {
         super(properties);
-        this.type = type_;
+        this.material = material_;
     }
 
     @Override
@@ -50,21 +49,19 @@ public class ClaySoldierItem extends Item {
             if(playerEntity.isShiftKeyDown()){
                 int stackSize = stack.getCount();
                 for (int i = 0; i < stackSize; i++){
-                    ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), worldin);
+                    ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), worldin, this.material);
                     worldin.addFreshEntity(soldierEntity);
                     soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
-                    soldierEntity.setVariant(this.type);
                 }
                 stack.shrink(stackSize);
 
                 worldin.playSound(playerEntity, soldierSummonPos, SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 1.0f ,1.0f);
 
             }else{
-                ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), worldin);
+                ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), worldin, this.material);
                 worldin.addFreshEntity(soldierEntity);
                 soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
-                soldierEntity.setVariant(this.type);
-
+                soldierEntity.setMaterial(this.material);
                 if(!playerEntity.isCreative()){
                     stack.shrink(1);
                 }
@@ -76,7 +73,7 @@ public class ClaySoldierItem extends Item {
     }
 
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material."+ ClaySoldierAPI.getSoldierMaterial(this.type).replace(" ", "_"))).withStyle(Style.EMPTY.withColor(ClaySoldierAPI.getSoldierColor(this.type).getRGB()))));
+        tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material."+ this.material.getMaterialName().replace(" ", "_"))).withStyle(Style.EMPTY.withColor(this.material.getMaterialColor().getRGB()))));
     }
 
     @NotNull
