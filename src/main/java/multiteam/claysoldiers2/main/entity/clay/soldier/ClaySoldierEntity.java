@@ -1,11 +1,11 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
+import multiteam.claysoldiers2.main.item.ClaySoldierItem;
 import multiteam.claysoldiers2.main.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,9 +17,11 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -29,18 +31,17 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
-    static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
+    static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
     final ClaySoldierAPI.ClaySoldierMaterial material;
+    private List<ClaySoldierAPI.ClaySoldierModifier> modifiers = new ArrayList<>();
 
     private AnimationFactory factory = new AnimationFactory(this);
-
-    public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, ClaySoldierAPI.ClaySoldierMaterial material) {
-        super(entity, world);
-        this.material = material;
-    }
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world) {
         super(entity, world);
@@ -57,8 +58,6 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-
-        //event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tinyman.idle", true));
         return PlayState.CONTINUE;
     }
 
@@ -68,37 +67,60 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
     public void removeSoldier(){
-        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(this.material.getItemForm())));
+        this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), this.getItemForm()));
+        if(this.modifiers != null || this.modifiers.size() > 0){
+            for (ClaySoldierAPI.ClaySoldierModifier modif: this.modifiers) {
+                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(modif.getModifierItem())));
+            }
+        }
         this.remove(RemovalReason.KILLED);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_VARIANT_ID, 0);
+        this.entityData.define(DATA_MATERIAL, 0);
     }
 
 
+    public List<ClaySoldierAPI.ClaySoldierModifier> getModifiers(){
+        return this.modifiers;
+    }
+
+    public void addModifier(ClaySoldierAPI.ClaySoldierModifier modifier){
+        this.modifiers.add(modifier);
+    }
+
+    public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifier){
+        this.modifiers.remove(modifier);
+    }
 
     public ClaySoldierAPI.ClaySoldierMaterial getMaterial() {
-        return ClaySoldierAPI.ClaySoldierMaterial.values()[Mth.clamp(this.entityData.get(DATA_VARIANT_ID), 0, ClaySoldierAPI.ClaySoldierMaterial.values().length-1)];
+        return ClaySoldierAPI.ClaySoldierMaterial.values()[Mth.clamp(this.entityData.get(DATA_MATERIAL), 0, ClaySoldierAPI.ClaySoldierMaterial.values().length-1)];
     }
 
-
     public void setMaterial(ClaySoldierAPI.ClaySoldierMaterial mat) {
-        this.entityData.set(DATA_VARIANT_ID, mat.ordinal());
+        this.entityData.set(DATA_MATERIAL, mat.ordinal());
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag data) {
         super.addAdditionalSaveData(data);
         data.putInt("Variant", this.getMaterial().ordinal());
+        int[] modifs = new int[this.getModifiers().size()];
+        for (int i = 0; i < this.modifiers.size(); i++){
+            modifs[i] = this.modifiers.get(i).ordinal();
+        }
+        data.putIntArray("Modifiers", modifs);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag data) {
         super.readAdditionalSaveData(data);
         this.setMaterial(ClaySoldierAPI.ClaySoldierMaterial.values()[data.getInt("Variant")]);
+        for (int i = 0; i < data.getIntArray("Modifiers").length; i++){
+            this.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[data.getIntArray("Modifiers")[i]]);
+        }
     }
 
     @Nullable
@@ -116,6 +138,36 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
     @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        if(damageSource.isFire()){
+            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.BRICKED_SOLDIER.get())));
+        }else{
+            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), this.getItemForm()));
+        }
+    }
+
+    @Override
+    public ItemStack getPickedResult(HitResult target) {
+        return this.getItemForm();
+    }
+
+
+    public ItemStack getItemForm(){
+        return new ItemStack(this.getMaterial().getItemForm());
+    }
+
+    private class BoolModifierCompound{
+        public boolean retBool;
+        public ClaySoldierAPI.ClaySoldierModifier retModif;
+
+        BoolModifierCompound(boolean bool, ClaySoldierAPI.ClaySoldierModifier modif){
+            this.retModif = modif;
+            this.retBool = bool;
+        }
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2, true));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
@@ -125,22 +177,42 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
             }
             return false;
         }));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
     }
 
     @Override
-    public void die(DamageSource damageSource) {
-        super.die(damageSource);
-        if(damageSource.isFire()){
-            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.BRICKED_SOLDIER.get())));
-        }else{
-            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(this.material.getItemForm())));
+    public void tick() {
+        super.tick();
+        ClaySoldierEntity soldier = this;
+        Level level = soldier.getLevel();
+
+        if(!level.isClientSide()){
+
+            List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(soldier.getX()-1,soldier.getY()-1,soldier.getZ()-1,soldier.getX()+1,soldier.getY()+1,soldier.getZ()+1));
+
+            for (ItemEntity itemEntity : itemsAround){
+                BoolModifierCompound compund = shouldPickUp(itemEntity.getItem());
+                if(compund.retBool){
+                    soldier.addModifier(compund.retModif);
+                    itemEntity.getItem().shrink(1);
+                }
+            }
+
         }
     }
 
-    @Override
-    public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(this.material.getItemForm());
+    public BoolModifierCompound shouldPickUp(ItemStack stack) {
+        BoolModifierCompound ret = new BoolModifierCompound(false, null);
+        for (int i = 0; i < ClaySoldierAPI.ClaySoldierModifier.values().length; i++){
+            if(ClaySoldierAPI.ClaySoldierModifier.values()[i].getModifierItem() == stack.getItem()){
+                if(!this.modifiers.contains(ClaySoldierAPI.ClaySoldierModifier.values()[i])){
+                    ret.retBool = true;
+                    ret.retModif = ClaySoldierAPI.ClaySoldierModifier.values()[i];
+                }
+            }
+        }
+        return ret;
     }
+
 }

@@ -32,6 +32,7 @@
 
     "GUI":"MOD GUI",
     "itemGroup.claysoldiers2_creative_tab":"Clay Soldiers 2",
+    "tooltip.claysoldiers2.material": "Material: ",
     "tooltip.claysoldiers2.clay_soldier_item_attributes.material.clay": "Clay",
     "tooltip.claysoldiers2.clay_soldier_item_attributes.material.white_clay": "White Clay",
     "tooltip.claysoldiers2.clay_soldier_item_attributes.material.yellow_clay": "Yellow Clay",
@@ -55,7 +56,8 @@
     "tooltip.claysoldiers2.clay_soldier_item_attributes.material.beetroot": "Beetroot",
     "tooltip.claysoldiers2.clay_soldier_item_attributes.material.apple": "Apple",
     "tooltip.claysoldiers2.clay_soldier_item_attributes.material.melon": "Melon",
-    "tooltip.claysoldiers2.material": "Material: ",
+
+    "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.king": "- King",
 
     "SOUND":"MOD SOUND"
 }

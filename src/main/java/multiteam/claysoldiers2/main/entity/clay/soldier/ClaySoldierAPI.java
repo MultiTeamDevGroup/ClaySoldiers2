@@ -378,10 +378,34 @@ public class ClaySoldierAPI {
                 new Color(0xFFFFFF)
         );
 
+        private ClaySoldierModifierType modifierType;
+        private Item modifierItem;
+        private String modifierName;
+        private Color modifierColor;
 
         ClaySoldierModifier(ClaySoldierModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor) {
-
+            this.modifierType = modifierType;
+            this.modifierItem = modifierItem;
+            this.modifierName = modifierName;
+            this.modifierColor = modifierColor;
         }
+
+        public ClaySoldierModifierType getModifierType(){
+            return this.modifierType;
+        }
+
+        public Item getModifierItem(){
+            return this.modifierItem;
+        }
+
+        public String getModifierName(){
+            return this.modifierName;
+        }
+
+        public Color getModifierColor(){
+            return this.modifierColor;
+        }
+
     }
 
 }
