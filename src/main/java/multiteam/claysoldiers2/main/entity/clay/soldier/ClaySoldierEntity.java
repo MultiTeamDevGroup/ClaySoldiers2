@@ -68,11 +68,6 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     public void removeSoldier(){
         this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), this.getItemForm()));
-        //if(this.modifiers != null || this.modifiers.size() > 0){
-        //            for (ClaySoldierAPI.ClaySoldierModifier modif: this.modifiers) {
-        //                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(modif.getModifierItem())));
-        //            }
-        //        }
         this.remove(RemovalReason.KILLED);
     }
 

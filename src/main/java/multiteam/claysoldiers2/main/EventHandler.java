@@ -22,14 +22,10 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void gatherTooltips(RenderTooltipEvent.GatherComponents event) {
-        System.out.println("lets start adding tooltip images");
         if (event.getItemStack().getItem() instanceof ClaySoldierItem) {
             CompoundTag tag = event.getItemStack().getTag();
-            System.out.println(tag + " trying still. one step further");
             if(tag != null){
-                System.out.println("k tag wasnt null. PROCEED!");
                 if(tag.getIntArray("Modifiers").length > 0){
-                System.out.println("very nice, modifiers list actually contains modifiers");
                     List<ClaySoldierAPI.ClaySoldierModifier> modifiers = new ArrayList<>();
                     for (int i = 0; i < tag.getIntArray("Modifiers").length; i++){
                         modifiers.add(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[i]]);
