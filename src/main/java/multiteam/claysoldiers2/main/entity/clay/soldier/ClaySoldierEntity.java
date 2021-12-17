@@ -68,11 +68,11 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     public void removeSoldier(){
         this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), this.getItemForm()));
-        if(this.modifiers != null || this.modifiers.size() > 0){
-            for (ClaySoldierAPI.ClaySoldierModifier modif: this.modifiers) {
-                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(modif.getModifierItem())));
-            }
-        }
+        //if(this.modifiers != null || this.modifiers.size() > 0){
+        //            for (ClaySoldierAPI.ClaySoldierModifier modif: this.modifiers) {
+        //                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(modif.getModifierItem())));
+        //            }
+        //        }
         this.remove(RemovalReason.KILLED);
     }
 
@@ -154,7 +154,17 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
 
     public ItemStack getItemForm(){
-        return new ItemStack(this.getMaterial().getItemForm());
+        ItemStack retStack = new ItemStack(this.getMaterial().getItemForm());
+
+        CompoundTag tag = new CompoundTag();
+        int[] modifs_ = new int[this.modifiers.size()];
+        for (int i = 0; i < this.modifiers.size(); i++){
+            modifs_[i] = this.modifiers.get(i).ordinal();
+        }
+        tag.putIntArray("Modifiers", modifs_);
+        retStack.setTag(tag);
+
+        return retStack;
     }
 
     private class BoolModifierCompound{
