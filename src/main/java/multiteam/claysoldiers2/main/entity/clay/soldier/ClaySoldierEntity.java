@@ -147,6 +147,10 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         return this.getItemForm();
     }
 
+    @Override
+    public ItemStack getPickResult() {
+        return this.getItemForm();
+    }
 
     public ItemStack getItemForm(){
         ItemStack retStack = new ItemStack(this.getMaterial().getItemForm());

@@ -5,6 +5,7 @@ import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -43,14 +44,22 @@ public class ClaySoldierItem extends Item {
             if(playerEntity.isShiftKeyDown()){
                 int stackSize = stack.getCount();
                 for (int i = 0; i < stackSize; i++){
-                    placeSoldier(worldin, context);
+                    ClaySoldierEntity soldierEntity = placeSoldier(worldin, context);
+                    CompoundTag tag = stack.getTag();
+                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
+                        soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                    }
                 }
                 stack.shrink(stackSize);
 
                 worldin.playSound(playerEntity, soldierSummonPos, SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 1.0f ,1.0f);
 
             }else{
-                placeSoldier(worldin, context);
+                ClaySoldierEntity soldierEntity = placeSoldier(worldin, context);
+                CompoundTag tag = stack.getTag();
+                for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
+                    soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                }
 
                 if(!playerEntity.isCreative()){
                     stack.shrink(1);
