@@ -46,8 +46,10 @@ public class ClaySoldierItem extends Item {
                 for (int i = 0; i < stackSize; i++){
                     ClaySoldierEntity soldierEntity = placeSoldier(worldin, context);
                     CompoundTag tag = stack.getTag();
-                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-                        soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                    if(tag != null){
+                        for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
+                            soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                        }
                     }
                 }
                 stack.shrink(stackSize);
@@ -57,8 +59,10 @@ public class ClaySoldierItem extends Item {
             }else{
                 ClaySoldierEntity soldierEntity = placeSoldier(worldin, context);
                 CompoundTag tag = stack.getTag();
-                for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-                    soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                if(tag != null){
+                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
+                        soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                    }
                 }
 
                 if(!playerEntity.isCreative()){
