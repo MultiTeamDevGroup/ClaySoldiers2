@@ -1,6 +1,7 @@
 package multiteam.claysoldiers2.main;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
+import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.item.ModItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -25,7 +26,7 @@ public class Registration {
 
         ModItems.register();
         //ModBlocks.register();
-        //ModEntities.register();
+        ModEntities.register();
     }
 
 }
