@@ -87,40 +87,4 @@ public class ClaySoldierItem extends Item {
         return soldierEntity;
     }
 
-    //*
-    // @NotNull
-    //    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-    //        List<ItemWithTextTooltipComponent.ItemTextCompoundRow> rowList = new ArrayList<>();;
-    //
-    //        if(this.modifiers != null){
-    //            for (ClaySoldierAPI.ClaySoldierModifier modifier: this.modifiers) {
-    //
-    //                rowList.add(new ItemWithTextTooltipComponent.ItemTextCompoundRow(List.of(
-    //                        new ItemStack(modifier.getModifierItem())
-    //                ), (TranslatableComponent) new TranslatableComponent("tooltip."+ ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + modifier.getModifierName()).withStyle(Style.EMPTY.withColor(modifier.getModifierColor().getRGB()))));
-    //
-    //            }
-    //        }
-    //
-    //        return Optional.of(new ItemWithTextTooltipComponent(rowList));
-    //    }
-    //
-    //
-    // public ItemStack addModifiers(List<ClaySoldierAPI.ClaySoldierModifier> modifs, ItemStack stack){
-    //        this.modifiers.clear();
-    //        this.modifiers = modifs;
-    //        CompoundTag tag = new CompoundTag();
-    //        int[] modifs_ = new int[modifs.size()];
-    //        for (int i = 0; i < modifs.size(); i++){
-    //            modifs_[i] = modifs.get(i).ordinal();
-    //        }
-    //        tag.putIntArray("Modifiers", modifs_);
-    //        stack.setTag(tag);
-    //        return stack;
-    //    }
-    //
-    //*//
-
-
-
 }

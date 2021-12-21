@@ -221,7 +221,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 }
             }
         }
-        return ret;
+        return new BoolModifierCompound(false, null);
     }
 
 }
