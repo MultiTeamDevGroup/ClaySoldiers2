@@ -84,10 +84,11 @@ repositories {
         url = "https://modmaven.k-4u.nl"
     }
     maven { url "https://github.com/MultiTeamDevGroup/MultiTeam-Maven/raw/main/" }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.5'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.7'
 
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
 
@@ -96,6 +97,9 @@ dependencies {
 
     runtimeOnly fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
     compileOnly fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
+
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-61:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-61")
 
 }
 
