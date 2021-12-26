@@ -1,12 +1,14 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
 import multiteam.claysoldiers2.main.item.ModItems;
+import multiteam.claysoldiers2.main.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,6 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.items.ItemHandlerHelper;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -233,6 +237,13 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 if(!this.modifiers.contains(ClaySoldierAPI.ClaySoldierModifier.values()[i])){
                     ret.retBool = true;
                     ret.retModif = ClaySoldierAPI.ClaySoldierModifier.values()[i];
+                }
+            }else if(ItemTags.WOOL.contains(stack.getItem())){
+                if(!this.modifiers.contains(ClaySoldierAPI.ClaySoldierModifier.WOOL_BOOST)){
+                    ret.retBool = true;
+                    ret.retModif = ClaySoldierAPI.ClaySoldierModifier.WOOL_BOOST;
+                    ret.retModif.setModifierItem(stack.getItem());
+                    ret.retModif.setModifierColor(Utils.getColorFromBlocks(stack.getItem()));
                 }
             }
         }

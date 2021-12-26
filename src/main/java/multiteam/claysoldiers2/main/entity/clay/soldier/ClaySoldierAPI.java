@@ -8,6 +8,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class ClaySoldierAPI {
 
@@ -504,9 +505,9 @@ public class ClaySoldierAPI {
         );
 
         private final ClaySoldierModifierType modifierType;
-        private final Item modifierItem;
+        private Item modifierItem;
         private final String modifierName;
-        private final Color modifierColor;
+        private Color modifierColor;
         private final boolean canBeStacked;
         private final int maxStackingLimit;
         private final ModifierBehavior behavior;
@@ -529,12 +530,20 @@ public class ClaySoldierAPI {
             return this.modifierItem;
         }
 
+        public void setModifierItem(Item item){
+            this.modifierItem = item;
+        }
+
         public String getModifierName(){
             return this.modifierName;
         }
 
         public Color getModifierColor(){
             return this.modifierColor;
+        }
+
+        public void setModifierColor(Color color){
+            this.modifierColor = color;
         }
 
         public boolean canBeStacked(){return this.canBeStacked;}
@@ -550,6 +559,7 @@ public class ClaySoldierAPI {
         }
 
     }
+
 
 }
 
