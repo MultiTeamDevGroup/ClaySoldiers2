@@ -15,6 +15,7 @@ public class ClaySoldierAPI {
     public static class Settings{
        public static int stackablesLimit = 32;
        public static int flowerStackLimit = 5;
+       public static int soldierViewDistance = 19;
     }
 
     public enum ClaySoldierMaterial{
