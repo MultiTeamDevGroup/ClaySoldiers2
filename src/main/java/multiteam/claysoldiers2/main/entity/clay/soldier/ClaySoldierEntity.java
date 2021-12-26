@@ -1,11 +1,12 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
-import multiteam.claysoldiers2.main.item.ClaySoldierItem;
 import multiteam.claysoldiers2.main.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -33,7 +33,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
@@ -88,6 +87,10 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifier){
         this.modifiers.remove(modifier);
+    }
+
+    public void removeAllModifiers(){
+        this.modifiers.clear();
     }
 
     public ClaySoldierAPI.ClaySoldierMaterial getMaterial() {
@@ -155,13 +158,15 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     public ItemStack getItemForm(){
         ItemStack retStack = new ItemStack(this.getMaterial().getItemForm());
 
-        CompoundTag tag = new CompoundTag();
-        int[] modifs_ = new int[this.modifiers.size()];
-        for (int i = 0; i < this.modifiers.size(); i++){
-            modifs_[i] = this.modifiers.get(i).ordinal();
+        if(!this.getModifiers().isEmpty()){
+            CompoundTag tag = new CompoundTag();
+            int[] modifs_ = new int[this.getModifiers().size()];
+            for (int i = 0; i < this.getModifiers().size(); i++){
+                modifs_[i] = this.getModifiers().get(i).ordinal();
+            }
+            tag.putIntArray("Modifiers", modifs_);
+            retStack.setTag(tag);
         }
-        tag.putIntArray("Modifiers", modifs_);
-        retStack.setTag(tag);
 
         return retStack;
     }
@@ -196,7 +201,8 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         ClaySoldierEntity soldier = this;
         Level level = soldier.getLevel();
 
-        if(!level.isClientSide()){
+        //Picking up items
+        if(!level.isClientSide){
 
             List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(soldier.getX()-1,soldier.getY()-1,soldier.getZ()-1,soldier.getX()+1,soldier.getY()+1,soldier.getZ()+1));
 
@@ -205,9 +211,18 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 if(compund.retBool){
                     soldier.addModifier(compund.retModif);
                     itemEntity.getItem().shrink(1);
+                    level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
                 }
             }
+        }
 
+        //Handling modifiers
+        if(!level.isClientSide && !this.getModifiers().isEmpty()){
+            for (int i = 0; i < this.getModifiers().size(); i++) {
+                if(this.getModifiers().get(i) != null){
+                    this.getModifiers().get(i).ExecuteModifierOn(this);
+                }else{return;}
+            }
         }
     }
 
@@ -221,7 +236,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 }
             }
         }
-        return new BoolModifierCompound(false, null);
+        return ret;
     }
 
 }
