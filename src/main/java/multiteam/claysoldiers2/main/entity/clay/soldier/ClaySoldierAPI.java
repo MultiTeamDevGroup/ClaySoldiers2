@@ -183,7 +183,9 @@ public class ClaySoldierAPI {
                 new Color(0xff8000),
                 false,
                 0,
-                (soldier) -> {}
+                (soldier) -> {
+                    soldier.isMainHandOccupied = true;
+                }
         ),
         BOWL_SECOND(
                 ClaySoldierModifierType.OFF_HAND,

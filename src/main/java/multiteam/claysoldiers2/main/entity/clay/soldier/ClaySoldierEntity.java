@@ -40,6 +40,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
     final ClaySoldierAPI.ClaySoldierMaterial material;
     private List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
+    public boolean isMainHandOccupied = false;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -206,8 +207,9 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
             for (ItemEntity itemEntity : itemsAround){
                 Pair<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> compund = shouldPickUp(itemEntity.getItem());
                 if(compund.getB().getA()){
-                    if(soldier.getModifiers().contains(compund.getA())){
-                        Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
+
+                    Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
+                    if(soldier.getModifiers().contains(oldModifier)){
                         soldier.removeModifier(oldModifier);
                         soldier.addModifier(compund.getA().getA(), compund.getA().getB());
                         itemEntity.getItem().shrink(compund.getA().getB());
@@ -229,6 +231,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 }else{return;}
             }
         }
+
     }
 
     public Pair<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> shouldPickUp(ItemStack stack) {
@@ -249,7 +252,6 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                     containedAmount = this.getModifiers().get(modifiersOfSoldier.indexOf(modifier)).getB();
                 }
 
-
                 if(modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
                     if(stack.getCount() > modifier.getMaxStackingLimit()){
                         pickUpAmount = modifier.getMaxStackingLimit();
@@ -258,11 +260,13 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                     }
                     ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
                 }else if(modifier.canBeStacked() && modifiersOfSoldier.contains(modifier) && containedAmount < modifier.getMaxStackingLimit()){
+                    //TODO fix when a single item is dropped/picked up, it adds a new on top of the already existing modifier, resulting in duplicates
                     if(stack.getCount() > modifier.getMaxStackingLimit()-containedAmount){
                         pickUpAmount = modifier.getMaxStackingLimit()-containedAmount;
                     }else{
                         pickUpAmount = stack.getCount();
                     }
+
                     ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
                 }else if(!modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
                     ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
