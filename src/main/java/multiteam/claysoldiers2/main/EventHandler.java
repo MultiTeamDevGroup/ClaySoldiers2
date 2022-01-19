@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +27,18 @@ public class EventHandler {
             CompoundTag tag = event.getItemStack().getTag();
             if(tag != null){
                 if(tag.getIntArray("Modifiers").length > 0){
-                    List<ClaySoldierAPI.ClaySoldierModifier> modifiers = new ArrayList<>();
+                    List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
                     for (int i = 0; i < tag.getIntArray("Modifiers").length; i++){
-                        modifiers.add(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[i]]);
+                        modifiers.add(new Pair<>(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[i]], tag.getIntArray("ModifiersAmounts")[i]));
                     }
 
                     List<ItemWithTextTooltipComponent.ItemTextCompoundRow> rowList = new ArrayList<>();;
-                    for (ClaySoldierAPI.ClaySoldierModifier modifier: modifiers) {
+                    for (Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> modifier: modifiers) {
+                        ItemStack stack = new ItemStack(modifier.getA().getModifierItem());
+                        stack.setCount(modifier.getB());
                         rowList.add(new ItemWithTextTooltipComponent.ItemTextCompoundRow(List.of(
-                                new ItemStack(modifier.getModifierItem())
-                        ), (TranslatableComponent) new TranslatableComponent("tooltip."+ ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + modifier.getModifierName()).withStyle(Style.EMPTY.withColor(modifier.getModifierColor().getRGB()))));
+                                stack
+                        ), (TranslatableComponent) new TranslatableComponent("tooltip."+ ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + modifier.getA().getModifierName()).withStyle(Style.EMPTY.withColor(modifier.getA().getModifierColor().getRGB()))));
                     }
 
                     event.getTooltipElements().add(Either.right(new ItemWithTextTooltipComponent(rowList)));

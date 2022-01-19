@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.2'
+version = '0.0.3_devBeta'
 group = 'multiteam.claysoldiers2'
 archivesBaseName = 'claysoldiers2'
 

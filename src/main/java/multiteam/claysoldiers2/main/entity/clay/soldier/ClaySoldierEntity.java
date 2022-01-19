@@ -1,14 +1,12 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
 import multiteam.claysoldiers2.main.item.ModItems;
-import multiteam.claysoldiers2.main.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,8 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.items.ItemHandlerHelper;
+import oshi.util.tuples.Pair;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -42,7 +39,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
     final ClaySoldierAPI.ClaySoldierMaterial material;
-    private List<ClaySoldierAPI.ClaySoldierModifier> modifiers = new ArrayList<>();
+    private List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -52,7 +49,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, (double)0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, ClaySoldierAPI.Settings.soldierViewDistance);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, ClaySoldierAPI.Settings.soldierViewDistance);
     }
 
     @Override
@@ -81,16 +78,16 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     }
 
 
-    public List<ClaySoldierAPI.ClaySoldierModifier> getModifiers(){
+    public List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> getModifiers(){
         return this.modifiers;
     }
 
-    public void addModifier(ClaySoldierAPI.ClaySoldierModifier modifier){
-        this.modifiers.add(modifier);
+    public void addModifier(ClaySoldierAPI.ClaySoldierModifier modifier, int amount){
+        this.modifiers.add(new Pair<>(modifier, amount));
     }
 
-    public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifier){
-        this.modifiers.remove(modifier);
+    public void removeModifier(Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> pair){
+        this.modifiers.remove(pair);
     }
 
     public void removeAllModifiers(){
@@ -110,10 +107,13 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         super.addAdditionalSaveData(data);
         data.putInt("Variant", this.getMaterial().ordinal());
         int[] modifs = new int[this.getModifiers().size()];
+        int[] modifsAmounts = new int[this.getModifiers().size()];
         for (int i = 0; i < this.modifiers.size(); i++){
-            modifs[i] = this.modifiers.get(i).ordinal();
+            modifs[i] = this.modifiers.get(i).getA().ordinal();
+            modifsAmounts[i] = this.modifiers.get(i).getB();
         }
         data.putIntArray("Modifiers", modifs);
+        data.putIntArray("ModifiersAmounts", modifsAmounts);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         super.readAdditionalSaveData(data);
         this.setMaterial(ClaySoldierAPI.ClaySoldierMaterial.values()[data.getInt("Variant")]);
         for (int i = 0; i < data.getIntArray("Modifiers").length; i++){
-            this.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[data.getIntArray("Modifiers")[i]]);
+            this.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[data.getIntArray("Modifiers")[i]], data.getIntArray("ModifiersAmounts")[i]);
         }
     }
 
@@ -165,24 +165,17 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         if(!this.getModifiers().isEmpty()){
             CompoundTag tag = new CompoundTag();
             int[] modifs_ = new int[this.getModifiers().size()];
+            int[] modifsAmounts_ = new int[this.getModifiers().size()];
             for (int i = 0; i < this.getModifiers().size(); i++){
-                modifs_[i] = this.getModifiers().get(i).ordinal();
+                modifs_[i] = this.getModifiers().get(i).getA().ordinal();
+                modifsAmounts_[i] = this.getModifiers().get(i).getB();
             }
             tag.putIntArray("Modifiers", modifs_);
+            tag.putIntArray("ModifiersAmounts", modifsAmounts_);
             retStack.setTag(tag);
         }
 
         return retStack;
-    }
-
-    private class BoolModifierCompound{
-        public boolean retBool;
-        public ClaySoldierAPI.ClaySoldierModifier retModif;
-
-        BoolModifierCompound(boolean bool, ClaySoldierAPI.ClaySoldierModifier modif){
-            this.retModif = modif;
-            this.retBool = bool;
-        }
     }
 
     @Override
@@ -211,11 +204,19 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
             List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(soldier.getX()-1,soldier.getY()-1,soldier.getZ()-1,soldier.getX()+1,soldier.getY()+1,soldier.getZ()+1));
 
             for (ItemEntity itemEntity : itemsAround){
-                BoolModifierCompound compund = shouldPickUp(itemEntity.getItem());
-                if(compund.retBool){
-                    soldier.addModifier(compund.retModif);
-                    itemEntity.getItem().shrink(1);
-                    level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                Pair<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> compund = shouldPickUp(itemEntity.getItem());
+                if(compund.getB().getA()){
+                    if(soldier.getModifiers().contains(compund.getA())){
+                        Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
+                        soldier.removeModifier(oldModifier);
+                        soldier.addModifier(compund.getA().getA(), compund.getA().getB());
+                        itemEntity.getItem().shrink(compund.getA().getB());
+                        level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                    }else{
+                        soldier.addModifier(compund.getA().getA(), compund.getA().getB());
+                        itemEntity.getItem().shrink(compund.getA().getB());
+                        level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                    }
                 }
             }
         }
@@ -224,26 +225,47 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         if(!level.isClientSide && !this.getModifiers().isEmpty()){
             for (int i = 0; i < this.getModifiers().size(); i++) {
                 if(this.getModifiers().get(i) != null){
-                    this.getModifiers().get(i).ExecuteModifierOn(this);
+                    this.getModifiers().get(i).getA().ExecuteModifierOn(this);
                 }else{return;}
             }
         }
     }
 
-    public BoolModifierCompound shouldPickUp(ItemStack stack) {
-        BoolModifierCompound ret = new BoolModifierCompound(false, null);
+    public Pair<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> shouldPickUp(ItemStack stack) {
+        Pair<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
         for (int i = 0; i < ClaySoldierAPI.ClaySoldierModifier.values().length; i++){
-            if(ClaySoldierAPI.ClaySoldierModifier.values()[i].getModifierItem() == stack.getItem()){
-                if(!this.modifiers.contains(ClaySoldierAPI.ClaySoldierModifier.values()[i])){
-                    ret.retBool = true;
-                    ret.retModif = ClaySoldierAPI.ClaySoldierModifier.values()[i];
+
+            ClaySoldierAPI.ClaySoldierModifier modifier = ClaySoldierAPI.ClaySoldierModifier.values()[i];
+
+            List<ClaySoldierAPI.ClaySoldierModifier> modifiersOfSoldier = new ArrayList<>();
+            for (Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> pair: this.getModifiers()) {
+                modifiersOfSoldier.add(pair.getA());
+            }
+
+            if(modifier.getModifierItem() == stack.getItem()){
+                int pickUpAmount = 1;
+                int containedAmount = 0;
+                if(modifiersOfSoldier.contains(modifier)){
+                    containedAmount = this.getModifiers().get(modifiersOfSoldier.indexOf(modifier)).getB();
                 }
-            }else if(ItemTags.WOOL.contains(stack.getItem())){
-                if(!this.modifiers.contains(ClaySoldierAPI.ClaySoldierModifier.WOOL_BOOST)){
-                    ret.retBool = true;
-                    ret.retModif = ClaySoldierAPI.ClaySoldierModifier.WOOL_BOOST;
-                    ret.retModif.setModifierItem(stack.getItem());
-                    ret.retModif.setModifierColor(Utils.getColorFromBlocks(stack.getItem()));
+
+
+                if(modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
+                    if(stack.getCount() > modifier.getMaxStackingLimit()){
+                        pickUpAmount = modifier.getMaxStackingLimit();
+                    }else{
+                        pickUpAmount = stack.getCount();
+                    }
+                    ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
+                }else if(modifier.canBeStacked() && modifiersOfSoldier.contains(modifier) && containedAmount < modifier.getMaxStackingLimit()){
+                    if(stack.getCount() > modifier.getMaxStackingLimit()-containedAmount){
+                        pickUpAmount = modifier.getMaxStackingLimit()-containedAmount;
+                    }else{
+                        pickUpAmount = stack.getCount();
+                    }
+                    ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
+                }else if(!modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
+                    ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
                 }
             }
         }

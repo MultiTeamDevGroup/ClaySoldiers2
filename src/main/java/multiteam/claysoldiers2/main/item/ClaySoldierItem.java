@@ -48,7 +48,7 @@ public class ClaySoldierItem extends Item {
                     CompoundTag tag = stack.getTag();
                     if(tag != null){
                         for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-                            soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                            soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
                         }
                     }
                 }
@@ -61,7 +61,7 @@ public class ClaySoldierItem extends Item {
                 CompoundTag tag = stack.getTag();
                 if(tag != null){
                     for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-                        soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]]);
+                        soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
                     }
                 }
 

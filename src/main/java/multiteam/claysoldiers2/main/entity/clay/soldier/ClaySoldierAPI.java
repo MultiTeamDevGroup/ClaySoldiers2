@@ -15,7 +15,7 @@ public class ClaySoldierAPI {
     public static class Settings{
        public static int stackablesLimit = 32;
        public static int flowerStackLimit = 5;
-       public static int soldierViewDistance = 19;
+       public static int soldierViewDistance = 32;
     }
 
     public enum ClaySoldierMaterial{
@@ -384,8 +384,8 @@ public class ClaySoldierAPI {
                 (soldier) -> {
                     if(!soldier.getModifiers().isEmpty()){
                         for (int i = 0; i < soldier.getModifiers().size(); i++) {
-                            if(soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getModifierItem() != Items.MILK_BUCKET){
-                                soldier.getLevel().addFreshEntity(new ItemEntity(soldier.level, soldier.getX(), soldier.getY(), soldier.getZ(), new ItemStack(soldier.getModifiers().get(i).modifierItem)));
+                            if(soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA().getModifierItem() != Items.MILK_BUCKET){
+                                soldier.getLevel().addFreshEntity(new ItemEntity(soldier.level, soldier.getX(), soldier.getY(), soldier.getZ(), new ItemStack(soldier.getModifiers().get(i).getA().modifierItem)));
                                 soldier.removeModifier(soldier.getModifiers().get(i));
                             }else{return;}
                         }
@@ -506,9 +506,9 @@ public class ClaySoldierAPI {
         );
 
         private final ClaySoldierModifierType modifierType;
-        private Item modifierItem;
+        private final Item modifierItem;
         private final String modifierName;
-        private Color modifierColor;
+        private final Color modifierColor;
         private final boolean canBeStacked;
         private final int maxStackingLimit;
         private final ModifierBehavior behavior;
@@ -531,20 +531,12 @@ public class ClaySoldierAPI {
             return this.modifierItem;
         }
 
-        public void setModifierItem(Item item){
-            this.modifierItem = item;
-        }
-
         public String getModifierName(){
             return this.modifierName;
         }
 
         public Color getModifierColor(){
             return this.modifierColor;
-        }
-
-        public void setModifierColor(Color color){
-            this.modifierColor = color;
         }
 
         public boolean canBeStacked(){return this.canBeStacked;}
