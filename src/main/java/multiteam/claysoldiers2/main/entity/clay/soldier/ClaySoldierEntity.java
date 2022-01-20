@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
@@ -40,7 +41,8 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
     final ClaySoldierAPI.ClaySoldierMaterial material;
     private List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
-    public boolean isMainHandOccupied = false;
+    public ItemStack MainHandItem = new ItemStack(Items.AIR);
+    public ItemStack SecondHandItem = new ItemStack(Items.AIR);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -89,6 +91,15 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifier, int amount){
         this.modifiers.remove(new Pair<>(modifier, amount));
+    }
+
+    public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifierToRemove){
+        ClaySoldierEntity soldier = this;
+        for (int i = 0; i < soldier.getModifiers().size(); i++) {
+            if(soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA() == modifierToRemove){
+                soldier.getModifiers().remove(i);
+            }else{return;}
+        }
     }
 
     public void removeAllModifiers(){
@@ -240,7 +251,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         if(!level.isClientSide && !this.getModifiers().isEmpty()){
             for (int i = 0; i < this.getModifiers().size(); i++) {
                 if(this.getModifiers().get(i) != null){
-                    this.getModifiers().get(i).getA().ExecuteModifierOn(this);
+                    this.getModifiers().get(i).getA().ExecuteModifierOn(this, this.getModifiers().get(i).getA());
                 }else{return;}
             }
         }
@@ -284,6 +295,61 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                     ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
                 }else if(!modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
                     ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
+                }
+
+                if(ret.getB().getA()){
+                    ClaySoldierAPI.ClaySoldierModifier thisModifier = ret.getA().getA();
+                    switch (thisModifier.getModifierType()){
+                        case MAIN_HAND -> {
+                            if(this.MainHandItem.getItem() != Items.AIR){
+                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                            }
+                        }
+                        case OFF_HAND -> {
+                            if(this.SecondHandItem.getItem() != Items.AIR){
+                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                            }
+                        }
+                        case MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM -> {
+                            if(this.MainHandItem.getItem() != Items.AIR || this.MainHandItem.getItem() != thisModifier.getModifierItem()){
+                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                            }
+                        }
+                        case OFF_HAND_BOOST_ITEM -> {
+                            if(this.SecondHandItem.getItem() != Items.AIR || this.SecondHandItem.getItem() != thisModifier.getModifierItem()){
+                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                            }
+                        }
+                        case OFF_HAND_INF_BOOST_COMBINED -> {
+                            //TODO figure this out
+                            if(this.SecondHandItem.getItem() == Items.AIR){
+                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                            }
+                        }
+                        case BOTH_HANDS -> {
+                            if(this.MainHandItem.getItem() != Items.AIR && this.SecondHandItem.getItem() != Items.AIR){
+                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                            }
+                        }
+                        case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM -> {
+                            if(this.MainHandItem.getItem() != Items.AIR){
+                                if(this.SecondHandItem.getItem() != Items.AIR){
+                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                }
+                            }else if(this.SecondHandItem.getItem() != Items.AIR){
+                                if(this.MainHandItem.getItem() != Items.AIR){
+                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                }
+                            }
+                        }
+                        case BOOST_ITEM -> {} //has a single use per item
+                        case INF_BOOST -> {} //applies an effect infinitely
+                        case INF_BOOST_COSMETIC -> {} //applies a cosmetic only effect infinitely
+                        case INF_BOOST_COMBINED -> {} //applies an effect as long as its combined with another modifier
+                        case EFFECT -> {} //applies effect for a period of time
+                        case INF_EFFECT -> {} //applies status effect infinitely
+                        case CANCEL -> {} //cancels any modifier on the soldier
+                    }
                 }
             }
         }
