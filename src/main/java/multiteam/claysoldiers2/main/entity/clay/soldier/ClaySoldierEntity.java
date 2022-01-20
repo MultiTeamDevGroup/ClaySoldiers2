@@ -87,8 +87,8 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         this.modifiers.add(new Pair<>(modifier, amount));
     }
 
-    public void removeModifier(Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> pair){
-        this.modifiers.remove(pair);
+    public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifier, int amount){
+        this.modifiers.remove(new Pair<>(modifier, amount));
     }
 
     public void removeAllModifiers(){
@@ -209,9 +209,22 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 if(compund.getB().getA()){
 
                     Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
-                    if(soldier.getModifiers().contains(oldModifier)){
-                        soldier.removeModifier(oldModifier);
-                        soldier.addModifier(compund.getA().getA(), compund.getA().getB());
+                    System.out.println(oldModifier.getA() + " " + oldModifier.getB());
+                    System.out.println(compund.getA().getA() + " " + compund.getA().getB());
+
+                    List<ClaySoldierAPI.ClaySoldierModifier> modifiersOfSoldier = new ArrayList<>();
+                    for (Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> pair: this.getModifiers()) {
+                        modifiersOfSoldier.add(pair.getA());
+                    }
+
+                    boolean reason = modifiersOfSoldier.contains(oldModifier.getA());
+
+                    System.out.println(reason);
+
+                    if(reason){
+                        System.out.println("this ran");
+                        soldier.getModifiers().remove(modifiersOfSoldier.indexOf(oldModifier.getA()));
+                        soldier.addModifier(compund.getA().getA(), compund.getA().getB() + oldModifier.getB());
                         itemEntity.getItem().shrink(compund.getA().getB());
                         level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
                     }else{
@@ -261,6 +274,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                     ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
                 }else if(modifier.canBeStacked() && modifiersOfSoldier.contains(modifier) && containedAmount < modifier.getMaxStackingLimit()){
                     //TODO fix when a single item is dropped/picked up, it adds a new on top of the already existing modifier, resulting in duplicates
+
                     if(stack.getCount() > modifier.getMaxStackingLimit()-containedAmount){
                         pickUpAmount = modifier.getMaxStackingLimit()-containedAmount;
                     }else{

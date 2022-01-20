@@ -388,7 +388,7 @@ public class ClaySoldierAPI {
                         for (int i = 0; i < soldier.getModifiers().size(); i++) {
                             if(soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA().getModifierItem() != Items.MILK_BUCKET){
                                 soldier.getLevel().addFreshEntity(new ItemEntity(soldier.level, soldier.getX(), soldier.getY(), soldier.getZ(), new ItemStack(soldier.getModifiers().get(i).getA().modifierItem)));
-                                soldier.removeModifier(soldier.getModifiers().get(i));
+                                soldier.removeModifier(soldier.getModifiers().get(i).getA(), soldier.getModifiers().get(i).getB());
                             }else{return;}
                         }
 
