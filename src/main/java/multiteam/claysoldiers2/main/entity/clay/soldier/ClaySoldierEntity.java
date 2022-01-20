@@ -1,5 +1,6 @@
 package multiteam.claysoldiers2.main.entity.clay.soldier;
 
+import multiteam.claysoldiers2.main.entity.ai.ClaySoldierAttackGoal;
 import multiteam.claysoldiers2.main.item.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,7 +14,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -41,6 +41,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
     static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
     final ClaySoldierAPI.ClaySoldierMaterial material;
     private List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
+
     public ItemStack MainHandItem = new ItemStack(Items.AIR);
     public ItemStack SecondHandItem = new ItemStack(Items.AIR);
 
@@ -80,17 +81,12 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         this.entityData.define(DATA_MATERIAL, 0);
     }
 
-
     public List<Pair<ClaySoldierAPI.ClaySoldierModifier, Integer>> getModifiers(){
         return this.modifiers;
     }
 
     public void addModifier(ClaySoldierAPI.ClaySoldierModifier modifier, int amount){
         this.modifiers.add(new Pair<>(modifier, amount));
-    }
-
-    public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifier, int amount){
-        this.modifiers.remove(new Pair<>(modifier, amount));
     }
 
     public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifierToRemove){
@@ -192,7 +188,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2, true));
+        this.goalSelector.addGoal(0, new ClaySoldierAttackGoal(this, 2, true));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
             if(targetEntity instanceof ClaySoldierEntity){
                 ClaySoldierEntity targetedSoldier = (ClaySoldierEntity) targetEntity;
