@@ -220,8 +220,6 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 if(compund.getB().getA()){
 
                     Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
-                    System.out.println(oldModifier.getA() + " " + oldModifier.getB());
-                    System.out.println(compund.getA().getA() + " " + compund.getA().getB());
 
                     List<ClaySoldierAPI.ClaySoldierModifier> modifiersOfSoldier = new ArrayList<>();
                     for (Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> pair: this.getModifiers()) {
@@ -230,18 +228,29 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
                     boolean reason = modifiersOfSoldier.contains(oldModifier.getA());
 
-                    System.out.println(reason);
-
                     if(reason){
-                        System.out.println("this ran");
                         soldier.getModifiers().remove(modifiersOfSoldier.indexOf(oldModifier.getA()));
                         soldier.addModifier(compund.getA().getA(), compund.getA().getB() + oldModifier.getB());
-                        itemEntity.getItem().shrink(compund.getA().getB());
-                        level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
                     }else{
                         soldier.addModifier(compund.getA().getA(), compund.getA().getB());
-                        itemEntity.getItem().shrink(compund.getA().getB());
-                        level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                    }
+                    itemEntity.getItem().shrink(compund.getA().getB());
+                    level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                    if(compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierAPI.ClaySoldierModifierType.MAIN_HAND, ClaySoldierAPI.ClaySoldierModifierType.MAIN_HAND_BOOST_ITEM, ClaySoldierAPI.ClaySoldierModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM))){
+                        this.MainHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
+                    }else if(compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierAPI.ClaySoldierModifierType.OFF_HAND, ClaySoldierAPI.ClaySoldierModifierType.OFF_HAND_BOOST_ITEM, ClaySoldierAPI.ClaySoldierModifierType.OFF_HAND_INF_BOOST_COMBINED))){
+                        this.SecondHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
+                    }else if(compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierAPI.ClaySoldierModifierType.ANY_HAND_BOOST_ITEM, ClaySoldierAPI.ClaySoldierModifierType.ANY_HAND_AMOUNT_BOOST_ITEM))){
+                        if(this.MainHandItem.getItem() == Items.AIR){
+                            this.MainHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
+                        }else if(this.SecondHandItem.getItem() == Items.AIR){
+                            this.SecondHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
+                        }
+                    }else if(compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierAPI.ClaySoldierModifierType.BOTH_HANDS))){
+                        if(this.MainHandItem.getItem() == Items.AIR && this.SecondHandItem.getItem() == Items.AIR){
+                            this.MainHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
+                            this.SecondHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
+                        }
                     }
                 }
             }
@@ -269,86 +278,95 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                 modifiersOfSoldier.add(pair.getA());
             }
 
+
+
             if(modifier.getModifierItem() == stack.getItem()){
-                int pickUpAmount = 1;
-                int containedAmount = 0;
-                if(modifiersOfSoldier.contains(modifier)){
-                    containedAmount = this.getModifiers().get(modifiersOfSoldier.indexOf(modifier)).getB();
+                boolean hasIncompatibles = false;
+
+                if(!modifier.getIncompatibleModifiers().isEmpty()){
+                    for (ClaySoldierAPI.ClaySoldierModifier modif : modifiersOfSoldier) {
+                        if(modifier.getIncompatibleModifiers().contains(modif.getModifierItem())){
+                            hasIncompatibles = true;
+                        }
+                    }
                 }
 
-                if(modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
-                    if(stack.getCount() > modifier.getMaxStackingLimit()){
-                        pickUpAmount = modifier.getMaxStackingLimit();
-                    }else{
-                        pickUpAmount = stack.getCount();
-                    }
-                    ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
-                }else if(modifier.canBeStacked() && modifiersOfSoldier.contains(modifier) && containedAmount < modifier.getMaxStackingLimit()){
-                    //TODO fix when a single item is dropped/picked up, it adds a new on top of the already existing modifier, resulting in duplicates
+                if(!hasIncompatibles){
 
-                    if(stack.getCount() > modifier.getMaxStackingLimit()-containedAmount){
-                        pickUpAmount = modifier.getMaxStackingLimit()-containedAmount;
-                    }else{
-                        pickUpAmount = stack.getCount();
+                    int pickUpAmount = 1;
+                    int containedAmount = 0;
+                    if(modifiersOfSoldier.contains(modifier)){
+                        containedAmount = this.getModifiers().get(modifiersOfSoldier.indexOf(modifier)).getB();
                     }
 
-                    ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
-                }else if(!modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
-                    ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
-                }
+                    if(modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
+                        if(stack.getCount() > modifier.getMaxStackingLimit()){
+                            pickUpAmount = modifier.getMaxStackingLimit();
+                        }else{
+                            pickUpAmount = stack.getCount();
+                        }
+                        ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
+                    }else if(modifier.canBeStacked() && modifiersOfSoldier.contains(modifier) && containedAmount < modifier.getMaxStackingLimit()){
+                        //TODO fix when a single item is dropped/picked up, it adds a new on top of the already existing modifier, resulting in duplicates
 
-                if(ret.getB().getA()){
-                    ClaySoldierAPI.ClaySoldierModifier thisModifier = ret.getA().getA();
-                    switch (thisModifier.getModifierType()){
-                        case MAIN_HAND -> {
-                            if(this.MainHandItem.getItem() != Items.AIR){
-                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                            }
+                        if(stack.getCount() > modifier.getMaxStackingLimit()-containedAmount){
+                            pickUpAmount = modifier.getMaxStackingLimit()-containedAmount;
+                        }else{
+                            pickUpAmount = stack.getCount();
                         }
-                        case OFF_HAND -> {
-                            if(this.SecondHandItem.getItem() != Items.AIR){
-                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                            }
-                        }
-                        case MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM -> {
-                            if(this.MainHandItem.getItem() != Items.AIR || this.MainHandItem.getItem() != thisModifier.getModifierItem()){
-                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                            }
-                        }
-                        case OFF_HAND_BOOST_ITEM -> {
-                            if(this.SecondHandItem.getItem() != Items.AIR || this.SecondHandItem.getItem() != thisModifier.getModifierItem()){
-                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                            }
-                        }
-                        case OFF_HAND_INF_BOOST_COMBINED -> {
-                            //TODO figure this out
-                            if(this.SecondHandItem.getItem() == Items.AIR){
-                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                            }
-                        }
-                        case BOTH_HANDS -> {
-                            if(this.MainHandItem.getItem() != Items.AIR && this.SecondHandItem.getItem() != Items.AIR){
-                                ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                            }
-                        }
-                        case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM -> {
-                            if(this.MainHandItem.getItem() != Items.AIR){
-                                if(this.SecondHandItem.getItem() != Items.AIR){
-                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-                                }
-                            }else if(this.SecondHandItem.getItem() != Items.AIR){
+
+                        ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
+                    }else if(!modifier.canBeStacked() && !modifiersOfSoldier.contains(modifier)){
+                        ret = new Pair<>(new Pair<>(modifier, pickUpAmount), new Pair<>(true, containedAmount));
+                    }
+
+                    if(ret.getB().getA()){
+                        ClaySoldierAPI.ClaySoldierModifier thisModifier = ret.getA().getA();
+                        switch (thisModifier.getModifierType()){
+                            case MAIN_HAND -> {
                                 if(this.MainHandItem.getItem() != Items.AIR){
                                     ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
                                 }
                             }
+                            case OFF_HAND, OFF_HAND_INF_BOOST_COMBINED -> {
+                                if(this.SecondHandItem.getItem() != Items.AIR){
+                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                }
+                            }
+                            case MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM -> {
+                                if(this.MainHandItem.getItem() != Items.AIR || this.MainHandItem.getItem() != thisModifier.getModifierItem()){
+                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                }
+                            }
+                            case OFF_HAND_BOOST_ITEM -> {
+                                if(this.SecondHandItem.getItem() != Items.AIR || this.SecondHandItem.getItem() != thisModifier.getModifierItem()){
+                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                }
+                            }
+                            case BOTH_HANDS -> {
+                                if(this.MainHandItem.getItem() != Items.AIR && this.SecondHandItem.getItem() != Items.AIR){
+                                    ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                }
+                            }
+                            case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM -> {
+                                if(this.MainHandItem.getItem() != Items.AIR){
+                                    if(this.SecondHandItem.getItem() != Items.AIR){
+                                        ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                    }
+                                }else if(this.SecondHandItem.getItem() != Items.AIR){
+                                    if(this.MainHandItem.getItem() != Items.AIR){
+                                        ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+                                    }
+                                }
+                            }
+                            case BOOST_ITEM -> {} //has a single use per item
+                            case INF_BOOST -> {} //applies an effect infinitely
+                            case INF_BOOST_COSMETIC -> {} //applies a cosmetic only effect infinitely
+                            case INF_BOOST_COMBINED -> {} //applies an effect as long as its combined with another modifier
+                            case EFFECT -> {} //applies effect for a period of time
+                            case INF_EFFECT -> {} //applies status effect infinitely
+                            case CANCEL -> {} //cancels any modifier on the soldier
                         }
-                        case BOOST_ITEM -> {} //has a single use per item
-                        case INF_BOOST -> {} //applies an effect infinitely
-                        case INF_BOOST_COSMETIC -> {} //applies a cosmetic only effect infinitely
-                        case INF_BOOST_COMBINED -> {} //applies an effect as long as its combined with another modifier
-                        case EFFECT -> {} //applies effect for a period of time
-                        case INF_EFFECT -> {} //applies status effect infinitely
-                        case CANCEL -> {} //cancels any modifier on the soldier
                     }
                 }
             }
