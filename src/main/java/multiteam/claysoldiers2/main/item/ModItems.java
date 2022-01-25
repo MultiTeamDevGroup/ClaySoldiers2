@@ -8,6 +8,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems {
 
+    public static final RegistryObject<Item> ICON_ITEM_SOLDIER_INFORMATIONS = Registration.ITEMS.register("icon_soldier_info", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> ICON_ITEM_SOLDIER_MODIFIERS = Registration.ITEMS.register("icon_soldier_modifier_list", () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> CLAY_SOLDIER = Registration.ITEMS.register("clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), ClaySoldierAPI.ClaySoldierMaterial.CLAY_SOLDIER));
     public static final RegistryObject<Item> WHITE_CLAY_SOLDIER = Registration.ITEMS.register("white_clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), ClaySoldierAPI.ClaySoldierMaterial.WHITE_CLAY_SOLDIER));
     public static final RegistryObject<Item> YELLOW_CLAY_SOLDIER = Registration.ITEMS.register("yellow_clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), ClaySoldierAPI.ClaySoldierMaterial.YELLOW_CLAY_SOLDIER));

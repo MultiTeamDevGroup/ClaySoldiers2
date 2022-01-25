@@ -1,0 +1,8 @@
+{
+  "name": "Clay Lexicon",
+  "landing_text": "Clay Soldiers 2 is something new, that you feel like you know but not at all actually. In this book you'll get help to find your way within the realm of clay.",
+  "version": 1,
+  "creative_tab": "claysoldiers2_creative_tab",
+  "book_texture": "claysoldiers2:textures/gui/clay_lexicon.png",
+  "model": "claysoldiers2:clay_lexicon"
+}

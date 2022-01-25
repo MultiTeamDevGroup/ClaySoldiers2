@@ -23,6 +23,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
 
         //Regular Items
+        builder(itemGenerated, "icon_soldier_modifier_list");
+        builder(itemGenerated, "icon_soldier_info");
+
         builder(itemGenerated, "basic_remote");
 
         builder(itemGenerated, "clay_soldier");

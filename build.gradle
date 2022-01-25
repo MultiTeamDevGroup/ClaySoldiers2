@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.3_devBeta'
+version = "${mod_version}"
 group = 'multiteam.claysoldiers2'
 archivesBaseName = 'claysoldiers2'
 
@@ -19,7 +19,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18.1'
+    mappings channel: 'official', version: "${mc_version}"
 
     runs {
         client {
@@ -28,6 +28,9 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
 
             property 'forge.logging.console.level', 'debug'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 claysoldiers2 {
@@ -42,6 +45,10 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
 
             property 'forge.logging.console.level', 'debug'
+
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 claysoldiers2 {
@@ -60,6 +67,10 @@ minecraft {
                     '--existing', file('src/main/resources/'),
                     '-existing', file('src/generated/resources'),
                     '--output', file('src/generated/resources/')
+
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 claysoldiers2 {
@@ -84,22 +95,23 @@ repositories {
         url = "https://modmaven.k-4u.nl"
     }
     maven { url "https://github.com/MultiTeamDevGroup/MultiTeam-Maven/raw/main/" }
+
     maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.7'
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
 
-    runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:1.18.1-0.2.3.3")
-    compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:1.18.1-0.2.3.3")
+    runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
+    compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
 
-    runtimeOnly fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
-    compileOnly fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
+    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:${geckolib_version}")
+    compileOnly fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:${geckolib_version}")
 
-    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-61:api")
-    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.18.1-61")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
 }
 

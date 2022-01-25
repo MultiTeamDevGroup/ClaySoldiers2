@@ -1,0 +1,43 @@
+{
+  "name": "List of Modifiers",
+  "icon": "claysoldiers2:icon_soldier_modifier_list",
+  "category": "claysoldiers2:modifiers_category",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "title": "Fire Aspect",
+      "item": "minecraft:blaze_rod",
+      "text": "Giving the soldiers a Blaze Rod will make it so when they attack something, it will be set on fire. Occupies the Main hand slot of the soldier. "
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Shield",
+      "item": "minecraft:bowl",
+      "text": "Gives a shield to the soldier. Occupies the Secondary hand slot of the soldier."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Heaviness",
+      "item": "minecraft:brick",
+      "text": "Makes the soldier heavier (so falls quicker and  walks slower), while giving it more health. Applies as an infinite effect - Takes no slot"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Clay Healer",
+      "item": "minecraft:clay_ball",
+      "text": "The soldier will heal itself or others while having a clay ball item. Each item heals 2 hp. Occupies Secondary hand. Consumes the item upon usage"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Slow Falling",
+      "item": "minecraft:feather",
+      "text": "Applies Slow falling effect infinitely - Takes no slot"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Suspicious Effects",
+      "item": "minecraft:allium,minecraft:azure_bluet,minecraft:blue_orchid,minecraft:dandelion,minecraft:cornflower,minecraft:lily_of_the_valley,minecraft:oxeye_daisy,minecraft:poppy,minecraft:orange_tulip,minecraft:pink_tulip,minecraft:red_tulip,minecraft:white_tulip,minecraft:wither_rose",
+      "text": "Applies an effect for 5 seconds based on the flower type you dropped. These flower types are applying the same effect as they would give when crafted into a suspicious stew. The flower item is consumed."
+    }
+  ]
+}
