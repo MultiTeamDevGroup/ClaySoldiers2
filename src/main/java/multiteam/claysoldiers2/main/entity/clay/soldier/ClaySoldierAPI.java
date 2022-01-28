@@ -820,15 +820,27 @@ public class ClaySoldierAPI {
                 (self, thisModifier, attacked) -> {},
                 (attacker, thisModifier, self) -> {}
         ),
-        MUSHROOM_ANY(
+        MUSHROOM_RED(
                 ClaySoldierModifierType.ANY_HAND_AMOUNT_BOOST_ITEM,
                 Items.RED_MUSHROOM,
-                "shroomer",
+                "red_shroomer",
                 new Color(0xFFFFFF),
                 false,
                 0,
                 (soldier, thisModifier) -> {},
-                new ArrayList<>(),
+                List.of(Items.BROWN_MUSHROOM),
+                (self, thisModifier, attacked) -> {},
+                (attacker, thisModifier, self) -> {}
+        ),
+        MUSHROOM_BROWN(
+                ClaySoldierModifierType.ANY_HAND_AMOUNT_BOOST_ITEM,
+                Items.BROWN_MUSHROOM,
+                "brown_shroomer",
+                new Color(0xFFFFFF),
+                false,
+                0,
+                (soldier, thisModifier) -> {},
+                List.of(Items.RED_MUSHROOM),
                 (self, thisModifier, attacked) -> {},
                 (attacker, thisModifier, self) -> {}
         );
