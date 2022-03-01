@@ -6,12 +6,10 @@ import multiteam.multicore_lib.setup.utilities.generic.ItemGroupTool;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -22,11 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
-import java.util.stream.Collectors;
-
 @Mod(ClaySoldiers2.MOD_ID)
-public class ClaySoldiers2
-{
+public class ClaySoldiers2 {
     public static final String MOD_ID = "claysoldiers2";
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -34,7 +29,6 @@ public class ClaySoldiers2
 
 
     public ClaySoldiers2() {
-
         GeckoLib.initialize();
         Registration.register();
 
@@ -42,6 +36,7 @@ public class ClaySoldiers2
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onNewRegistry);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::applyAttributes);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -63,12 +58,21 @@ public class ClaySoldiers2
 
     }
 
+//    /**
+//     * Event handler for creating new registries.
+//     *
+//     * @param event new registry event
+//     */
+//    private void onNewRegistry(final RegistryEvent.NewRegistry event) {
+//        ModClaySoldierModifiers.makeRegistry();
+//    }
+
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
     }
 
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {

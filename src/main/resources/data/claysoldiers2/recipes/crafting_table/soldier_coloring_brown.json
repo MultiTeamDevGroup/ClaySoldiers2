@@ -1,24 +1,24 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "minecraft:brown_dye"
-        },
-        {
-            "tag": "claysoldiers2:clay_soldier_item"
-        },
-        {
-            "tag": "claysoldiers2:clay_soldier_item"
-        },
-        {
-            "tag": "claysoldiers2:clay_soldier_item"
-        },
-        {
-            "tag": "claysoldiers2:clay_soldier_item"
-        }
-    ],
-    "result": {
-        "item": "claysoldiers2:brown_clay_soldier",
-        "count": 4
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:brown_dye"
+    },
+    {
+      "tag": "claysoldiers2:clay_soldier_item"
+    },
+    {
+      "tag": "claysoldiers2:clay_soldier_item"
+    },
+    {
+      "tag": "claysoldiers2:clay_soldier_item"
+    },
+    {
+      "tag": "claysoldiers2:clay_soldier_item"
     }
+  ],
+  "result": {
+    "item": "claysoldiers2:brown_clay_soldier",
+    "count": 4
+  }
 }

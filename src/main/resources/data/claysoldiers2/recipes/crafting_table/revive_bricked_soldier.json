@@ -1,15 +1,15 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "minecraft:ghast_tear"
-        },
-        {
-            "item": "claysoldiers2:bricked_soldier"
-        }
-    ],
-    "result": {
-        "item": "claysoldiers2:clay_soldier",
-        "count": 1
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "claysoldiers2:bricked_soldier"
     }
+  ],
+  "result": {
+    "item": "claysoldiers2:clay_soldier",
+    "count": 1
+  }
 }

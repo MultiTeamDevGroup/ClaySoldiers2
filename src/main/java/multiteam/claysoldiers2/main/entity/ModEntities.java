@@ -26,12 +26,13 @@ public class ModEntities {
         event.registerEntityRenderer(CLAY_SOLDIER.get(), ClaySoldierRenderer::new);
     }
 
-    public static void applyAttributes(EntityAttributeCreationEvent event){
+    public static void applyAttributes(EntityAttributeCreationEvent event) {
         event.put(CLAY_SOLDIER.get(), ClaySoldierEntity.createAttributes().build());
     }
 
 
-    public static void register() { }
+    public static void register() {
+    }
 
     //Not yet using the buildEntityV2 from MultiCoreLib since its kinda broken atm.
     public static <T extends Entity> RegistryObject<EntityType<T>> buildEntity(String name, EntityType.EntityFactory<T> entity, float width, float height, MobCategory classification, int trackingRange, int updateinterval) {

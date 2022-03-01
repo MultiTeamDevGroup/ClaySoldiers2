@@ -1,26 +1,26 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        " / ",
-        "SCC",
-        "RCC"
-    ],
-    "key": {
-        "/": {
-            "item": "minecraft:stick"
-        },
-        "S": {
-            "item": "minecraft:stone_button"
-        },
-        "C": {
-            "item": "minecraft:clay"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " / ",
+    "SCC",
+    "RCC"
+  ],
+  "key": {
+    "/": {
+      "item": "minecraft:stick"
     },
-    "result": {
-        "item": "claysoldiers2:basic_remote",
-        "count": 1
+    "S": {
+      "item": "minecraft:stone_button"
+    },
+    "C": {
+      "item": "minecraft:clay"
+    },
+    "R": {
+      "item": "minecraft:redstone"
     }
+  },
+  "result": {
+    "item": "claysoldiers2:basic_remote",
+    "count": 1
+  }
 }

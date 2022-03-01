@@ -39,5 +39,6 @@ public class ModItems {
 
     public static final RegistryObject<Item> BASIC_REMOTE = Registration.ITEMS.register("basic_remote", () -> new BasicRemoteItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(1)));
 
-    public static void register(){}
+    public static void register() {
+    }
 }

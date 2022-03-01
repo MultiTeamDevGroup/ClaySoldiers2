@@ -1,7 +1,7 @@
 package multiteam.claysoldiers2.main.entity.ai;
 
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -67,7 +67,7 @@ public class ClaySoldierAttackGoal extends Goal {
         } else if (!this.mob.isWithinRestriction(livingentity.blockPosition())) {
             return false;
         } else {
-            return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
+            return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player) livingentity).isCreative();
         }
     }
 
@@ -81,7 +81,7 @@ public class ClaySoldierAttackGoal extends Goal {
     public void stop() {
         LivingEntity livingentity = this.mob.getTarget();
         if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
-            this.mob.setTarget((LivingEntity)null);
+            this.mob.setTarget(null);
         }
 
         this.mob.setAggressive(false);
@@ -128,11 +128,11 @@ public class ClaySoldierAttackGoal extends Goal {
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(entity);
 
-            if(this.mob.MainHandItem.getItem() != Items.AIR){
-                for (Pair<ClaySoldierAPI.ClaySoldierModifier, Integer> modifier : this.mob.getModifiers()) {
-                    if(modifier.getA().getModifierItem() == this.mob.MainHandItem.getItem()){
+            if (this.mob.MainHandItem.getItem() != Items.AIR) {
+                for (Pair<ClaySoldierModifier, Integer> modifier : this.mob.getModifiers()) {
+                    if (modifier.getA().getModifierItem() == this.mob.MainHandItem.getItem()) {
                         modifier.getA().ExecuteModifierOnAttack(this.mob, modifier.getA(), entity);
-                        if(modifier.getA().canBeStacked() && this.mob.MainHandItem.getCount() >= 1){
+                        if (modifier.getA().canBeStacked() && this.mob.MainHandItem.getCount() >= 1) {
                             this.mob.MainHandItem.shrink(1);
                         }
                     }
@@ -160,6 +160,6 @@ public class ClaySoldierAttackGoal extends Goal {
     }
 
     protected double getAttackReachSqr(LivingEntity entity) {
-        return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + entity.getBbWidth());
+        return this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + entity.getBbWidth();
     }
 }

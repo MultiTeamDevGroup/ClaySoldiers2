@@ -1,40 +1,40 @@
-modLoader="javafml"
-loaderVersion="[39,)"
-license="All rights reserved"
+modLoader = "javafml"
+loaderVersion = "[39,)"
+license = "All rights reserved"
 [[mods]]
-modId="claysoldiers2"
-version="${file.jarVersion}"
-displayName="Clay Soldiers 2"
-logoFile="ClaySoldiers2Logo.png"
-credits="Made by MultiTeam"
-authors="LazTheArtist [Code - Art]"
-description='''
+modId = "claysoldiers2"
+version = "${file.jarVersion}"
+displayName = "Clay Soldiers 2"
+logoFile = "ClaySoldiers2Logo.png"
+credits = "Made by MultiTeam"
+authors = "LazTheArtist [Code - Art]"
+description = '''
 Those good old days, when we had little clay people running around in our worlds... we all miss them.
 But not anymore! Here comes the reboot! But, unlike the Ben10 reboot, this one doesnt suck!
 
 Clay Soldiers 2 brings most features from the original mod to a modern version of minecraft, whilst expanding upon the features and basically improving the whole thing!
 '''
 [[dependencies.claysoldiers2]]
-    modId="forge"
-    mandatory=true
-    versionRange="[39,)"
-    ordering="NONE"
-    side="BOTH"
+modId = "forge"
+mandatory = true
+versionRange = "[39,)"
+ordering = "NONE"
+side = "BOTH"
 [[dependencies.claysoldiers2]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.18.1,1.19)"
-    ordering="NONE"
-    side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.1,1.19)"
+ordering = "NONE"
+side = "BOTH"
 [[dependencies.claysoldiers2]]
-    modId="multicore_lib"
-    mandatory=true
-    versionRange="[1.18.1-0.2.3.3,)"
-    ordering="AFTER"
-    side="BOTH"
+modId = "multicore_lib"
+mandatory = true
+versionRange = "[1.18.1-0.2.3.3,)"
+ordering = "AFTER"
+side = "BOTH"
 [[dependencies.claysoldiers2]]
-    modId="geckolib3"
-    mandatory=true
-    versionRange="[3.0.3,)"
-    ordering="AFTER"
-    side="BOTH"
+modId = "geckolib3"
+mandatory = true
+versionRange = "[3.0.3,)"
+ordering = "AFTER"
+side = "BOTH"

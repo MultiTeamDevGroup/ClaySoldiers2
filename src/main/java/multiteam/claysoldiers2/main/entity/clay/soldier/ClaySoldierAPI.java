@@ -16,13 +16,13 @@ import java.util.List;
 
 public class ClaySoldierAPI {
 
-    public static class Settings{
-       public static int stackablesLimit = 32;
-       public static int flowerStackLimit = 5;
-       public static int soldierViewDistance = 32;
+    public static class Settings {
+        public static int stackablesLimit = 32;
+        public static int flowerStackLimit = 5;
+        public static int soldierViewDistance = 32;
     }
 
-    public enum ClaySoldierMaterial{
+    public enum ClaySoldierMaterial {
         CLAY_SOLDIER(
                 ModItems.CLAY_SOLDIER,
                 new Color(0x9499a4),
@@ -149,18 +149,20 @@ public class ClaySoldierAPI {
             this.materialName = materialName;
         }
 
-        public Item getItemForm(){
+        public Item getItemForm() {
             return this.itemForm.get();
         }
-        public Color getMaterialColor(){
+
+        public Color getMaterialColor() {
             return this.materialColor;
         }
-        public String getMaterialName(){
+
+        public String getMaterialName() {
             return this.materialName;
         }
     }
 
-    public enum ClaySoldierModifierType{
+    public enum ClaySoldierModifierType {
         MAIN_HAND, //occupies the main hand
         MAIN_HAND_BOOST_ITEM, //occupies the main hand, while having a single use per item
         MAIN_HAND_AMOUNT_BOOST_ITEM, //occupies the main hand, while having an amount of uses per item
@@ -178,12 +180,13 @@ public class ClaySoldierAPI {
         INF_EFFECT, //applies status effect infinitely
         CANCEL; //cancels any modifier on the soldier
 
-        public boolean anyOf(List<ClaySoldierModifierType> type){
+        public boolean anyOf(List<ClaySoldierModifierType> type) {
             return type.contains(this);
         }
     }
 
-    public enum ClaySoldierModifier{
+    @Deprecated
+    public enum ClaySoldierModifier {
         BLAZEROD_MAIN(
                 ClaySoldierModifierType.MAIN_HAND,
                 Items.BLAZE_ROD,
@@ -191,12 +194,14 @@ public class ClaySoldierAPI {
                 new Color(0xff8000),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
                 (self, thisModifier, attacked) -> {
                     attacked.setSecondsOnFire(5);
                 },
-                (attacker, thisModifier, self) -> {}
+                (attacker, thisModifier, self) -> {
+                }
         ),
         BOWL_SECOND(
                 ClaySoldierModifierType.OFF_HAND,
@@ -205,10 +210,13 @@ public class ClaySoldierAPI {
                 new Color(0x4d2515),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         BRICK_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -217,10 +225,13 @@ public class ClaySoldierAPI {
                 new Color(0xa63b26),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         CLAY_HEAL_SECOND(
                 ClaySoldierModifierType.OFF_HAND_BOOST_ITEM,
@@ -229,10 +240,13 @@ public class ClaySoldierAPI {
                 new Color(0x9499a4),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FEATHER_BOOST(
                 ClaySoldierModifierType.INF_EFFECT,
@@ -241,10 +255,13 @@ public class ClaySoldierAPI {
                 new Color(0xe6edf5),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_ALLIUM(
                 ClaySoldierModifierType.EFFECT,
@@ -254,14 +271,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty() && thisModifier!=null){
+                    if (!soldier.getModifiers().isEmpty() && thisModifier != null) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_AZURE_BLUET(
                 ClaySoldierModifierType.EFFECT,
@@ -271,14 +290,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_BLUE_ORCHID(
                 ClaySoldierModifierType.EFFECT,
@@ -288,14 +309,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.SATURATION, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_DANDELION(
                 ClaySoldierModifierType.EFFECT,
@@ -305,14 +328,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.SATURATION, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_CORNFLOWER(
                 ClaySoldierModifierType.EFFECT,
@@ -322,14 +347,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.JUMP, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_LILY_OF_THE_VALLEY(
                 ClaySoldierModifierType.EFFECT,
@@ -339,14 +366,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.POISON, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_OXEYE_DAISY(
                 ClaySoldierModifierType.EFFECT,
@@ -356,14 +385,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_POPPY(
                 ClaySoldierModifierType.EFFECT,
@@ -373,14 +404,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_ORANGE_TULIP(
                 ClaySoldierModifierType.EFFECT,
@@ -390,14 +423,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_PINK_TULIP(
                 ClaySoldierModifierType.EFFECT,
@@ -407,14 +442,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_RED_TULIP(
                 ClaySoldierModifierType.EFFECT,
@@ -424,14 +461,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_WHITE_TULIP(
                 ClaySoldierModifierType.EFFECT,
@@ -441,14 +480,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLOWER_BOOST_WITHER_ROSE(
                 ClaySoldierModifierType.EFFECT,
@@ -458,14 +499,16 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         soldier.addEffect(new MobEffectInstance(MobEffects.WITHER, 100));
                         soldier.removeModifier(thisModifier);
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         GLISTERING_HEAL_SECOND(
                 ClaySoldierModifierType.OFF_HAND_BOOST_ITEM,
@@ -474,10 +517,13 @@ public class ClaySoldierAPI {
                 new Color(0xFFF97E),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         KING_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -486,10 +532,13 @@ public class ClaySoldierAPI {
                 new Color(0xFFB700),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         GRAVEL_MAIN(
                 ClaySoldierModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM,
@@ -498,10 +547,13 @@ public class ClaySoldierAPI {
                 new Color(0x3B3C3D),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         LEATHER_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -510,10 +562,13 @@ public class ClaySoldierAPI {
                 new Color(0x703923),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         MAGMA_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -522,10 +577,13 @@ public class ClaySoldierAPI {
                 new Color(0xFF6200),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         PAPER_BOOST(
                 ClaySoldierModifierType.INF_BOOST_COSMETIC,
@@ -534,10 +592,13 @@ public class ClaySoldierAPI {
                 new Color(0xDEE1E8),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         RABBIT_HIDE_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -546,10 +607,13 @@ public class ClaySoldierAPI {
                 new Color(0x9B734A),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         SCUTE_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -558,10 +622,13 @@ public class ClaySoldierAPI {
                 new Color(0x0DBD41),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         SEEDS_MAIN(
                 ClaySoldierModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM,
@@ -570,10 +637,13 @@ public class ClaySoldierAPI {
                 new Color(0x30812A),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         STICK_MAIN(
                 ClaySoldierModifierType.MAIN_HAND,
@@ -582,10 +652,13 @@ public class ClaySoldierAPI {
                 new Color(0x5D350E),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         WOOL_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -594,10 +667,13 @@ public class ClaySoldierAPI {
                 new Color(0xFFFFFF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FLINT_BOOST(
                 ClaySoldierModifierType.INF_BOOST_COMBINED,
@@ -606,10 +682,13 @@ public class ClaySoldierAPI {
                 new Color(0x626262),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         IRON_BOOST(
                 ClaySoldierModifierType.INF_BOOST_COMBINED,
@@ -618,10 +697,13 @@ public class ClaySoldierAPI {
                 new Color(0xAFAFAF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         REDSTONE_ANY(
                 ClaySoldierModifierType.ANY_HAND_BOOST_ITEM,
@@ -630,10 +712,13 @@ public class ClaySoldierAPI {
                 new Color(0xFF0000),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         SLIME_ANY(
                 ClaySoldierModifierType.ANY_HAND_BOOST_ITEM,
@@ -642,10 +727,13 @@ public class ClaySoldierAPI {
                 new Color(0x69AF11),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         GLOWSTONE_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -654,10 +742,13 @@ public class ClaySoldierAPI {
                 new Color(0xE5BE5F),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         MILK(
                 ClaySoldierModifierType.CANCEL,
@@ -667,16 +758,18 @@ public class ClaySoldierAPI {
                 false,
                 0,
                 (soldier, thisModifier) -> {
-                    if(!soldier.getModifiers().isEmpty()){
+                    if (!soldier.getModifiers().isEmpty()) {
                         for (int i = 0; i < soldier.getModifiers().size(); i++) {
-                            if(soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA().getModifierItem() != Items.MILK_BUCKET){
-                                ItemStack dropStack = new ItemStack(soldier.getModifiers().get(i).getA().modifierItem);
-                                if(soldier.getModifiers().get(i).getA().canBeStacked){
+                            if (soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA().getModifierItem() != Items.MILK_BUCKET) {
+                                ItemStack dropStack = new ItemStack(soldier.getModifiers().get(i).getA().getModifierItem());
+                                if (soldier.getModifiers().get(i).getA().canBeStacked()) {
                                     dropStack.setCount(soldier.getModifiers().get(i).getB());
                                 }
                                 soldier.getLevel().addFreshEntity(new ItemEntity(soldier.level, soldier.getX(), soldier.getY(), soldier.getZ(), dropStack));
                                 soldier.removeModifier(soldier.getModifiers().get(i).getA());
-                            }else{return;}
+                            } else {
+                                return;
+                            }
                         }
 
                         soldier.removeAllModifiers();
@@ -685,8 +778,10 @@ public class ClaySoldierAPI {
                     }
                 },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         GUNPOWDER_BOOST(
                 ClaySoldierModifierType.BOOST_ITEM,
@@ -695,10 +790,13 @@ public class ClaySoldierAPI {
                 new Color(0x5D5A5A),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         COAL_BOOST(
                 ClaySoldierModifierType.OFF_HAND_INF_BOOST_COMBINED,
@@ -707,10 +805,13 @@ public class ClaySoldierAPI {
                 new Color(0x3A3A3A),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         LILYPAD_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -719,10 +820,13 @@ public class ClaySoldierAPI {
                 new Color(0x355D03),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         GLASS_PANE_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -731,10 +835,13 @@ public class ClaySoldierAPI {
                 new Color(0xFFFFFF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         DIAMOND_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -743,10 +850,13 @@ public class ClaySoldierAPI {
                 new Color(0x0EC9AF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         SHEAR_BOTH(
                 ClaySoldierModifierType.BOTH_HANDS,
@@ -755,10 +865,13 @@ public class ClaySoldierAPI {
                 new Color(0xC5BDBB),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         ENDEREYE_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -767,10 +880,13 @@ public class ClaySoldierAPI {
                 new Color(0xff8000),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         SUGAR_BOOST(
                 ClaySoldierModifierType.INF_EFFECT,
@@ -779,10 +895,13 @@ public class ClaySoldierAPI {
                 new Color(0xECEEEF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         EGG_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -791,10 +910,13 @@ public class ClaySoldierAPI {
                 new Color(0xD9BCA3),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         FIRECHARGE_MAIN(
                 ClaySoldierModifierType.MAIN_HAND_BOOST_ITEM,
@@ -803,10 +925,13 @@ public class ClaySoldierAPI {
                 new Color(0x9D3907),
                 true,
                 Settings.stackablesLimit,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         WART_BOOST(
                 ClaySoldierModifierType.INF_BOOST,
@@ -815,10 +940,13 @@ public class ClaySoldierAPI {
                 new Color(0xa62530),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 new ArrayList<>(),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         MUSHROOM_RED(
                 ClaySoldierModifierType.ANY_HAND_AMOUNT_BOOST_ITEM,
@@ -827,10 +955,13 @@ public class ClaySoldierAPI {
                 new Color(0xFFFFFF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 List.of(Items.BROWN_MUSHROOM),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         ),
         MUSHROOM_BROWN(
                 ClaySoldierModifierType.ANY_HAND_AMOUNT_BOOST_ITEM,
@@ -839,10 +970,13 @@ public class ClaySoldierAPI {
                 new Color(0xFFFFFF),
                 false,
                 0,
-                (soldier, thisModifier) -> {},
+                (soldier, thisModifier) -> {
+                },
                 List.of(Items.RED_MUSHROOM),
-                (self, thisModifier, attacked) -> {},
-                (attacker, thisModifier, self) -> {}
+                (self, thisModifier, attacked) -> {
+                },
+                (attacker, thisModifier, self) -> {
+                }
         );
 
         private final ClaySoldierModifierType modifierType;
@@ -869,49 +1003,55 @@ public class ClaySoldierAPI {
             this.defenseEventBehavior = defenseBehavior;
         }
 
-        public ClaySoldierModifierType getModifierType(){
+        public ClaySoldierModifierType getModifierType() {
             return this.modifierType;
         }
 
-        public Item getModifierItem(){
+        public Item getModifierItem() {
             return this.modifierItem;
         }
 
-        public String getModifierName(){
+        public String getModifierName() {
             return this.modifierName;
         }
 
-        public Color getModifierColor(){
+        public Color getModifierColor() {
             return this.modifierColor;
         }
 
-        public boolean canBeStacked(){return this.canBeStacked;}
+        public boolean canBeStacked() {
+            return this.canBeStacked;
+        }
 
-        public int getMaxStackingLimit(){return this.maxStackingLimit;}
+        public int getMaxStackingLimit() {
+            return this.maxStackingLimit;
+        }
 
-        public List<Item> getIncompatibleModifiers(){return this.incompatibleModifiers;}
+        public List<Item> getIncompatibleModifiers() {
+            return this.incompatibleModifiers;
+        }
 
-        public void ExecuteModifierOn(ClaySoldierEntity entity, ClaySoldierModifier thisModifier){
+        public void ExecuteModifierOn(ClaySoldierEntity entity, ClaySoldierModifier thisModifier) {
             this.behavior.ExecuteModifierOn(entity, thisModifier);
         }
 
-        public void ExecuteModifierOnAttack(ClaySoldierEntity self, ClaySoldierModifier thisModifier, LivingEntity attacked){
+        public void ExecuteModifierOnAttack(ClaySoldierEntity self, ClaySoldierModifier thisModifier, LivingEntity attacked) {
             this.attackEventBehavior.ExecuteModifierOnAttack(self, thisModifier, attacked);
         }
 
-        public void ExecuteModifierOnDefend(LivingEntity attacker, ClaySoldierModifier thisModifier, ClaySoldierEntity self){
+        public void ExecuteModifierOnDefend(LivingEntity attacker, ClaySoldierModifier thisModifier, ClaySoldierEntity self) {
             this.defenseEventBehavior.ExecuteModifierOnDefend(attacker, thisModifier, self);
         }
 
-        private interface ModifierBehavior{
+        private interface ModifierBehavior {
             void ExecuteModifierOn(ClaySoldierEntity soldier, ClaySoldierModifier thisModifier);
         }
 
-        private interface ModifierBehaviorAttackEvent{
+        private interface ModifierBehaviorAttackEvent {
             void ExecuteModifierOnAttack(ClaySoldierEntity self, ClaySoldierModifier thisModifier, LivingEntity attacked);
         }
 
-        private interface ModifierBehaviorDefenseEvent{
+        private interface ModifierBehaviorDefenseEvent {
             void ExecuteModifierOnDefend(LivingEntity attacker, ClaySoldierModifier thisModifier, ClaySoldierEntity self);
         }
 

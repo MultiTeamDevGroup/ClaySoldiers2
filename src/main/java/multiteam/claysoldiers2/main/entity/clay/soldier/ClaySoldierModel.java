@@ -2,7 +2,6 @@ package multiteam.claysoldiers2.main.entity.clay.soldier;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -33,7 +32,7 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implem
 
     @Override
     public ResourceLocation getTextureLocation(ClaySoldierEntity claySoldierEntity) {
-        return new ResourceLocation(ClaySoldiers2.MOD_ID, "textures/entity/clayman/soldier_"+claySoldierEntity.getMaterial().getMaterialName().replace(" ", "_")+".png");
+        return new ResourceLocation(ClaySoldiers2.MOD_ID, "textures/entity/clayman/soldier_" + claySoldierEntity.getMaterial().getMaterialName().replace(" ", "_") + ".png");
     }
 
     @Override
@@ -46,7 +45,6 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implem
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("head");
 
-        LivingEntity entityIn = (LivingEntity) entity;
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
 
         float limbSwing = customPredicate.getLimbSwing();
@@ -61,8 +59,8 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implem
         IBone leftHand = this.getAnimationProcessor().getBone("lefthand");
 
         leftLeg.setRotationX((float) Math.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
-        rightLeg.setRotationX((float) Math.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount);
+        rightLeg.setRotationX((float) Math.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount);
         leftHand.setRotationX((float) Math.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount);
-        rightHand.setRotationX((float) Math.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount);
+        rightHand.setRotationX((float) Math.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount);
     }
 }

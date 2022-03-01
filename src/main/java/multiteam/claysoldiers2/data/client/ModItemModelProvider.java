@@ -29,36 +29,36 @@ public class ModItemModelProvider extends ItemModelProvider {
         builder(itemGenerated, "basic_remote");
 
         builder(itemGenerated, "clay_soldier");
-        builder(itemGenerated,"white_clay_soldier");
-        builder(itemGenerated,"yellow_clay_soldier");
-        builder(itemGenerated,"red_clay_soldier");
-        builder(itemGenerated,"purple_clay_soldier");
-        builder(itemGenerated,"pink_clay_soldier");
-        builder(itemGenerated,"orange_clay_soldier");
-        builder(itemGenerated,"magenta_clay_soldier");
-        builder(itemGenerated,"lime_clay_soldier");
-        builder(itemGenerated,"light_gray_clay_soldier");
-        builder(itemGenerated,"light_blue_clay_soldier");
-        builder(itemGenerated,"green_clay_soldier");
-        builder(itemGenerated,"gray_clay_soldier");
-        builder(itemGenerated,"cyan_clay_soldier");
-        builder(itemGenerated,"brown_clay_soldier");
-        builder(itemGenerated,"blue_clay_soldier");
-        builder(itemGenerated,"black_clay_soldier");
-        builder(itemGenerated,"carrot_clay_soldier");
-        builder(itemGenerated,"potato_clay_soldier");
-        builder(itemGenerated,"poisonous_potato_clay_soldier");
-        builder(itemGenerated,"beetroot_clay_soldier");
-        builder(itemGenerated,"apple_clay_soldier");
-        builder(itemGenerated,"melon_clay_soldier");
+        builder(itemGenerated, "white_clay_soldier");
+        builder(itemGenerated, "yellow_clay_soldier");
+        builder(itemGenerated, "red_clay_soldier");
+        builder(itemGenerated, "purple_clay_soldier");
+        builder(itemGenerated, "pink_clay_soldier");
+        builder(itemGenerated, "orange_clay_soldier");
+        builder(itemGenerated, "magenta_clay_soldier");
+        builder(itemGenerated, "lime_clay_soldier");
+        builder(itemGenerated, "light_gray_clay_soldier");
+        builder(itemGenerated, "light_blue_clay_soldier");
+        builder(itemGenerated, "green_clay_soldier");
+        builder(itemGenerated, "gray_clay_soldier");
+        builder(itemGenerated, "cyan_clay_soldier");
+        builder(itemGenerated, "brown_clay_soldier");
+        builder(itemGenerated, "blue_clay_soldier");
+        builder(itemGenerated, "black_clay_soldier");
+        builder(itemGenerated, "carrot_clay_soldier");
+        builder(itemGenerated, "potato_clay_soldier");
+        builder(itemGenerated, "poisonous_potato_clay_soldier");
+        builder(itemGenerated, "beetroot_clay_soldier");
+        builder(itemGenerated, "apple_clay_soldier");
+        builder(itemGenerated, "melon_clay_soldier");
 
-        builder(itemGenerated,"bricked_soldier");
+        builder(itemGenerated, "bricked_soldier");
 
 
     }
 
     private ItemModelBuilder builder(ModelFile itemGenerated, String name) {
-        return getBuilder(name).parent(itemGenerated).texture("layer0", "item/"+name);
+        return getBuilder(name).parent(itemGenerated).texture("layer0", "item/" + name);
     }
 
 }

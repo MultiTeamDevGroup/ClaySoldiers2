@@ -4,8 +4,9 @@ import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -33,39 +35,55 @@ public class ClaySoldierItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        Level worldin = context.getLevel();
+    public @NotNull InteractionResult useOn(UseOnContext context) {
+        Level levelIn = context.getLevel();
         BlockPos soldierSummonPos = context.getClickedPos().offset(context.getClickedFace().getNormal());
-        Player playerEntity = context.getPlayer();
+        Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
 
-        if(worldin.getBlockState(soldierSummonPos) == Blocks.AIR.defaultBlockState() && !worldin.isClientSide){
+        if (player == null) {
+            return InteractionResult.FAIL;
+        }
 
-            if(playerEntity.isShiftKeyDown()){
+        if (levelIn.getBlockState(soldierSummonPos) == Blocks.AIR.defaultBlockState() && !levelIn.isClientSide) {
+
+            List<ClaySoldierModifier.Instance> modifiers = ItemAttributeUtils.getModifiers(stack);
+            if (player.isShiftKeyDown()) {
                 int stackSize = stack.getCount();
-                for (int i = 0; i < stackSize; i++){
-                    ClaySoldierEntity soldierEntity = placeSoldier(worldin, context);
-                    CompoundTag tag = stack.getTag();
-                    if(tag != null){
-                        for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-                            soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
-                        }
+                for (int i = 0; i < stackSize; i++) {
+                    ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
+                    for (ClaySoldierModifier.Instance instance : modifiers) {
+                        soldierEntity.addModifier(instance);
                     }
+
+                    // Todo: remove out-commented code at some point.
+//                    CompoundTag tag = stack.getTag();
+//                    if (tag != null) {
+//                        for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
+//                            soldierEntity.addModifier(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
+//                        }
+//                    }
                 }
                 stack.shrink(stackSize);
 
-                worldin.playSound(playerEntity, soldierSummonPos, SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 1.0f ,1.0f);
+                levelIn.playSound(player, soldierSummonPos, SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 1.0f, 1.0f);
 
-            }else{
-                ClaySoldierEntity soldierEntity = placeSoldier(worldin, context);
-                CompoundTag tag = stack.getTag();
-                if(tag != null){
-                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-                        soldierEntity.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
-                    }
+            } else {
+                ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
+
+                for (ClaySoldierModifier.Instance instance : modifiers) {
+                    soldierEntity.addModifier(instance);
                 }
 
-                if(!playerEntity.isCreative()){
+                // Todo: remove out-commented code at some point.
+//                CompoundTag tag = stack.getTag();
+//                if (tag != null) {
+//                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
+//                        soldierEntity.addModifier(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
+//                    }
+//                }
+
+                if (!player.isCreative()) {
                     stack.shrink(1);
                 }
             }
@@ -75,11 +93,11 @@ public class ClaySoldierItem extends Item {
         return super.useOn(context);
     }
 
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material."+ this.material.getMaterialName().replace(" ", "_"))).withStyle(Style.EMPTY.withColor(this.material.getMaterialColor().getRGB()))));
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
+        tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material." + this.material.getMaterialName().replace(" ", "_"))).withStyle(Style.EMPTY.withColor(this.material.getMaterialColor().getRGB()))));
     }
 
-    public ClaySoldierEntity placeSoldier(Level level, UseOnContext context){
+    public ClaySoldierEntity placeSoldier(Level level, UseOnContext context) {
         ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), level);
         level.addFreshEntity(soldierEntity);
         soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);

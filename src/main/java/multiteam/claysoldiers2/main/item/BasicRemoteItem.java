@@ -19,10 +19,9 @@ public class BasicRemoteItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        List<ClaySoldierEntity> entities = level.getEntitiesOfClass(ClaySoldierEntity.class, new AABB(player.getX() - 16, player.getY() - 16, player.getZ() - 16, player.getX() + 16, player.getY() + 16, player.getZ() + 16));
 
-        List<ClaySoldierEntity> entities = level.getEntitiesOfClass(ClaySoldierEntity.class, new AABB(player.getX()-16,player.getY()-16,player.getZ()-16,player.getX()+16,player.getY()+16,player.getZ()+16));
-
-        for (ClaySoldierEntity soldier : entities){
+        for (ClaySoldierEntity soldier : entities) {
             soldier.removeSoldier();
         }
 
