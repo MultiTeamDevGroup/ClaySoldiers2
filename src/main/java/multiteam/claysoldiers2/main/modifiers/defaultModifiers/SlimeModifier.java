@@ -16,7 +16,7 @@ public class SlimeModifier extends CSModifier {
     }
 
     @Override
-    public void onModifierAttack(Entity targetSoldier) {
+    public void onModifierAttack(Entity targetEntity) {
 
     }
 

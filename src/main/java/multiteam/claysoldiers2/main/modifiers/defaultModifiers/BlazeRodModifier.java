@@ -17,8 +17,8 @@ public class BlazeRodModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierAttack(Entity targetSoldier) {
-        targetSoldier.setSecondsOnFire(5);
+    public void onModifierAttack(Entity targetEntity) {
+        targetEntity.setSecondsOnFire(5);
     }
 
     @Override

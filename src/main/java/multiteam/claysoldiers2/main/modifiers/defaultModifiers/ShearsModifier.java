@@ -17,7 +17,7 @@ public class ShearsModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierAttack(Entity targetSoldier) {
+    public void onModifierAttack(Entity targetEntity) {
 
     }
 

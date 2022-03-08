@@ -88,7 +88,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         return ret;
     }
 
-    public abstract void onModifierAttack(Entity targetSoldier);
+    public abstract void onModifierAttack(Entity targetEntity);
     public abstract void onModifierHurt(ClaySoldierEntity thisSoldier, ClaySoldierEntity attackerSoldier);
     public abstract void onModifierTick(ClaySoldierEntity thisSoldier);
 
