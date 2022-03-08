@@ -1,6 +1,10 @@
 {
   "BLOCKS": "MOD BLOCKS",
+
+
+
   "ITEMS": "MOD ITEMS",
+
   "item.claysoldiers2.clay_soldier": "Clay Soldier",
   "item.claysoldiers2.basic_remote": "Basic Remote",
   "item.claysoldiers2.white_clay_soldier": "Clay Soldier",
@@ -26,8 +30,14 @@
   "item.claysoldiers2.apple_clay_soldier": "Clay Soldier",
   "item.claysoldiers2.melon_clay_soldier": "Clay Soldier",
   "item.claysoldiers2.bricked_soldier": "Bricked Soldier",
+
+
+
   "ENTITIES": "MOD ENTITIES",
+  "entity.claysoldiers2.clay_soldier": "Clay Soldier",
+
   "GUI": "MOD GUI",
+
   "itemGroup.claysoldiers2_creative_tab": "Clay Soldiers 2",
   "tooltip.claysoldiers2.material": "Material: ",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.clay": "Clay",
@@ -88,5 +98,10 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_hands": "Fiery Hands",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.crazy_warted": "Crazy",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.shroomer": "Shroomed",
+
+
+
   "SOUND": "MOD SOUND"
+
+
 }

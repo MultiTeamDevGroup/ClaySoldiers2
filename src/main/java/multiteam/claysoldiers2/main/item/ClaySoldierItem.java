@@ -82,10 +82,9 @@ public class ClaySoldierItem extends Item {
     }
 
     public ClaySoldierEntity placeSoldier(Level level, UseOnContext context) {
-        ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), level);
+        ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), level, this.material);
         level.addFreshEntity(soldierEntity);
         soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
-        soldierEntity.setMaterial(this.material);
         return soldierEntity;
     }
 

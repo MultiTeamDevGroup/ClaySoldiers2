@@ -6,17 +6,16 @@ import multiteam.claysoldiers2.main.entity.base.ClayEntityBase;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Difficulty;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,6 +25,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +41,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
+        this.setMaterial(material);
     }
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world) {
@@ -177,6 +178,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
                         case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED ->
                                 this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(pickUpModifier.getA().getModifier().getModifierItem()));
                     }
+
                     itemEntity.getItem().shrink(pickUpModifier.getB());
                     level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
                 }
@@ -210,16 +212,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
                     }
                 }
 
-                boolean hasIncompatibles = false;
-                if (!modifier.getIncompatibleModifiers().isEmpty()) {
-                    for (CSModifier.Instance modif : this.getModifiers()) {
-                        if (modifier.getIncompatibleModifiers().contains(modif.getModifier())) {
-                            hasIncompatibles = true;
-                        }
-                    }
-                }
-
-                if (!hasIncompatibles) {
+                if (canEquip(modifier)) {
                     if (this.getModifiers().contains(thisModifierInstance)){
                         if(modifier.canBeStacked()){
                             pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit()-thisModifierInstance.getAmount());
@@ -242,6 +235,25 @@ public class ClaySoldierEntity extends ClayEntityBase {
         return new Pair<>(retInstance, pickUpAmount);
     }
 
+    public boolean canEquip(CSModifier modifier){
+        boolean ret = true;
+
+        //Testing if the soldier has modifiers that are incompatible by default with this modifier
+        if (!modifier.getIncompatibleModifiers().isEmpty()) {
+            for (CSModifier.Instance modif : this.getModifiers()) {
+                if (modifier.getIncompatibleModifiers().contains(modif.getModifier())) {
+                    ret = false;
+                }
+            }
+        }
+
+        //TODO testing the type of the modifier if it can be picked up (aka hand slot is occupied or something)
+        //switch (modifier.getModifierType())
+        //also if its a main hand item or an off hand item, setting the handslot to have the item of the modifier
+
+        return ret;
+    }
+
     @Override
     public void doEnchantDamageEffects(LivingEntity p_19971_, Entity p_19972_) {
         super.doEnchantDamageEffects(p_19971_, p_19972_);
@@ -249,13 +261,36 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        boolean flag = super.doHurtTarget(entity);
+        float attackDamage = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float knockbackAmount = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
         for (CSModifier.Instance inst : this.getModifiers()) {
             if(inst !=null){
                 inst.getModifier().onModifierAttack(entity);
+                if(inst.getModifier() instanceof DamageBonusModifier){
+                    attackDamage+=((DamageBonusModifier)inst.getModifier()).getDamageBonus();
+                }
+            }else{
+                break;
             }
         }
+
+        if (entity instanceof LivingEntity) {
+            attackDamage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)entity).getMobType());
+            knockbackAmount += (float)EnchantmentHelper.getKnockbackBonus(this);
+        }
+
+        boolean flag = entity.hurt(DamageSource.mobAttack(this), attackDamage);
+        if (flag) {
+            if (knockbackAmount > 0.0F && entity instanceof LivingEntity) {
+                ((LivingEntity)entity).knockback((double)(knockbackAmount * 0.5F), (double) Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), (double)(-Mth.cos(this.getYRot() * ((float)Math.PI / 180F))));
+                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+            }
+
+            this.doEnchantDamageEffects(this, entity);
+            this.setLastHurtMob(entity);
+        }
+
 
         return flag;
     }
