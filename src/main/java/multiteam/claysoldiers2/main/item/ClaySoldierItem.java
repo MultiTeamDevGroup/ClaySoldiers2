@@ -67,14 +67,6 @@ public class ClaySoldierItem extends Item {
                     soldierEntity.addModifier(instance);
                 }
 
-                // Todo: remove out-commented code at some point.
-//                CompoundTag tag = stack.getTag();
-//                if (tag != null) {
-//                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-//                        soldierEntity.addModifier(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
-//                    }
-//                }
-
                 if (!player.isCreative()) {
                     stack.shrink(1);
                 }
