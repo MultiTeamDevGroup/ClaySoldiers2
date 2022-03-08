@@ -2,8 +2,10 @@ package multiteam.claysoldiers2.main.entity.clay.soldier;
 
 import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ai.ClaySoldierAttackGoal;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI.ClaySoldierModifierType;
+import multiteam.claysoldiers2.main.modifiers.CSAPI;
+import multiteam.claysoldiers2.main.modifiers.CSAPI.ModifierType;
 import multiteam.claysoldiers2.main.item.ModItems;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -46,21 +48,21 @@ import java.util.Objects;
 public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
-    final ClaySoldierAPI.ClaySoldierMaterial material;
-    private final List<Pair<ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
+    final CSAPI.ClaySoldierMaterial material;
+    private List<CSModifier.Instance> modifiers = new ArrayList<>();
 
-    public ItemStack MainHandItem = new ItemStack(Items.AIR);
-    public ItemStack SecondHandItem = new ItemStack(Items.AIR);
+    //private final List<Pair<ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
+
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world) {
         super(entity, world);
-        this.material = ClaySoldierAPI.ClaySoldierMaterial.CLAY_SOLDIER;
+        this.material = CSAPI.ClaySoldierMaterial.CLAY_SOLDIER;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, ClaySoldierAPI.Settings.soldierViewDistance);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, CSAPI.Settings.soldierViewDistance);
     }
 
     @Override
@@ -88,43 +90,28 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         this.entityData.define(DATA_MATERIAL, 0);
     }
 
-    public List<Pair<ClaySoldierModifier, Integer>> getModifiers() {
+
+    public List<CSModifier.Instance> getModifiers() {
         return this.modifiers;
     }
 
-    public void addModifier(ClaySoldierModifier modifier, int amount) {
-        this.modifiers.add(new Pair<>(modifier, amount));
+    public void addModifier(CSModifier.Instance modifierToAdd) {
+        this.modifiers.add(modifierToAdd);
     }
 
-    public void addModifier(ClaySoldierModifier.Instance instance) {
-        this.addModifier(instance.getModifier(), instance.getAmount());
-    }
-
-    public void removeModifier(ClaySoldierModifier modifierToRemove) {
-        ClaySoldierEntity soldier = this;
-        for (int i = 0; i < soldier.getModifiers().size(); i++) {
-            if (soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA() == modifierToRemove) {
-                soldier.getModifiers().remove(i);
-            } else {
-                return;
-            }
-        }
-    }
-
-    @Deprecated(forRemoval = true)
-    public void removeModifier(ClaySoldierAPI.ClaySoldierModifier modifierToRemove) {
-
+    public void removeModifier(CSModifier.Instance modifierToRemove) {
+        this.modifiers.remove(modifierToRemove);
     }
 
     public void removeAllModifiers() {
         this.modifiers.clear();
     }
 
-    public ClaySoldierAPI.ClaySoldierMaterial getMaterial() {
-        return ClaySoldierAPI.ClaySoldierMaterial.values()[Mth.clamp(this.entityData.get(DATA_MATERIAL), 0, ClaySoldierAPI.ClaySoldierMaterial.values().length - 1)];
+    public CSAPI.ClaySoldierMaterial getMaterial() {
+        return CSAPI.ClaySoldierMaterial.values()[Mth.clamp(this.entityData.get(DATA_MATERIAL), 0, CSAPI.ClaySoldierMaterial.values().length - 1)];
     }
 
-    public void setMaterial(ClaySoldierAPI.ClaySoldierMaterial mat) {
+    public void setMaterial(CSAPI.ClaySoldierMaterial mat) {
         this.entityData.set(DATA_MATERIAL, mat.ordinal());
     }
 
@@ -134,31 +121,22 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         data.putInt("Variant", this.getMaterial().ordinal());
 
         ListTag list = new ListTag();
-        for (Pair<ClaySoldierModifier, Integer> entry : this.getModifiers()) {
-            ClaySoldierModifier modifier = entry.getA();
-            Integer amount = entry.getB();
+        for (CSModifier.Instance entry : this.getModifiers()) {
+            Integer amount = entry.getAmount();
+            ResourceLocation modifier = entry.getModifier().getRegistryName();
             CompoundTag modifierTag = new CompoundTag();
-            modifierTag.putString("Type", Objects.requireNonNull(modifier.getRegistryName()).toString());
+            modifierTag.putString("Type", Objects.requireNonNull(modifier).toString());
             modifierTag.putInt("Amount", amount);
             list.add(modifierTag);
         }
-
         data.put("Modifiers", list);
 
-//        int[] modifs = new int[this.getModifiers().size()];
-//        int[] modifsAmounts = new int[this.getModifiers().size()];
-//        for (int i = 0; i < this.modifiers.size(); i++) {
-//            modifs[i] = this.modifiers.get(i).getA().ordinal();
-//            modifsAmounts[i] = this.modifiers.get(i).getB();
-//        }
-//        data.putIntArray("Modifiers", modifs);
-//        data.putIntArray("ModifiersAmounts", modifsAmounts);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag data) {
         super.readAdditionalSaveData(data);
-        this.setMaterial(ClaySoldierAPI.ClaySoldierMaterial.values()[data.getInt("Variant")]);
+        this.setMaterial(CSAPI.ClaySoldierMaterial.values()[data.getInt("Variant")]);
 
         // Data structure:
         // + "Modifier" (Compound)
@@ -167,15 +145,12 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         for (Tag tag : data.getList("Modifiers", Tag.TAG_STRING)) {
             if (tag instanceof CompoundTag modifierTag) {
                 ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
-                ClaySoldierModifier modifier = Registration.getModifierRegistry().getValue(type);
+                CSModifier modifier = Registration.getModifierRegistry().getValue(type);
                 int amount = modifierTag.getInt("Amount");
-                this.addModifier(modifier, amount);
+                this.addModifier(new CSModifier.Instance(modifier, amount));
             }
         }
 
-//        for (int i = 0; i < data.getIntArray("Modifiers").length; i++) {
-//            this.addModifier(ClaySoldierAPI.ClaySoldierModifier.values()[data.getIntArray("Modifiers")[i]], data.getIntArray("ModifiersAmounts")[i]);
-//        }
     }
 
     @Nullable
@@ -214,23 +189,13 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
         if (!this.getModifiers().isEmpty()) {
             CompoundTag tag = new CompoundTag();
             ListTag list = new ListTag();
-            for (Pair<ClaySoldierModifier, Integer> modifier : getModifiers()) {
+            for (CSModifier.Instance entry : getModifiers()) {
                 CompoundTag modifierTag = new CompoundTag();
-                modifierTag.putString("Type", modifier.getA().getRegistryName().toString());
-                modifierTag.putInt("Amount", modifier.getB());
+                modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());
+                modifierTag.putInt("Amount", entry.getAmount());
                 list.add(modifierTag);
             }
-
             tag.put("Modifiers", list);
-
-//            int[] modifs_ = new int[this.getModifiers().size()];
-//            int[] modifsAmounts_ = new int[this.getModifiers().size()];
-//            for (int i = 0; i < this.getModifiers().size(); i++) {
-//                modifs_[i] = this.getModifiers().get(i).getA().ordinal();
-//                modifsAmounts_[i] = this.getModifiers().get(i).getB();
-//            }
-//            tag.putIntArray("Modifiers", modifs_);
-//            tag.putIntArray("ModifiersAmounts", modifsAmounts_);
 
             itemForm.setTag(tag);
         }
@@ -263,17 +228,12 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
             List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(soldier.getX() - 1, soldier.getY() - 1, soldier.getZ() - 1, soldier.getX() + 1, soldier.getY() + 1, soldier.getZ() + 1));
 
             for (ItemEntity itemEntity : itemsAround) {
-                Pair<Pair<ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> compund = shouldPickUp(itemEntity.getItem());
+                Pair<Pair<CSModifier, Integer>, Pair<Boolean, Integer>> compund = shouldPickUp(itemEntity.getItem());
                 if (compund.getB().getA()) {
 
-                    Pair<ClaySoldierModifier, Integer> oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
+                    CSModifier.Instance oldModifier = new Pair<>(compund.getA().getA(), compund.getB().getB());
 
-                    List<ClaySoldierModifier> modifiersOfSoldier = new ArrayList<>();
-                    for (Pair<ClaySoldierModifier, Integer> pair : this.getModifiers()) {
-                        modifiersOfSoldier.add(pair.getA());
-                    }
-
-                    boolean reason = modifiersOfSoldier.contains(oldModifier.getA());
+                    boolean reason = this.modifiers.contains(oldModifier);
 
                     if (reason) {
                         soldier.getModifiers().remove(modifiersOfSoldier.indexOf(oldModifier.getA()));
@@ -283,17 +243,17 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                     }
                     itemEntity.getItem().shrink(compund.getA().getB());
                     level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
-                    if (compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierModifierType.MAIN_HAND, ClaySoldierModifierType.MAIN_HAND_BOOST_ITEM, ClaySoldierModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM))) {
+                    if (compund.getA().getA().getModifierType().anyOf(List.of(ModifierType.MAIN_HAND, ModifierType.MAIN_HAND_BOOST_ITEM, ModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM))) {
                         this.MainHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
-                    } else if (compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierModifierType.OFF_HAND, ClaySoldierModifierType.OFF_HAND_BOOST_ITEM, ClaySoldierModifierType.OFF_HAND_INF_BOOST_COMBINED))) {
+                    } else if (compund.getA().getA().getModifierType().anyOf(List.of(ModifierType.OFF_HAND, ModifierType.OFF_HAND_BOOST_ITEM, ModifierType.OFF_HAND_INF_BOOST_COMBINED))) {
                         this.SecondHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
-                    } else if (compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierModifierType.ANY_HAND_BOOST_ITEM, ClaySoldierModifierType.ANY_HAND_AMOUNT_BOOST_ITEM))) {
+                    } else if (compund.getA().getA().getModifierType().anyOf(List.of(ModifierType.ANY_HAND_BOOST_ITEM, ModifierType.ANY_HAND_AMOUNT_BOOST_ITEM))) {
                         if (this.MainHandItem.getItem() == Items.AIR) {
                             this.MainHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
                         } else if (this.SecondHandItem.getItem() == Items.AIR) {
                             this.SecondHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
                         }
-                    } else if (compund.getA().getA().getModifierType().anyOf(List.of(ClaySoldierModifierType.BOTH_HANDS))) {
+                    } else if (compund.getA().getA().getModifierType().anyOf(List.of(ModifierType.BOTH_HANDS))) {
                         if (this.MainHandItem.getItem() == Items.AIR && this.SecondHandItem.getItem() == Items.AIR) {
                             this.MainHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
                             this.SecondHandItem = new ItemStack(compund.getA().getA().getModifierItem(), compund.getA().getB());
@@ -316,20 +276,19 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
 
     }
 
-    public Pair<Pair<ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> shouldPickUp(ItemStack stack) {
-        Pair<Pair<ClaySoldierModifier, Integer>, Pair<Boolean, Integer>> ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
-        for (ClaySoldierModifier modifier : Registration.getModifierRegistry().getValues()) {
-            List<ClaySoldierModifier> modifiersOfSoldier = new ArrayList<>();
-            for (Pair<ClaySoldierModifier, Integer> pair : this.getModifiers()) {
+    public Pair<Pair<CSModifier, Integer>, Pair<Boolean, Integer>> shouldPickUp(ItemStack stack) {
+        Pair<Pair<CSModifier, Integer>, Pair<Boolean, Integer>> ret = new Pair<>(new Pair<>(null, null), new Pair<>(false, 0));
+        for (CSModifier modifier : Registration.getModifierRegistry().getValues()) {
+            List<CSModifier> modifiersOfSoldier = new ArrayList<>();
+            for (Pair<CSModifier, Integer> pair : this.getModifiers()) {
                 modifiersOfSoldier.add(pair.getA());
             }
-
 
             if (modifier.getModifierItem() == stack.getItem()) {
                 boolean hasIncompatibles = false;
 
                 if (!modifier.getIncompatibleModifiers().isEmpty()) {
-                    for (ClaySoldierModifier modif : modifiersOfSoldier) {
+                    for (CSModifier modif : modifiersOfSoldier) {
                         if (modifier.getIncompatibleModifiers().contains(modif.getModifierItem())) {
                             hasIncompatibles = true;
                         }
@@ -366,7 +325,7 @@ public class ClaySoldierEntity extends PathfinderMob implements IAnimatable {
                     }
 
                     if (ret.getB().getA()) {
-                        ClaySoldierModifier thisModifier = ret.getA().getA();
+                        CSModifier thisModifier = ret.getA().getA();
                         switch (thisModifier.getModifierType()) {
                             case MAIN_HAND -> {
                                 if (this.MainHandItem.getItem() != Items.AIR) {

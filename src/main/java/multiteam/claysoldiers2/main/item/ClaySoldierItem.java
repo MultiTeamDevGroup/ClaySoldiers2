@@ -2,9 +2,9 @@ package multiteam.claysoldiers2.main.item;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
+import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -27,9 +27,9 @@ import java.util.List;
 
 public class ClaySoldierItem extends Item {
 
-    public ClaySoldierAPI.ClaySoldierMaterial material;
+    public CSAPI.ClaySoldierMaterial material;
 
-    public ClaySoldierItem(Properties properties, ClaySoldierAPI.ClaySoldierMaterial material_) {
+    public ClaySoldierItem(Properties properties, CSAPI.ClaySoldierMaterial material_) {
         super(properties);
         this.material = material_;
     }
@@ -47,12 +47,12 @@ public class ClaySoldierItem extends Item {
 
         if (levelIn.getBlockState(soldierSummonPos) == Blocks.AIR.defaultBlockState() && !levelIn.isClientSide) {
 
-            List<ClaySoldierModifier.Instance> modifiers = ItemAttributeUtils.getModifiers(stack);
+            List<CSModifier.Instance> modifiers = ItemAttributeUtils.getModifiers(stack);
             if (player.isShiftKeyDown()) {
                 int stackSize = stack.getCount();
                 for (int i = 0; i < stackSize; i++) {
                     ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
-                    for (ClaySoldierModifier.Instance instance : modifiers) {
+                    for (CSModifier.Instance instance : modifiers) {
                         soldierEntity.addModifier(instance);
                     }
 
@@ -71,7 +71,7 @@ public class ClaySoldierItem extends Item {
             } else {
                 ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
 
-                for (ClaySoldierModifier.Instance instance : modifiers) {
+                for (CSModifier.Instance instance : modifiers) {
                     soldierEntity.addModifier(instance);
                 }
 

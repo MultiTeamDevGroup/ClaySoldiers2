@@ -1,0 +1,120 @@
+package multiteam.claysoldiers2.main.modifiers.modifier;
+
+import multiteam.claysoldiers2.ClaySoldiers2;
+import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.awt.*;
+import java.util.List;
+
+public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
+
+    public enum ModifierType {
+        MAIN_HAND, //occupies the main hand
+        MAIN_HAND_BOOST_ITEM, //occupies the main hand, while having a single use per item
+        MAIN_HAND_AMOUNT_BOOST_ITEM, //occupies the main hand, while having an amount of uses per item
+        OFF_HAND, //occupies the offhand
+        OFF_HAND_BOOST_ITEM, //occupies the offhand, while having a single use per item
+        OFF_HAND_INF_BOOST_COMBINED, //occupies the offhand, and applies an effect as long as its combined with another modifier
+        ANY_HAND_BOOST_ITEM, //can be equipped in any hand, while having a single use per item
+        ANY_HAND_AMOUNT_BOOST_ITEM, //occupies any hand, while having an amount of uses per item
+        BOTH_HANDS, //occupies both hands
+        BOOST_ITEM, //has a single use per item
+        INF_BOOST, //applies an effect infinitely
+        INF_BOOST_COSMETIC, //applies a cosmetic only effect infinitely
+        INF_BOOST_COMBINED, //applies an effect as long as its combined with another modifier
+        EFFECT, //applies effect for a period of time
+        INF_EFFECT, //applies status effect infinitely
+        CANCEL; //cancels any modifier on the soldier
+
+        public boolean anyOf(List<ModifierType> type) {
+            return type.contains(this);
+        }
+    }
+
+    private final ModifierType modifierType;
+    private final Item modifierItem;
+    private final String modifierName;
+    private final Color modifierColor;
+    private final boolean canBeStacked;
+    private final int maxStackingLimit;
+    private final List<RegistryObject<CSModifier>> incompatibleModifiers;
+
+
+    public CSModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, boolean canBeStacked, int stackingLimit, List<RegistryObject<CSModifier>> incompatibleModifiers) {
+        this.modifierType = modifierType;
+        this.modifierItem = modifierItem;
+        this.modifierName = modifierName;
+        this.modifierColor = modifierColor;
+        this.canBeStacked = canBeStacked;
+        this.maxStackingLimit = stackingLimit;
+        this.incompatibleModifiers = incompatibleModifiers;
+
+    }
+
+    public ModifierType getModifierType() {
+        return this.modifierType;
+    }
+
+    public Item getModifierItem() {
+        return this.modifierItem;
+    }
+
+    public String getModifierName() {
+        return this.modifierName;
+    }
+
+    public Color getModifierColor() {
+        return this.modifierColor;
+    }
+
+    public boolean canBeStacked() {
+        return this.canBeStacked;
+    }
+
+    public int getMaxStackingLimit() {
+        return this.maxStackingLimit;
+    }
+
+    public List<RegistryObject<CSModifier>> getIncompatibleModifiers() {
+        return this.incompatibleModifiers;
+    }
+
+    public abstract void onModifierAttack(ClaySoldierEntity targetSoldier);
+    public abstract void onModifierHurt(ClaySoldierEntity thisSoldier, ClaySoldierEntity attackerSoldier);
+    public abstract void onModifierTick(ClaySoldierEntity thisSoldier);
+
+    public String getDescriptionId() {
+        return "tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + getModifierName();
+    }
+
+    public static class Instance {
+        private final CSModifier modifier;
+        private int amount;
+
+        public Instance(CSModifier modifier, int amount) {
+            this.modifier = modifier;
+            this.amount = amount;
+        }
+
+        public CSModifier getModifier() {
+            return modifier;
+        }
+
+        public int getAmount() {
+            return amount;
+        }
+
+        public void setAmount(int amount) {
+            this.amount = amount;
+        }
+
+        public Instance copy() {
+            return new Instance(modifier, amount);
+        }
+    }
+}
+
+

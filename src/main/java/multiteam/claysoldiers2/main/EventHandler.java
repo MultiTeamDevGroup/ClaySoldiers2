@@ -2,7 +2,7 @@ package multiteam.claysoldiers2.main;
 
 import com.mojang.datafixers.util.Either;
 import multiteam.claysoldiers2.ClaySoldiers2;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.item.ClaySoldierItem;
 import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
 import multiteam.multicore_lib.setup.utilities.render.tooltip.itemtextcomp.ItemWithTextTooltipComponent;
@@ -22,10 +22,10 @@ public class EventHandler {
     @SubscribeEvent
     public static void gatherTooltips(RenderTooltipEvent.GatherComponents event) {
         if (event.getItemStack().getItem() instanceof ClaySoldierItem) {
-            List<ClaySoldierModifier.Instance> modifiers1 = ItemAttributeUtils.getModifiers(event.getItemStack());
+            List<CSModifier.Instance> modifiers1 = ItemAttributeUtils.getModifiers(event.getItemStack());
             List<ItemWithTextTooltipComponent.ItemTextCompoundRow> rowList = new ArrayList<>();
 
-            for (ClaySoldierModifier.Instance instance : modifiers1) {
+            for (CSModifier.Instance instance : modifiers1) {
                 ItemStack stack = new ItemStack(instance.getModifier().getModifierItem());
                 stack.setCount(instance.getAmount());
                 rowList.add(new ItemWithTextTooltipComponent.ItemTextCompoundRow(

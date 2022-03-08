@@ -1,7 +1,7 @@
 package multiteam.claysoldiers2.main.entity.ai;
 
 import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -129,7 +129,7 @@ public class ClaySoldierAttackGoal extends Goal {
             this.mob.doHurtTarget(entity);
 
             if (this.mob.MainHandItem.getItem() != Items.AIR) {
-                for (Pair<ClaySoldierModifier, Integer> modifier : this.mob.getModifiers()) {
+                for (Pair<CSModifier, Integer> modifier : this.mob.getModifiers()) {
                     if (modifier.getA().getModifierItem() == this.mob.MainHandItem.getItem()) {
                         modifier.getA().ExecuteModifierOnAttack(this.mob, modifier.getA(), entity);
                         if (modifier.getA().canBeStacked() && this.mob.MainHandItem.getCount() >= 1) {
