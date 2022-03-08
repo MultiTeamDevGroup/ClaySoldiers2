@@ -1,4 +1,4 @@
-package multiteam.claysoldiers2.main.entity.clay.soldier;
+package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

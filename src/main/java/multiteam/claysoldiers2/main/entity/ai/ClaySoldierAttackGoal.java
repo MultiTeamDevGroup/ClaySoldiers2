@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.entity.ai;
 
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;

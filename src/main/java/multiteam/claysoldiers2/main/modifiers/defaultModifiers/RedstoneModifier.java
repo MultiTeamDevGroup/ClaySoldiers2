@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.world.item.Item;
 

@@ -2,8 +2,8 @@ package multiteam.claysoldiers2.main.entity;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.Registration;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierRenderer;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierRenderer;
 import multiteam.multicore_lib.setup.utilities.generic.MathF;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

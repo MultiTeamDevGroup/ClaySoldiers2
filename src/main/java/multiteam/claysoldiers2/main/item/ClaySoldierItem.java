@@ -3,7 +3,7 @@ package multiteam.claysoldiers2.main.item;
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
 import net.minecraft.core.BlockPos;
@@ -55,14 +55,6 @@ public class ClaySoldierItem extends Item {
                     for (CSModifier.Instance instance : modifiers) {
                         soldierEntity.addModifier(instance);
                     }
-
-                    // Todo: remove out-commented code at some point.
-//                    CompoundTag tag = stack.getTag();
-//                    if (tag != null) {
-//                        for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-//                            soldierEntity.addModifier(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
-//                        }
-//                    }
                 }
                 stack.shrink(stackSize);
 

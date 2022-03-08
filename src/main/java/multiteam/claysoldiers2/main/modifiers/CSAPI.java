@@ -1,19 +1,10 @@
 package multiteam.claysoldiers2.main.modifiers;
 
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.item.ModItems;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CSAPI {
 

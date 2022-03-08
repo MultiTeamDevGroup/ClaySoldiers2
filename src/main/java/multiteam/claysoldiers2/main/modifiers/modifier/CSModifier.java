@@ -1,12 +1,13 @@
 package multiteam.claysoldiers2.main.modifiers.modifier;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
@@ -78,8 +79,12 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         return this.maxStackingLimit;
     }
 
-    public List<RegistryObject<CSModifier>> getIncompatibleModifiers() {
-        return this.incompatibleModifiers;
+    public List<CSModifier> getIncompatibleModifiers() {
+        List<CSModifier> ret = new ArrayList<>();
+        for (RegistryObject<CSModifier> obj : this.incompatibleModifiers ) {
+            ret.add(obj.get());
+        }
+        return ret;
     }
 
     public abstract void onModifierAttack(ClaySoldierEntity targetSoldier);

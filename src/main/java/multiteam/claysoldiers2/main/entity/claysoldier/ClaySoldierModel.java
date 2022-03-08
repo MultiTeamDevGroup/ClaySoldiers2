@@ -1,4 +1,4 @@
-package multiteam.claysoldiers2.main.entity.clay.soldier;
+package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import net.minecraft.resources.ResourceLocation;
