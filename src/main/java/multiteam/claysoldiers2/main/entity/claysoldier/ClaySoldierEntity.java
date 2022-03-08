@@ -10,6 +10,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -140,6 +142,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
     @Override
     public void tick() {
         super.tick();
+
         ClaySoldierEntity soldier = this;
         Level level = soldier.getLevel();
 
@@ -151,15 +154,20 @@ public class ClaySoldierEntity extends ClayEntityBase {
             for (ItemEntity itemEntity : itemsAround) {
                 Pair<CSModifier.Instance, Integer> pickUpModifier = shouldPickUp(itemEntity.getItem());
 
-                if(pickUpModifier.getB() > 0 && this.getModifiers().contains(pickUpModifier.getA())){
-                    int indexOfOldModifier = this.getModifiers().indexOf(pickUpModifier.getA());
-                    CSModifier.Instance oldModifier = this.getModifiers().get(indexOfOldModifier);
+                if(pickUpModifier.getB() > 0){
+                    if(this.getModifiers().contains(pickUpModifier.getA())){ //If we are adding more to a contained modifier
+                        int indexOfOldModifier = this.getModifiers().indexOf(pickUpModifier.getA());
+                        CSModifier.Instance oldModifier = this.getModifiers().get(indexOfOldModifier);
 
-                    int newAmount = oldModifier.getAmount()+pickUpModifier.getB();
+                        int newAmount = oldModifier.getAmount()+pickUpModifier.getB();
 
-                    this.getModifiers().set(indexOfOldModifier, new CSModifier.Instance(oldModifier.getModifier(), newAmount));
+                        this.getModifiers().set(indexOfOldModifier, new CSModifier.Instance(oldModifier.getModifier(), newAmount));
+                    }else{ // If we are adding a new modifier
+                        this.getModifiers().add(pickUpModifier.getA());
+                    }
 
                     itemEntity.getItem().shrink(pickUpModifier.getB());
+                    level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
                 }
 
             }
@@ -188,7 +196,6 @@ public class ClaySoldierEntity extends ClayEntityBase {
                 for (CSModifier.Instance inst : this.getModifiers()) {
                     if(inst.getModifier() == modifier){
                         thisModifierInstance = inst;
-                        break;
                     }
                 }
 
@@ -206,23 +213,21 @@ public class ClaySoldierEntity extends ClayEntityBase {
                         if(modifier.canBeStacked()){
                             retInstance = thisModifierInstance;
                             pickUpAmount = modifier.getMaxStackingLimit()-thisModifierInstance.getAmount();
-                            break;
                         }
                     }else{
                         if(modifier.canBeStacked()){
-                            retInstance = thisModifierInstance;
                             pickUpAmount = modifier.getMaxStackingLimit()-thisModifierInstance.getAmount();
-                            break;
+                            retInstance = new CSModifier.Instance(modifier, pickUpAmount);
                         }else{
-                            retInstance = thisModifierInstance;
                             pickUpAmount = 1;
-                            break;
+                            retInstance = new CSModifier.Instance(modifier, pickUpAmount);
                         }
                     }
                 }
 
             }
         }
+        System.out.println("yee: "+retInstance +" - "+ pickUpAmount);
         return new Pair<>(retInstance, pickUpAmount);
     }
 

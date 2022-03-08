@@ -36,27 +36,6 @@ public class EventHandler {
             }
 
             event.getTooltipElements().add(Either.right(new ItemWithTextTooltipComponent(rowList)));
-
-//            CompoundTag tag = event.getItemStack().getTag();
-//            if (tag != null) {
-//                if (tag.getIntArray("Modifiers").length > 0) {
-//                    List<Pair<ClaySoldierModifier, Integer>> modifiers = new ArrayList<>();
-//                    for (int i = 0; i < tag.getIntArray("Modifiers").length; i++) {
-//                        modifiers.add(new Pair<>(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[i]], tag.getIntArray("ModifiersAmounts")[i]));
-//                    }
-//
-//                    List<ItemWithTextTooltipComponent.ItemTextCompoundRow> rowList = new ArrayList<>();
-//                    for (Pair<ClaySoldierModifier, Integer> modifier : modifiers) {
-//                        ItemStack stack = new ItemStack(modifier.getA().getModifierItem());
-//                        stack.setCount(modifier.getB());
-//                        rowList.add(new ItemWithTextTooltipComponent.ItemTextCompoundRow(List.of(
-//                                stack
-//                        ), (TranslatableComponent) new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + modifier.getA().getModifierName()).withStyle(Style.EMPTY.withColor(modifier.getA().getModifierColor().getRGB()))));
-//                    }
-//
-//                    event.getTooltipElements().add(Either.right(new ItemWithTextTooltipComponent(rowList)));
-//                }
-//            }
         }
     }
 }
