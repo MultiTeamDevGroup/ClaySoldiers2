@@ -154,7 +154,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
             for (ItemEntity itemEntity : itemsAround) {
                 Pair<CSModifier.Instance, Integer> pickUpModifier = shouldPickUp(itemEntity.getItem());
 
-                if(pickUpModifier.getB() > 0){
+                if(pickUpModifier.getB() > 0 && pickUpModifier.getA() != null){
                     if(this.getModifiers().contains(pickUpModifier.getA())){ //If we are adding more to a contained modifier
                         int indexOfOldModifier = this.getModifiers().indexOf(pickUpModifier.getA());
                         CSModifier.Instance oldModifier = this.getModifiers().get(indexOfOldModifier);
@@ -209,14 +209,14 @@ public class ClaySoldierEntity extends ClayEntityBase {
                 }
 
                 if (!hasIncompatibles) {
-                    if (this.getModifiers().contains(modifier)){
+                    if (this.getModifiers().contains(thisModifierInstance)){
                         if(modifier.canBeStacked()){
+                            pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit()-thisModifierInstance.getAmount());
                             retInstance = thisModifierInstance;
-                            pickUpAmount = modifier.getMaxStackingLimit()-thisModifierInstance.getAmount();
                         }
                     }else{
                         if(modifier.canBeStacked()){
-                            pickUpAmount = modifier.getMaxStackingLimit()-thisModifierInstance.getAmount();
+                            pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit());
                             retInstance = new CSModifier.Instance(modifier, pickUpAmount);
                         }else{
                             pickUpAmount = 1;
