@@ -12,6 +12,11 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -166,6 +171,12 @@ public class ClaySoldierEntity extends ClayEntityBase {
                         this.getModifiers().add(pickUpModifier.getA());
                     }
 
+                    switch (pickUpModifier.getA().getModifier().getModifierType()){
+                        case MAIN_HAND, MAIN_HAND_BOOST_ITEM, MAIN_HAND_AMOUNT_BOOST_ITEM ->
+                                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(pickUpModifier.getA().getModifier().getModifierItem()));
+                        case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED ->
+                                this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(pickUpModifier.getA().getModifier().getModifierItem()));
+                    }
                     itemEntity.getItem().shrink(pickUpModifier.getB());
                     level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
                 }
@@ -231,4 +242,21 @@ public class ClaySoldierEntity extends ClayEntityBase {
         return new Pair<>(retInstance, pickUpAmount);
     }
 
+    @Override
+    public void doEnchantDamageEffects(LivingEntity p_19971_, Entity p_19972_) {
+        super.doEnchantDamageEffects(p_19971_, p_19972_);
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        boolean flag = super.doHurtTarget(entity);
+
+        for (CSModifier.Instance inst : this.getModifiers()) {
+            if(inst !=null){
+                inst.getModifier().onModifierAttack(entity);
+            }
+        }
+
+        return flag;
+    }
 }

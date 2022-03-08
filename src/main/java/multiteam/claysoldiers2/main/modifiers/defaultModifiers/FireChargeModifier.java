@@ -2,6 +2,7 @@ package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -15,7 +16,7 @@ public class FireChargeModifier extends CSModifier {
     }
 
     @Override
-    public void onModifierAttack(ClaySoldierEntity targetSoldier) {
+    public void onModifierAttack(Entity targetSoldier) {
 
     }
 

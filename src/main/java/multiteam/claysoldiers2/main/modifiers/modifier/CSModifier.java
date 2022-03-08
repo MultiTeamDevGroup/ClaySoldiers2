@@ -2,6 +2,7 @@ package multiteam.claysoldiers2.main.modifiers.modifier;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
@@ -87,7 +88,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         return ret;
     }
 
-    public abstract void onModifierAttack(ClaySoldierEntity targetSoldier);
+    public abstract void onModifierAttack(Entity targetSoldier);
     public abstract void onModifierHurt(ClaySoldierEntity thisSoldier, ClaySoldierEntity attackerSoldier);
     public abstract void onModifierTick(ClaySoldierEntity thisSoldier);
 
