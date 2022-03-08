@@ -2,10 +2,12 @@ package multiteam.claysoldiers2.main.modifiers.modifier;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
+import oshi.util.tuples.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -89,7 +91,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
     }
 
     public abstract void onModifierAttack(Entity targetEntity);
-    public abstract void onModifierHurt(ClaySoldierEntity thisSoldier, ClaySoldierEntity attackerSoldier);
+    public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount);
     public abstract void onModifierTick(ClaySoldierEntity thisSoldier);
 
     public String getDescriptionId() {

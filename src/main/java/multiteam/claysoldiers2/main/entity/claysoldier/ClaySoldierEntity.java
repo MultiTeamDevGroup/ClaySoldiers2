@@ -264,14 +264,16 @@ public class ClaySoldierEntity extends ClayEntityBase {
         float attackDamage = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
         float knockbackAmount = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
-        for (CSModifier.Instance inst : this.getModifiers()) {
-            if(inst !=null){
-                inst.getModifier().onModifierAttack(entity);
-                if(inst.getModifier() instanceof DamageBonusModifier){
-                    attackDamage+=((DamageBonusModifier)inst.getModifier()).getDamageBonus();
+        if(!this.getModifiers().isEmpty()){
+            for (CSModifier.Instance inst : this.getModifiers()) {
+                if(inst !=null){
+                    inst.getModifier().onModifierAttack(entity);
+                    if(inst.getModifier() instanceof DamageBonusModifier){
+                        attackDamage+=((DamageBonusModifier)inst.getModifier()).getDamageBonus();
+                    }
+                }else{
+                    break;
                 }
-            }else{
-                break;
             }
         }
 
@@ -293,5 +295,28 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
 
         return flag;
+    }
+
+    @Override
+    public boolean hurt(DamageSource damageSource, float damageAmount) {
+        DamageSource newSource = damageSource;
+        float newDamage = damageAmount;
+        if(!this.getModifiers().isEmpty()){
+            for (CSModifier.Instance inst : this.getModifiers()) {
+                if(inst !=null){
+                    Pair<DamageSource, Float> pair =inst.getModifier().onModifierHurt(this, damageSource, damageAmount);
+                    newSource = pair.getA();
+                    newDamage = pair.getB();
+                }else{
+                    break;
+                }
+            }
+        }
+        return super.hurt(newSource, newDamage);
+    }
+
+    @Override
+    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
+        super.actuallyHurt(p_21240_, p_21241_);
     }
 }
