@@ -128,16 +128,19 @@ public class ClaySoldierAttackGoal extends Goal {
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(entity);
 
-            if (this.mob.MainHandItem.getItem() != Items.AIR) {
-                for (Pair<CSModifier, Integer> modifier : this.mob.getModifiers()) {
-                    if (modifier.getA().getModifierItem() == this.mob.MainHandItem.getItem()) {
-                        modifier.getA().ExecuteModifierOnAttack(this.mob, modifier.getA(), entity);
-                        if (modifier.getA().canBeStacked() && this.mob.MainHandItem.getCount() >= 1) {
-                            this.mob.MainHandItem.shrink(1);
-                        }
-                    }
-                }
-            }
+            //TODO MAKE THIS WORK AGAIN
+            /**
+             * if (this.mob.MainHandItem.getItem() != Items.AIR) {
+             *                 for (Pair<CSModifier, Integer> modifier : this.mob.getModifiers()) {
+             *                     if (modifier.getA().getModifierItem() == this.mob.MainHandItem.getItem()) {
+             *                         modifier.getA().ExecuteModifierOnAttack(this.mob, modifier.getA(), entity);
+             *                         if (modifier.getA().canBeStacked() && this.mob.MainHandItem.getCount() >= 1) {
+             *                             this.mob.MainHandItem.shrink(1);
+             *                         }
+             *                     }
+             *                 }
+             *             }
+             */
 
         }
 

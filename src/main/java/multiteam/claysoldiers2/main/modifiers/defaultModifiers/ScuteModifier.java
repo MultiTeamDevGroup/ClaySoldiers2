@@ -4,12 +4,13 @@ import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
 import java.util.List;
 
 public class ScuteModifier extends NonStackingCSModifier {
-    public ScuteModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<CSModifier> incompatibleModifiers) {
+    public ScuteModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
     }
 
