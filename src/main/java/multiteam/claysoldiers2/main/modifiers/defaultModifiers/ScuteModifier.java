@@ -33,7 +33,14 @@ public class ScuteModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
+    }
+
+    @Override
+    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+        if(thisSoldier.isUnderWater()){
+            thisSoldier.setAirSupply(thisSoldier.getMaxAirSupply());
+        }
     }
 }

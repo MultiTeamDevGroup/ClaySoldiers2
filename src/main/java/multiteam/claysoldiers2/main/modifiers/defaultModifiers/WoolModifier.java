@@ -5,6 +5,7 @@ import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
@@ -14,13 +15,15 @@ import java.util.List;
 
 public class WoolModifier extends NonStackingCSModifier {
 
+
+
     public WoolModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
     }
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-
+        thisSoldier.getAttributes().getInstance(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(thisSoldier.getAttributes().getInstance(Attributes.KNOCKBACK_RESISTANCE).getBaseValue() + 0.3F);
     }
 
     @Override
@@ -31,6 +34,11 @@ public class WoolModifier extends NonStackingCSModifier {
     @Override
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
     }
 
     @Override

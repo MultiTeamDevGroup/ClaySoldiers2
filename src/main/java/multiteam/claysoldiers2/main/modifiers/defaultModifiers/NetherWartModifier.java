@@ -20,7 +20,7 @@ public class NetherWartModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-
+        thisSoldier.hostileAgainstItsOwnKind = true;
     }
 
     @Override
@@ -31,6 +31,11 @@ public class NetherWartModifier extends NonStackingCSModifier {
     @Override
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
     }
 
     @Override

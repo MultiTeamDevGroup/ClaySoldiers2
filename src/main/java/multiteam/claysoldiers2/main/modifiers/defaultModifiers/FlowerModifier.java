@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FlowerModifier extends NonStackingCSModifier {
 
-    private MobEffectInstance effect;
+    private final MobEffectInstance effect;
 
     public FlowerModifier(Item modifierItem, String modifierName, Color modifierColor, MobEffectInstance effect, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(CSModifier.ModifierType.EFFECT, modifierItem, modifierName, modifierColor, incompatibleModifiers);

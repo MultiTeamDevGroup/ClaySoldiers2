@@ -1,7 +1,6 @@
 package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import multiteam.claysoldiers2.main.Registration;
-import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.entity.ai.ClaySoldierAttackGoal;
 import multiteam.claysoldiers2.main.entity.base.ClayEntityBase;
 import multiteam.claysoldiers2.main.item.ModItems;
@@ -19,7 +18,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -42,6 +40,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
     public boolean isInvisibleToOthers = false;
     public boolean canSeeInvisibleToOthers = false;
+    public boolean hostileAgainstItsOwnKind = false;
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
@@ -53,7 +52,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, CSAPI.Settings.soldierViewDistance).add(Attributes.JUMP_STRENGTH, 1.0d);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, CSAPI.Settings.soldierViewDistance).add(Attributes.JUMP_STRENGTH, 1.0d).add(Attributes.KNOCKBACK_RESISTANCE, 0.2F);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
         this.goalSelector.addGoal(0, new ClaySoldierAttackGoal(this, 2, true));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
             if (targetEntity instanceof ClaySoldierEntity targetedSoldier) {
-                return !targetedSoldier.isMatchingMaterial(this) && (!targetedSoldier.isInvisibleToOthers || this.canSeeInvisibleToOthers);
+                return (!targetedSoldier.isMatchingMaterial(this) || this.hostileAgainstItsOwnKind) && (!targetedSoldier.isInvisibleToOthers || this.canSeeInvisibleToOthers);
             }
             return false;
         }));
@@ -251,16 +250,23 @@ public class ClaySoldierEntity extends ClayEntityBase {
         //switch (modifier.getModifierType())
         //also if its a main hand item or an off hand item, setting the handslot to have the item of the modifier
 
+        //This has been already started, but i think its incomplete yet!
+
         switch (modifier.getModifierType()){
             case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
-                if(!this.getMainHandItem().isEmpty()){
-                    ret = false;
-                }
+                    if(!this.getMainHandItem().isEmpty()){
+                        ret = false;
+                    }
                 break;
             case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
-                if(!this.getOffhandItem().isEmpty()){
-                    ret = false;
-                }
+                    if(!this.getOffhandItem().isEmpty()){
+                        ret = false;
+                    }
+                break;
+            case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM, BOTH_HANDS:
+                    if(!this.getMainHandItem().isEmpty() && !this.getOffhandItem().isEmpty()){
+                        ret = false;
+                    }
                 break;
         }
 
@@ -342,5 +348,10 @@ public class ClaySoldierEntity extends ClayEntityBase {
         }
 
         super.die(damageSource);
+    }
+
+    //TODO make this actually do something
+    public void stickToPosition(){
+
     }
 }

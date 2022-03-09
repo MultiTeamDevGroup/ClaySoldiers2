@@ -36,6 +36,11 @@ public class InfEffectCSModifier extends NonStackingCSModifier{
     }
 
     @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
+
+    @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
         thisSoldier.addEffect(this.effectInstance);
     }

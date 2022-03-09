@@ -235,7 +235,7 @@ public final class ModModifiers {
             Items.SCUTE,
             "diver",
             new Color(0x0DBD41),
-            new ArrayList<>()
+            List.of(ModModifiers.LILYPAD_BOOST)
     ));
 
     public static final RegistryObject<CSModifier> SEEDS_MAIN = register("seeds_main", () -> new WheatSeedsModifier(
@@ -339,7 +339,7 @@ public final class ModModifiers {
             Items.LILY_PAD,
             "water_walker",
             new Color(0x355D03),
-            new ArrayList<>()
+            List.of(ModModifiers.SCUTE_BOOST)
     ));
 
     public static final RegistryObject<CSModifier> GLASS_PANE_BOOST = register("glass_pane_boost", () -> new GlassPaneModifier(
@@ -409,14 +409,14 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> MUSHROOM_RED = register("mushroom_red", () -> new MushroomModifier(
-            CSModifier.ModifierType.ANY_HAND_AMOUNT_BOOST_ITEM,
+            CSModifier.ModifierType.INF_BOOST,
             Items.RED_MUSHROOM,
             "red_shroomer",
             new Color(0xFFFFFF),
             List.of(ModModifiers.MUSHROOM_BROWN)
     ));
     public static final RegistryObject<CSModifier> MUSHROOM_BROWN = register("mushroom_brown", () -> new MushroomModifier(
-            CSModifier.ModifierType.ANY_HAND_AMOUNT_BOOST_ITEM,
+            CSModifier.ModifierType.INF_BOOST,
             Items.BROWN_MUSHROOM,
             "brown_shroomer",
             new Color(0xFFFFFF),

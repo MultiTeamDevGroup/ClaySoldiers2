@@ -34,7 +34,18 @@ public class PaperModifier extends NonStackingCSModifier {
     }
 
     @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
+
+    @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
+    }
+
+    @Override
+    public void additionalModifierRenderComponent() {
+        super.additionalModifierRenderComponent();
+        //TODO: do the rendering part of this bruh lmao xDD :D haha funny jokes on you jkjk sheeeesh skibidi ba pum dada
     }
 }

@@ -2,7 +2,7 @@ package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
-import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -12,9 +12,21 @@ import oshi.util.tuples.Pair;
 import java.awt.*;
 import java.util.List;
 
-public class MagmaCreamModifier extends NonStackingCSModifier {
+public class MagmaCreamModifier extends DamageBonusCSModifier {
+
+    boolean canCrit = false;
+
     public MagmaCreamModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
+    }
+
+    @Override
+    public float getDamageBonus() {
+        if(canCrit){
+            return 0.5f;
+        }else{
+            return 0;
+        }
     }
 
     @Override
@@ -33,7 +45,13 @@ public class MagmaCreamModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
+    }
+
+    @Override
+    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+        int chance = thisSoldier.getLevel().getRandom().nextInt(100);
+        this.canCrit = chance > 85;
     }
 }

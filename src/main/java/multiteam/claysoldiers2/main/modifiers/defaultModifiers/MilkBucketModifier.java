@@ -5,11 +5,15 @@ import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MilkBucketModifier extends NonStackingCSModifier {
@@ -20,7 +24,28 @@ public class MilkBucketModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+        List<ItemStack> dropsList = new ArrayList<>();
 
+        for (Instance instance : thisSoldier.getModifiers()){
+            if(instance != null && instance != thisModifierInstance){
+                int amount;
+                if(instance.getModifier().canBeStacked()){
+                    amount = instance.getAmount();
+                }else{
+                    amount = 1;
+                }
+                dropsList.add(new ItemStack(instance.getModifier().getModifierItem(), amount));
+            }
+        }
+
+        dropsList.add(new ItemStack(Items.BUCKET));
+
+        for (ItemStack stack : dropsList){
+            thisSoldier.getLevel().addFreshEntity(new ItemEntity(thisSoldier.getLevel(), thisSoldier.getX(), thisSoldier.getY(), thisSoldier.getZ(), stack));
+        }
+
+        thisSoldier.getModifiers().clear();
+        thisSoldier.removeSoldier();
     }
 
     @Override
@@ -34,30 +59,12 @@ public class MilkBucketModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 
-    /*
-    (soldier, thisModifier) -> {
-                if (!soldier.getModifiers().isEmpty()) {
-                    for (int i = 0; i < soldier.getModifiers().size(); i++) {
-                        if (soldier.getModifiers().get(i) != null && soldier.getModifiers().get(i).getA().getModifierItem() != Items.MILK_BUCKET) {
-                            ItemStack dropStack = new ItemStack(soldier.getModifiers().get(i).getA().getModifierItem());
-                            if (soldier.getModifiers().get(i).getA().canBeStacked()) {
-                                dropStack.setCount(soldier.getModifiers().get(i).getB());
-                            }
-                            soldier.getLevel().addFreshEntity(new ItemEntity(soldier.level, soldier.getX(), soldier.getY(), soldier.getZ(), dropStack));
-                            soldier.removeModifier(soldier.getModifiers().get(i).getA());
-                        } else {
-                            return;
-                        }
-                    }
+    @Override
+    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
-                    soldier.removeAllModifiers();
-                    soldier.getLevel().addFreshEntity(new ItemEntity(soldier.level, soldier.getX(), soldier.getY(), soldier.getZ(), new ItemStack(Items.BUCKET)));
-                    soldier.removeSoldier();
-                }
-            },
-     */
+    }
 }

@@ -13,6 +13,5 @@ public abstract class DamageBonusCSModifier extends NonStackingCSModifier{
     }
 
 
-
     public abstract float getDamageBonus();
 }
