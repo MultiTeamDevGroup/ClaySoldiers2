@@ -42,7 +42,7 @@ public class BlazeRodModifier extends NonStackingCSModifier {
             }
         }
         if(coalModifier != null){
-            coalModifier.setAmount(coalModifier.getAmount()-1);
+            coalModifier.shrink(1, thisSoldier);
         }
     }
 
@@ -53,6 +53,11 @@ public class BlazeRodModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 }

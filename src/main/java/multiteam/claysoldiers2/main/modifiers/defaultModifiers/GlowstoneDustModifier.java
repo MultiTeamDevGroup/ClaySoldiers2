@@ -4,6 +4,8 @@ import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
@@ -35,6 +37,11 @@ public class GlowstoneDustModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+        thisSoldier.addEffect(new MobEffectInstance(MobEffects.GLOWING, 1, 1, false, false));
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 }

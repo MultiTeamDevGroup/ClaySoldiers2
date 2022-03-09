@@ -17,8 +17,8 @@ public class HealingModifier extends CSModifier {
 
     public final float healAmount;
 
-    public HealingModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, boolean canBeStacked, int stackingLimit, List<RegistryObject<CSModifier>> incompatibleModifiers, float healAmount) {
-        super(modifierType, modifierItem, modifierName, modifierColor, canBeStacked, stackingLimit, incompatibleModifiers);
+    public HealingModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, int stackingLimit, List<RegistryObject<CSModifier>> incompatibleModifiers, float healAmount) {
+        super(modifierType, modifierItem, modifierName, modifierColor, true, stackingLimit, incompatibleModifiers);
         this.healAmount = healAmount;
     }
 
@@ -42,6 +42,12 @@ public class HealingModifier extends CSModifier {
         int rand = thisSoldier.getLevel().getRandom().nextInt(100);
         if(rand > CSAPI.Settings.handUsageChance && thisSoldier.getHealth() < thisSoldier.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue()){
             thisSoldier.heal(this.healAmount);
+            thisModifierInstance.shrink(1, thisSoldier);
         }
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
     }
 }

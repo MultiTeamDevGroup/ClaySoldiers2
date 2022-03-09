@@ -50,4 +50,9 @@ public class CoalModifier extends NonStackingCSModifier {
             ((BlazeRodModifier)blazeRodModifier.getModifier()).modifiedFireSeconds = ((BlazeRodModifier)blazeRodModifier.getModifier()).defaultFireSeconds+5;
         }
     }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
 }

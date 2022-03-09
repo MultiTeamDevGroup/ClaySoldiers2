@@ -1,6 +1,7 @@
 package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import multiteam.claysoldiers2.main.Registration;
+import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.entity.ai.ClaySoldierAttackGoal;
 import multiteam.claysoldiers2.main.entity.base.ClayEntityBase;
 import multiteam.claysoldiers2.main.item.ModItems;
@@ -18,6 +19,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -328,7 +330,17 @@ public class ClaySoldierEntity extends ClayEntityBase {
     }
 
     @Override
-    protected void actuallyHurt(DamageSource p_21240_, float p_21241_) {
-        super.actuallyHurt(p_21240_, p_21241_);
+    public void die(@NotNull DamageSource damageSource) {
+        if(!this.getModifiers().isEmpty()){
+            for (CSModifier.Instance inst : this.getModifiers()) {
+                if(inst !=null){
+                    inst.getModifier().onModifierDeath(damageSource, this, inst);
+                }else{
+                    break;
+                }
+            }
+        }
+
+        super.die(damageSource);
     }
 }

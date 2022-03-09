@@ -27,7 +27,7 @@ public class FireChargeModifier extends CSModifier {
     @Override
     public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
         targetEntity.setSecondsOnFire(5);
-        thisModifierInstance.setAmount(thisModifierInstance.getAmount()-1);
+        thisModifierInstance.shrink(1, thisSoldier);
     }
 
     @Override
@@ -37,6 +37,11 @@ public class FireChargeModifier extends CSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 }

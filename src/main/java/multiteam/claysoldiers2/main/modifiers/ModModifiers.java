@@ -53,7 +53,6 @@ public final class ModModifiers {
             Items.CLAY_BALL,
             "clay_healer",
             new Color(0x9499a4),
-            true,
             CSAPI.Settings.stackablesLimit,
             new ArrayList<>(),
             1f
@@ -176,7 +175,6 @@ public final class ModModifiers {
             Items.GLISTERING_MELON_SLICE,
             "glistering_healer",
             new Color(0xFFF97E),
-            true,
             CSAPI.Settings.stackablesLimit,
             new ArrayList<>(),
             2f

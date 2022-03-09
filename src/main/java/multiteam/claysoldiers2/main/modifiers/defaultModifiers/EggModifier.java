@@ -37,4 +37,9 @@ public class EggModifier extends NonStackingCSModifier {
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
         thisSoldier.isInvisibleToOthers = true;
     }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
 }

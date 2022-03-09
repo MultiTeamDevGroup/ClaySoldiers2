@@ -24,7 +24,7 @@ public class FlintModifier extends DamageBonusCSModifier {
     @Override
     public float getDamageBonus() {
         if(isCombinedWithStick){
-            return 1;
+            return 2;
         }else{
             return 0;
         }
@@ -50,5 +50,10 @@ public class FlintModifier extends DamageBonusCSModifier {
         for (Instance instance : thisSoldier.getModifiers()){
             isCombinedWithStick = instance.getModifier() == ModModifiers.STICK_MAIN.get();
         }
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
     }
 }

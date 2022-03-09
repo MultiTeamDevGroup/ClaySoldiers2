@@ -14,6 +14,8 @@ import java.util.List;
 
 public class GoldNuggetModifier extends NonStackingCSModifier {
 
+    //TODO Make this work; the ai needs to have a follow goal, and olny follow if the targeted soldier has this modifier;
+
     public GoldNuggetModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
     }
@@ -35,6 +37,11 @@ public class GoldNuggetModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 }

@@ -5,6 +5,7 @@ import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Explosion;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
 
@@ -35,5 +36,11 @@ public class GunpowderModifier extends CSModifier {
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+        thisModifierInstance.shrink(1, thisSoldier);
+        thisSoldier.getLevel().explode(thisSoldier, thisSoldier.getX(), thisSoldier.getY(), thisSoldier.getZ(), 3.0F, Explosion.BlockInteraction.NONE);
     }
 }

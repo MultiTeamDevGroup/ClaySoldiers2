@@ -37,4 +37,9 @@ public class EnderEyeModifier extends NonStackingCSModifier {
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
         thisSoldier.canSeeInvisibleToOthers = true;
     }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
 }

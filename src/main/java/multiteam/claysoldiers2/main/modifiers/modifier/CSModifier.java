@@ -91,9 +91,15 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
     }
 
     public abstract void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
+    public abstract void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
     public abstract void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance);
     public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance);
-    public abstract void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
+    public abstract void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
+
+    public void additionalModifierRenderComponent(){
+
+    }
+
 
     public String getDescriptionId() {
         return "tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + getModifierName();
@@ -118,6 +124,14 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
 
         public void setAmount(int amount) {
             this.amount = amount;
+        }
+
+        public void shrink(int amount, ClaySoldierEntity thisSoldier){
+            if(amount >= this.amount){
+                thisSoldier.removeModifier(this);
+            }else{
+                this.amount =- amount;
+            }
         }
 
         public Instance copy() {

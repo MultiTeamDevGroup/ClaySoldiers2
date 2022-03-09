@@ -2,6 +2,7 @@ package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,7 +23,14 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
     @Override
-    public void render(ClaySoldierEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+    public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
+        super.render(thisSoldier, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+
+        for (CSModifier.Instance instance : thisSoldier.getModifiers()){
+            if(instance != null){
+                instance.getModifier().additionalModifierRenderComponent();
+            }
+        }
+
     }
 }

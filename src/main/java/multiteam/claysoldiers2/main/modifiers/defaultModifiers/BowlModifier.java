@@ -46,4 +46,9 @@ public class BowlModifier extends NonStackingCSModifier {
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
 }

@@ -30,11 +30,25 @@ public class LeatherModifier extends NonStackingCSModifier {
 
     @Override
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
-        return new Pair<>(damageSource, damageAmount);
+        float newDamageAmount = damageAmount;
+        if(damageAmount > 0.5f){
+            newDamageAmount = damageAmount - 0.5f;
+        }
+
+        int damageBlockingChance = thisSoldier.getLevel().getRandom().nextInt(100);
+        if(damageBlockingChance >= 99){
+            newDamageAmount = 0;
+        }
+        return new Pair<>(damageSource, newDamageAmount);
     }
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+
+    }
+
+    @Override
+    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 }
