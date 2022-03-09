@@ -189,6 +189,10 @@ public class ClaySoldierEntity extends ClayEntityBase {
             for (int i = 0; i < this.getModifiers().size(); i++) {
                 CSModifier.Instance instance = this.getModifiers().get(i);
                 if (instance != null) {
+                    if(instance.getAmount() <= 0){
+                        this.removeModifier(instance);
+                        return;
+                    }
                     instance.getModifier().onModifierTick(soldier, instance);
                 } else {
                     return;
@@ -230,7 +234,6 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
             }
         }
-        System.out.println("yee: "+retInstance +" - "+ pickUpAmount);
         return new Pair<>(retInstance, pickUpAmount);
     }
 

@@ -127,11 +127,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         }
 
         public void shrink(int amount, ClaySoldierEntity thisSoldier){
-            if(amount >= this.amount){
-                thisSoldier.removeModifier(this);
-            }else{
-                this.amount =- amount;
-            }
+            this.amount--;
         }
 
         public Instance copy() {
