@@ -90,9 +90,10 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         return ret;
     }
 
-    public abstract void onModifierAttack(Entity targetEntity);
-    public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount);
-    public abstract void onModifierTick(ClaySoldierEntity thisSoldier);
+    public abstract void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
+    public abstract void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance);
+    public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance);
+    public abstract void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
 
     public String getDescriptionId() {
         return "tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + getModifierName();

@@ -2,6 +2,7 @@ package multiteam.claysoldiers2.main.modifiers;
 
 import multiteam.claysoldiers2.main.modifiers.defaultModifiers.*;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.InfEffectCSModifier;
 import multiteam.claysoldiers2.main.util.ExceptionUtils;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -54,11 +55,12 @@ public final class ModModifiers {
             new Color(0x9499a4),
             true,
             CSAPI.Settings.stackablesLimit,
-            new ArrayList<>()
+            new ArrayList<>(),
+            1f
     ));
 
-    public static final RegistryObject<CSModifier> FEATHER_BOOST = register("feather_boost", () -> new FeatherModifier(
-            CSModifier.ModifierType.INF_EFFECT,
+    public static final RegistryObject<CSModifier> FEATHER_BOOST = register("feather_boost", () -> new InfEffectCSModifier(
+            new MobEffectInstance(MobEffects.SLOW_FALLING, 12),
             Items.FEATHER,
             "slow_falling",
             new Color(0xe6edf5),
@@ -176,7 +178,8 @@ public final class ModModifiers {
             new Color(0xFFF97E),
             true,
             CSAPI.Settings.stackablesLimit,
-            new ArrayList<>()
+            new ArrayList<>(),
+            2f
     ));
 
     public static final RegistryObject<CSModifier> KING_BOOST = register("king_boost", () -> new GoldNuggetModifier(

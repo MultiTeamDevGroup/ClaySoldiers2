@@ -6,7 +6,7 @@ import multiteam.claysoldiers2.main.entity.base.ClayEntityBase;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
-import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -39,6 +38,9 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
     private List<CSModifier.Instance> modifiers = new ArrayList<>();
 
+    public boolean isInvisibleToOthers = false;
+    public boolean canSeeInvisibleToOthers = false;
+
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
         this.setMaterial(material);
@@ -49,7 +51,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, CSAPI.Settings.soldierViewDistance);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, CSAPI.Settings.soldierViewDistance).add(Attributes.JUMP_STRENGTH, 1.0d);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
         this.goalSelector.addGoal(0, new ClaySoldierAttackGoal(this, 2, true));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
             if (targetEntity instanceof ClaySoldierEntity targetedSoldier) {
-                return !targetedSoldier.isMatchingMaterial(this);
+                return !targetedSoldier.isMatchingMaterial(this) && (!targetedSoldier.isInvisibleToOthers || this.canSeeInvisibleToOthers);
             }
             return false;
         }));
@@ -172,12 +174,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
                         this.getModifiers().add(pickUpModifier.getA());
                     }
 
-                    switch (pickUpModifier.getA().getModifier().getModifierType()){
-                        case MAIN_HAND, MAIN_HAND_BOOST_ITEM, MAIN_HAND_AMOUNT_BOOST_ITEM ->
-                                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(pickUpModifier.getA().getModifier().getModifierItem()));
-                        case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED ->
-                                this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(pickUpModifier.getA().getModifier().getModifierItem()));
-                    }
+                    pickUpModifier.getA().getModifier().onModifierAdded(soldier, pickUpModifier.getA());
 
                     itemEntity.getItem().shrink(pickUpModifier.getB());
                     level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
@@ -189,8 +186,9 @@ public class ClaySoldierEntity extends ClayEntityBase {
         //Calling on Modifier Tick
         if (!level.isClientSide && !this.getModifiers().isEmpty()) {
             for (int i = 0; i < this.getModifiers().size(); i++) {
-                if (this.getModifiers().get(i) != null) {
-                    this.getModifiers().get(i).getModifier().onModifierTick(soldier);
+                CSModifier.Instance instance = this.getModifiers().get(i);
+                if (instance != null) {
+                    instance.getModifier().onModifierTick(soldier, instance);
                 } else {
                     return;
                 }
@@ -267,9 +265,9 @@ public class ClaySoldierEntity extends ClayEntityBase {
         if(!this.getModifiers().isEmpty()){
             for (CSModifier.Instance inst : this.getModifiers()) {
                 if(inst !=null){
-                    inst.getModifier().onModifierAttack(entity);
-                    if(inst.getModifier() instanceof DamageBonusModifier){
-                        attackDamage+=((DamageBonusModifier)inst.getModifier()).getDamageBonus();
+                    inst.getModifier().onModifierAttack(this, entity, inst);
+                    if(inst.getModifier() instanceof DamageBonusCSModifier){
+                        attackDamage+=((DamageBonusCSModifier)inst.getModifier()).getDamageBonus();
                     }
                 }else{
                     break;
@@ -304,7 +302,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
         if(!this.getModifiers().isEmpty()){
             for (CSModifier.Instance inst : this.getModifiers()) {
                 if(inst !=null){
-                    Pair<DamageSource, Float> pair =inst.getModifier().onModifierHurt(this, damageSource, damageAmount);
+                    Pair<DamageSource, Float> pair =inst.getModifier().onModifierHurt(this, damageSource, damageAmount, inst);
                     newSource = pair.getA();
                     newDamage = pair.getB();
                 }else{

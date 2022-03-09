@@ -19,17 +19,22 @@ public class MilkBucketModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierAttack(Entity targetEntity) {
+    public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount) {
+    public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
+
+    }
+
+    @Override
+    public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier) {
+    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
 
     }
 
