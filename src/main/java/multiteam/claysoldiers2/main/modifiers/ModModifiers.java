@@ -271,7 +271,7 @@ public final class ModModifiers {
             Items.FLINT,
             "flint_damage_boost",
             new Color(0x626262),
-            new ArrayList<>()
+            List.of(ModModifiers.IRON_BOOST)
     ));
 
     public static final RegistryObject<CSModifier> IRON_BOOST = register("iron_boost", () -> new IronNuggetModifier(
@@ -279,7 +279,7 @@ public final class ModModifiers {
             Items.IRON_NUGGET,
             "iron_damage_boost",
             new Color(0xAFAFAF),
-            new ArrayList<>()
+            List.of(ModModifiers.FLINT_BOOST)
     ));
 
     public static final RegistryObject<CSModifier> REDSTONE_ANY = register("redstone_any", () -> new RedstoneModifier(

@@ -12,5 +12,7 @@ public abstract class DamageBonusCSModifier extends NonStackingCSModifier{
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
     }
 
+
+
     public abstract float getDamageBonus();
 }

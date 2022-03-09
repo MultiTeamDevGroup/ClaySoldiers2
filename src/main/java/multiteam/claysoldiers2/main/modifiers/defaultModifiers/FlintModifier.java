@@ -1,8 +1,9 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
-import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -12,15 +13,26 @@ import oshi.util.tuples.Pair;
 import java.awt.*;
 import java.util.List;
 
-public class FlintModifier extends NonStackingCSModifier {
+public class FlintModifier extends DamageBonusCSModifier {
+
+    public boolean isCombinedWithStick = false;
 
     public FlintModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
     }
 
     @Override
+    public float getDamageBonus() {
+        if(isCombinedWithStick){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-        
+
     }
 
     @Override
@@ -35,6 +47,8 @@ public class FlintModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-
+        for (Instance instance : thisSoldier.getModifiers()){
+            isCombinedWithStick = instance.getModifier() == ModModifiers.STICK_MAIN.get();
+        }
     }
 }

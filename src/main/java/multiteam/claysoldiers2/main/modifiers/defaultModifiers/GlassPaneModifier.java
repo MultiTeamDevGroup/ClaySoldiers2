@@ -1,10 +1,12 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
@@ -20,7 +22,7 @@ public class GlassPaneModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-
+        thisSoldier.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(CSAPI.Settings.soldierViewDistance*1.5f);
     }
 
     @Override

@@ -24,7 +24,8 @@ public class FlowerModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-
+        thisSoldier.addEffect(this.effect);
+        thisSoldier.removeModifier(thisModifierInstance);
     }
 
     @Override
