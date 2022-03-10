@@ -2,6 +2,7 @@ package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ai.ClaySoldierAttackGoal;
+import multiteam.claysoldiers2.main.entity.ai.NearestAttackableTargetGoalModified;
 import multiteam.claysoldiers2.main.entity.base.ClayEntityBase;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,15 +57,15 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new ClaySoldierAttackGoal(this, 2, true));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
+        this.goalSelector.addGoal(1, new ClaySoldierAttackGoal(this, 2, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoalModified<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
             if (targetEntity instanceof ClaySoldierEntity targetedSoldier) {
                 return (!targetedSoldier.isMatchingMaterial(this) || this.hostileAgainstItsOwnKind) && (!targetedSoldier.isInvisibleToOthers || this.canSeeInvisibleToOthers);
             }
             return false;
         }));
-        this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
     }
 
     @Override
