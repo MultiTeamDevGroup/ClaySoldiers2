@@ -257,12 +257,12 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
         switch (modifier.getModifierType()){
             case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
-                    if(!this.getMainHandItem().isEmpty()){
+                    if(!this.getMainHandItem().isEmpty() || (this.getMainHandItem().getItem() != modifier.getModifierItem() && modifier.canBeStacked())){
                         ret = false;
                     }
                 break;
             case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
-                    if(!this.getOffhandItem().isEmpty()){
+                    if(!this.getOffhandItem().isEmpty() || (this.getOffhandItem().getItem() != modifier.getModifierItem() && modifier.canBeStacked())){
                         ret = false;
                     }
                 break;
