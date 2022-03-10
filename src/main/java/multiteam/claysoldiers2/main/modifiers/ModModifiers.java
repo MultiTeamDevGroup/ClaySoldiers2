@@ -412,14 +412,14 @@ public final class ModModifiers {
             CSModifier.ModifierType.INF_BOOST,
             Items.RED_MUSHROOM,
             "red_shroomer",
-            new Color(0xFFFFFF),
+            new Color(0xdf1212),
             List.of(ModModifiers.MUSHROOM_BROWN)
     ));
     public static final RegistryObject<CSModifier> MUSHROOM_BROWN = register("mushroom_brown", () -> new MushroomModifier(
             CSModifier.ModifierType.INF_BOOST,
             Items.BROWN_MUSHROOM,
             "brown_shroomer",
-            new Color(0xFFFFFF),
+            new Color(0x8f6c54),
             List.of(ModModifiers.MUSHROOM_RED)
     ));
 
