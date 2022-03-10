@@ -255,14 +255,24 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
         //This has been already started, but i think its incomplete yet!
 
+        boolean canBeStackedFlagMainHand = false;
+        boolean canBeStackedFlagOffHand = false;
+
+
         switch (modifier.getModifierType()){
             case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
-                    if(!this.getMainHandItem().isEmpty() || (this.getMainHandItem().getItem() != modifier.getModifierItem() && modifier.canBeStacked())){
+                    if(modifier.canBeStacked() && this.getMainHandItem().is(modifier.getModifierItem())){
+                        canBeStackedFlagMainHand = true;
+                    }
+                    if(!this.getMainHandItem().isEmpty() && !canBeStackedFlagMainHand){
                         ret = false;
                     }
                 break;
             case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
-                    if(!this.getOffhandItem().isEmpty() || (this.getOffhandItem().getItem() != modifier.getModifierItem() && modifier.canBeStacked())){
+                    if(modifier.canBeStacked() && this.getOffhandItem().is(modifier.getModifierItem())){
+                        canBeStackedFlagOffHand = true;
+                    }
+                    if(!this.getOffhandItem().isEmpty() && !canBeStackedFlagOffHand){
                         ret = false;
                     }
                 break;
