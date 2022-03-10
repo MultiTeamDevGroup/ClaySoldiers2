@@ -50,6 +50,23 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
             stack.popPose();
             bufferIn = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
         }
+
+        if (bone.getName().equals("lefthand")) {
+            stack.pushPose();
+            // You'll need to play around with these to get item to render in the correct orientation
+            stack.mulPose(Vector3f.XP.rotationDegrees(-75));
+            stack.mulPose(Vector3f.YP.rotationDegrees(0));
+            stack.mulPose(Vector3f.ZP.rotationDegrees(0));
+            // You'll need to play around with this to render the item in the correct spot.
+            stack.translate(-0.09D, 0.06D, 0.2D); //x z y actually, where z is the way the entity is facing
+            // Sets the scaling of the item.
+            stack.scale(0.25f, 0.25f, 0.25f);
+            // Change mainHand to predefined Itemstack and TransformType to what transform you would want to use.
+            Minecraft.getInstance().getItemRenderer().renderStatic(offHand, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, packedLightIn, packedOverlayIn, stack, this.rtb, 0);
+            stack.popPose();
+            bufferIn = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
+        }
+
         super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
