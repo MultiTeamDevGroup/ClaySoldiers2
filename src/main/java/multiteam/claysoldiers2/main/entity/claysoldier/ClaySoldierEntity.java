@@ -8,6 +8,7 @@ import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -15,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,8 +29,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.RegistryManager;
 import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
+import software.bernie.example.registry.ItemRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +76,10 @@ public class ClaySoldierEntity extends ClayEntityBase {
     public ItemStack getItemForm() {
         ItemStack itemForm = new ItemStack(this.getMaterial().getItemForm());
 
+        CompoundTag tag = new CompoundTag();
+        ListTag list = new ListTag();
+
         if (!this.getModifiers().isEmpty()) {
-            CompoundTag tag = new CompoundTag();
-            ListTag list = new ListTag();
             for (CSModifier.Instance entry : getModifiers()) {
                 CompoundTag modifierTag = new CompoundTag();
                 modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());
@@ -85,6 +90,9 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
             itemForm.setTag(tag);
         }
+
+        tag.putString("MainHandItem", this.getMainHandItem().getItem().getRegistryName().toString());
+        tag.putString("OffHandItem", this.getOffhandItem().getItem().getRegistryName().toString());
 
         return itemForm;
     }
@@ -125,6 +133,8 @@ public class ClaySoldierEntity extends ClayEntityBase {
         }
         data.put("Modifiers", list);
 
+        data.putString("MainHandItem", this.getMainHandItem().getItem().getRegistryName().toString());
+        data.putString("OffHandItem", this.getOffhandItem().getItem().getRegistryName().toString());
     }
 
     @Override
@@ -143,6 +153,9 @@ public class ClaySoldierEntity extends ClayEntityBase {
                 this.addModifier(new CSModifier.Instance(modifier, amount));
             }
         }
+
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(data.getString("MainHandItem")))));
+        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(data.getString("OffHandItem")))));
 
     }
 
