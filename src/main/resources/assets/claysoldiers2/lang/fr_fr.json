@@ -27,6 +27,7 @@
   "item.claysoldiers2.melon_clay_soldier": "Soldat d'argile",
   "item.claysoldiers2.bricked_soldier": "Soldat de brique",
   "ENTITIES": "ENTITÉS DU MOD",
+  "entity.claysoldiers2.clay_soldier": "Soldat d'argile",
   "GUI": "GUIS DU MOD",
   "itemGroup.claysoldiers2_creative_tab": "Clay Soldiers 2",
   "tooltip.claysoldiers2.material": "Matériel : ",
