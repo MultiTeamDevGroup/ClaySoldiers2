@@ -22,6 +22,7 @@ public class BrickModifier extends NonStackingCSModifier {
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
         thisSoldier.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(thisSoldier.getAttributes().getInstance(Attributes.MAX_HEALTH).getValue()+2);
+        thisSoldier.heal(2);
         thisSoldier.getAttributes().getInstance(Attributes.JUMP_STRENGTH).setBaseValue(0.5d);
     }
 
