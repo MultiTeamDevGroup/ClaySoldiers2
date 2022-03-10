@@ -203,7 +203,7 @@ public final class ModModifiers {
             Items.LEATHER,
             "leather_armor",
             new Color(0x703923),
-            new ArrayList<>()
+            List.of(ModModifiers.RABBIT_HIDE_BOOST)
     ));
 
     public static final RegistryObject<CSModifier> MAGMA_BOOST = register("magma_boost", () -> new MagmaCreamModifier(
@@ -227,7 +227,7 @@ public final class ModModifiers {
             Items.RABBIT_HIDE,
             "rabbit_armor",
             new Color(0x9B734A),
-            new ArrayList<>()
+            List.of(ModModifiers.LEATHER_BOOST)
     ));
 
     public static final RegistryObject<CSModifier> SCUTE_BOOST = register("scute_boost", () -> new ScuteModifier(
