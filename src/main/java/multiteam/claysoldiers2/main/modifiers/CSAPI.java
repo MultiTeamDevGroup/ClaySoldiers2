@@ -10,9 +10,7 @@ public class CSAPI {
 
     public static class Settings {
         public static int stackablesLimit = 32;
-        public static int flowerStackLimit = 5;
         public static int soldierViewDistance = 32;
-
         public static int handUsageChance = 50;
     }
 

@@ -1,11 +1,14 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
@@ -28,7 +31,8 @@ public class ShearsModifier extends DamageBonusCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-
+        thisSoldier.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.RENDERING_DISPLAY_HALF_SHEAR.get()));
+        thisSoldier.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ModItems.RENDERING_DISPLAY_HALF_SHEAR.get()));
     }
 
     @Override
@@ -48,6 +52,6 @@ public class ShearsModifier extends DamageBonusCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-        this.canUseShears = thisSoldier.getMainHandItem().is(Items.SHEARS) && thisSoldier.getOffhandItem().is(Items.SHEARS);
+        this.canUseShears = thisSoldier.getMainHandItem().is(ModItems.RENDERING_DISPLAY_HALF_SHEAR.get()) && thisSoldier.getOffhandItem().is(ModItems.RENDERING_DISPLAY_HALF_SHEAR.get());
     }
 }

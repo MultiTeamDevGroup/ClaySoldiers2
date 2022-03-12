@@ -4,7 +4,6 @@
 
 
   "ITEMS": "MOD ITEMS",
-
   "item.claysoldiers2.clay_soldier": "Clay Soldier",
   "item.claysoldiers2.basic_remote": "Basic Remote",
   "item.claysoldiers2.white_clay_soldier": "Clay Soldier",
@@ -36,9 +35,11 @@
   "ENTITIES": "MOD ENTITIES",
   "entity.claysoldiers2.clay_soldier": "Clay Soldier",
 
-  "GUI": "MOD GUI",
 
+
+  "GUI": "MOD GUI",
   "itemGroup.claysoldiers2_creative_tab": "Clay Soldiers 2",
+
   "tooltip.claysoldiers2.material": "Material: ",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.clay": "Clay",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.white_clay": "White Clay",

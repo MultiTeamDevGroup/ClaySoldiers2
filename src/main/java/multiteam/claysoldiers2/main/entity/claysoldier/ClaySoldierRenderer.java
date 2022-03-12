@@ -60,7 +60,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
             // Sets the scaling of the item.
             stack.scale(0.25f, 0.25f, 0.25f);
             // Change mainHand to predefined Itemstack and TransformType to what transform you would want to use.
-            Minecraft.getInstance().getItemRenderer().renderStatic(offHand, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, packedLightIn, packedOverlayIn, stack, this.rtb, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(offHand, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, packedLightIn, packedOverlayIn, stack, this.rtb, 0);
             stack.popPose();
             bufferIn = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
         }
