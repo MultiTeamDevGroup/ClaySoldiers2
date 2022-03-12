@@ -2,6 +2,7 @@ package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -31,8 +32,9 @@ public class SlimeModifier extends CSModifier {
     @Override
     public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
         if(targetEntity instanceof ClaySoldierEntity targetSoldier){
-            targetSoldier.stickToPosition();
             thisModifierInstance.shrink(1, thisSoldier);
+            targetSoldier.stickingPosition = targetSoldier.position();
+            targetSoldier.shouldStickToPosition = true;
         }
     }
 

@@ -29,10 +29,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.registries.RegistryManager;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
-import software.bernie.example.registry.ItemRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +44,8 @@ public class ClaySoldierEntity extends ClayEntityBase {
     public boolean isInvisibleToOthers = false;
     public boolean canSeeInvisibleToOthers = false;
     public boolean hostileAgainstItsOwnKind = false;
+    public boolean shouldStickToPosition = false;
+    public Vec3 stickingPosition = new Vec3(0, 0, 0);
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
@@ -213,6 +214,10 @@ public class ClaySoldierEntity extends ClayEntityBase {
             }
         }
 
+        //Handle shouldStickToPosition
+        if(!level.isClientSide && this.shouldStickToPosition){
+            soldier.setPos(this.stickingPosition);
+        }
     }
 
     public Pair<CSModifier.Instance, Integer> shouldPickUp(ItemStack stack) {
@@ -374,10 +379,5 @@ public class ClaySoldierEntity extends ClayEntityBase {
         }
 
         super.die(damageSource);
-    }
-
-    //TODO make this actually do something
-    public void stickToPosition(){
-
     }
 }

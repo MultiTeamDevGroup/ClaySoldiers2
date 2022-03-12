@@ -31,8 +31,6 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 
-
-
     @Override
     public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (bone.getName().equals("righthand")) {
@@ -71,8 +69,6 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
 
-
-
     @Override
     public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(thisSoldier, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
@@ -83,4 +79,6 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
             }
         }
     }
+
+
 }
