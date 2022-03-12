@@ -37,7 +37,7 @@ public class GlowstoneDustModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-        thisSoldier.addEffect(new MobEffectInstance(MobEffects.GLOWING, 1, 1, false, false));
+        thisSoldier.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
     }
 
     @Override
