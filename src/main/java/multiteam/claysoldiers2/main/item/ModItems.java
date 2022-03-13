@@ -11,6 +11,7 @@ public class ModItems {
     public static final RegistryObject<Item> ICON_ITEM_SOLDIER_INFORMATIONS = Registration.ITEMS.register("icon_soldier_info", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> ICON_ITEM_SOLDIER_MODIFIERS = Registration.ITEMS.register("icon_soldier_modifier_list", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RENDERING_DISPLAY_HALF_SHEAR = Registration.ITEMS.register("half_shear", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RENDERING_DISPLAY_MINI_SHIELD = Registration.ITEMS.register("soldier_shield_model", () -> new Item(new Item.Properties()));
 
 
 

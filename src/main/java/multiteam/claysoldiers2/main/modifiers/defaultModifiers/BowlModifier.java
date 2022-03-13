@@ -1,6 +1,8 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierRenderer;
+import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
 import net.minecraft.world.InteractionHand;
@@ -19,11 +21,12 @@ public class BowlModifier extends NonStackingCSModifier {
 
     public BowlModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
+        //ClaySoldierRenderer.addRenderExceptionForModifierOffhand(this);
     }
 
     @Override
     public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
-        thisSoldier.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(this.getModifierItem()));
+        thisSoldier.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ModItems.RENDERING_DISPLAY_MINI_SHIELD.get()));
     }
 
     @Override
