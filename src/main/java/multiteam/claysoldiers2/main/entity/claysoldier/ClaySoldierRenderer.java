@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -70,9 +72,13 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
 
         if(thisSoldier.shouldStickToPosition){
             matrixStack.pushPose();
-            matrixStack.translate(0,0,0);
-            matrixStack.scale(1, 1, 1);
-            Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get()), ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, packedLightIn, packedLightIn, matrixStack, bufferIn, 0);
+
+            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+            ItemStack stack = new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get());
+            BakedModel ibakedmodel = itemRenderer.getModel(stack, thisSoldier.getLevel(), null, 0);
+
+            itemRenderer.render(stack, ItemTransforms.TransformType.NONE, true, matrixStack, bufferIn, packedLightIn, packedLightIn, ibakedmodel);
+
             matrixStack.popPose();
         }
 
