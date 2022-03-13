@@ -3,6 +3,7 @@ package multiteam.claysoldiers2.main.entity.claysoldier;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
@@ -65,6 +67,14 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     @Override
     public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(thisSoldier, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
+
+        if(thisSoldier.shouldStickToPosition){
+            matrixStack.pushPose();
+            matrixStack.translate(0,0,0);
+            matrixStack.scale(1, 1, 1);
+            Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get()), ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, packedLightIn, packedLightIn, matrixStack, bufferIn, 0);
+            matrixStack.popPose();
+        }
 
         for (CSModifier.Instance instance : thisSoldier.getModifiers()){
             if(instance != null){

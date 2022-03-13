@@ -136,6 +136,11 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
         data.putString("MainHandItem", this.getMainHandItem().getItem().getRegistryName().toString());
         data.putString("OffHandItem", this.getOffhandItem().getItem().getRegistryName().toString());
+
+        data.putBoolean("ShouldStickToPosition", this.shouldStickToPosition);
+        data.putFloat("StickingPositionX", (float) this.stickingPosition.x);
+        data.putFloat("StickingPositionY", (float) this.stickingPosition.y);
+        data.putFloat("StickingPositionZ", (float) this.stickingPosition.z);
     }
 
     @Override
@@ -157,6 +162,9 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(data.getString("MainHandItem")))));
         this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(data.getString("OffHandItem")))));
+
+        this.shouldStickToPosition = data.getBoolean("ShouldStickToPosition");
+        this.stickingPosition = new Vec3( data.getFloat("StickingPositionX"),  data.getFloat("StickingPositionY"),  data.getFloat("StickingPositionZ"));
 
     }
 
