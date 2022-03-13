@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import multiteam.claysoldiers2.main.item.ModItems;
+import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,9 +13,14 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LightLayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
@@ -22,6 +28,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@OnlyIn(Dist.CLIENT)
 public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
 
     private static List<CSModifier> modifierRenderExceptionsOffhand = new ArrayList<>();
@@ -77,7 +84,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
             ItemStack stack = new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get());
             BakedModel ibakedmodel = itemRenderer.getModel(stack, thisSoldier.getLevel(), null, 0);
 
-            itemRenderer.render(stack, ItemTransforms.TransformType.NONE, true, matrixStack, bufferIn, packedLightIn, packedLightIn, ibakedmodel);
+            itemRenderer.render(stack, ItemTransforms.TransformType.FIXED, true, matrixStack, bufferIn, packedLightIn, packedLightIn, ibakedmodel);
 
             matrixStack.popPose();
         }
@@ -118,5 +125,11 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
 
     public static void addRenderExceptionForModifierMainHand(CSModifier modifier){
         modifierRenderExceptionsMainHand.add(modifier);
+    }
+
+    @Override
+    protected int getBlockLightLevel(ClaySoldierEntity soldierEntity, BlockPos blockPos) {
+        super.getBlockLightLevel(soldierEntity, blockPos);
+        return soldierEntity.shouldBeFuckingGlowing ? 15 : soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
     }
 }

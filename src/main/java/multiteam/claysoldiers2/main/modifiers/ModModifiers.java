@@ -308,6 +308,14 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
+    public static final RegistryObject<CSModifier> GLOW_INK_BOOST = register("glow_ink_boost", () -> new GlowInkModifier(
+            CSModifier.ModifierType.INF_BOOST,
+            Items.GLOW_INK_SAC,
+            "fluorescent",
+            new Color(0x4ADBB8),
+            new ArrayList<>()
+    ));
+
     public static final RegistryObject<CSModifier> MILK = register("milk", () -> new MilkBucketModifier(
             CSModifier.ModifierType.CANCEL,
             Items.MILK_BUCKET,
