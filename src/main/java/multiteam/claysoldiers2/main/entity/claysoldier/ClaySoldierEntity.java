@@ -180,7 +180,6 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
         //Picking up items
         if (!level.isClientSide) {
-
             List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(soldier.getX() - 1, soldier.getY() - 1, soldier.getZ() - 1, soldier.getX() + 1, soldier.getY() + 1, soldier.getZ() + 1));
 
             for (ItemEntity itemEntity : itemsAround) {
@@ -208,7 +207,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
         }
 
         //Calling on Modifier Tick
-        if (!level.isClientSide && !this.getModifiers().isEmpty()) {
+        if (!this.getModifiers().isEmpty()) {
             for (int i = 0; i < this.getModifiers().size(); i++) {
                 CSModifier.Instance instance = this.getModifiers().get(i);
                 if (instance != null) {
@@ -224,7 +223,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
         }
 
         //Handle shouldStickToPosition
-        if(!level.isClientSide && this.shouldStickToPosition){
+        if(this.shouldStickToPosition){
             soldier.setPos(this.stickingPosition);
         }
     }
