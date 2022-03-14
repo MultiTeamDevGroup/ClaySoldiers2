@@ -214,11 +214,11 @@ public class ClaySoldierEntity extends ClayEntityBase {
                 if (instance != null) {
                     if(instance.getAmount() <= 0){
                         this.removeModifier(instance);
-                        return;
+                        break;
                     }
                     instance.getModifier().onModifierTick(soldier, instance);
                 } else {
-                    return;
+                    break;
                 }
             }
         }

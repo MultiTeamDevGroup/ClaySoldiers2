@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import multiteam.claysoldiers2.main.item.ModItems;
-import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,7 +14,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
@@ -72,10 +70,9 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
         super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
-
     @Override
-    public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
-        super.render(thisSoldier, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
+    public void renderLate(ClaySoldierEntity thisSoldier, PoseStack matrixStack, float ticks, MultiBufferSource bufferIn, VertexConsumer vertexConsumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+        super.renderLate(thisSoldier, matrixStack, ticks, bufferIn, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
 
         if(thisSoldier.shouldStickToPosition){
             matrixStack.pushPose();
@@ -89,11 +86,20 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
             matrixStack.popPose();
         }
 
+
         for (CSModifier.Instance instance : thisSoldier.getModifiers()){
             if(instance != null){
-                instance.getModifier().additionalModifierRenderComponent();
+                instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
             }
         }
+    }
+
+    @Override
+    public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
+        super.render(thisSoldier, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
+
+
+
     }
 
 
@@ -129,7 +135,10 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
 
     @Override
     protected int getBlockLightLevel(ClaySoldierEntity soldierEntity, BlockPos blockPos) {
-        super.getBlockLightLevel(soldierEntity, blockPos);
-        return soldierEntity.shouldBeFuckingGlowing ? 15 : soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
+        if(soldierEntity.shouldBeFuckingGlowing){
+            return 15;
+        }else{
+            return soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
+        }
     }
 }

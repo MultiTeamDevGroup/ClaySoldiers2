@@ -3,6 +3,7 @@ package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -25,6 +26,9 @@ public class GlowInkModifier extends NonStackingCSModifier {
     @Override
     public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
         thisSoldier.shouldBeFuckingGlowing = true;
+        if(thisSoldier.level.getRandom().nextInt(100) > 95){
+            thisSoldier.level.addParticle(ParticleTypes.GLOW, thisSoldier.getRandomX(0.6D), thisSoldier.getRandomY(), thisSoldier.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+        }
     }
 
     @Override

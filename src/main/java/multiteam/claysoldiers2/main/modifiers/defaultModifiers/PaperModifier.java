@@ -1,8 +1,10 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -44,8 +46,8 @@ public class PaperModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void additionalModifierRenderComponent() {
-        super.additionalModifierRenderComponent();
+    public void additionalModifierRenderComponent(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
+        super.additionalModifierRenderComponent(thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
         //TODO: do the rendering part of this bruh lmao xDD :D haha funny jokes on you jkjk sheeeesh skibidi ba pum dada
     }
 }

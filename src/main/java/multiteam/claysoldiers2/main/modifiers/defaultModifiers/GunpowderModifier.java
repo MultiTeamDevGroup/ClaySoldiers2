@@ -1,10 +1,16 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
@@ -42,5 +48,19 @@ public class GunpowderModifier extends CSModifier {
     public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
         thisModifierInstance.shrink(1, thisSoldier);
         thisSoldier.getLevel().explode(thisSoldier, thisSoldier.getX(), thisSoldier.getY(), thisSoldier.getZ(), 3.0F, Explosion.BlockInteraction.NONE);
+    }
+
+    @Override
+    public void additionalModifierRenderComponent(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
+        //super.additionalModifierRenderComponent(thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
+
+        matrixStack.pushPose();
+
+        System.out.println("EY IM RENDERING " + this);
+
+        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.CREEPER_HEAD), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, multiBufferSource, 0);
+
+        matrixStack.popPose();
+
     }
 }

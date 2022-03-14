@@ -1,7 +1,9 @@
 package multiteam.claysoldiers2.main.modifiers.modifier;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -96,7 +98,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
     public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance);
     public abstract void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
 
-    public void additionalModifierRenderComponent(){
+    public void additionalModifierRenderComponent(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
 
     }
 
