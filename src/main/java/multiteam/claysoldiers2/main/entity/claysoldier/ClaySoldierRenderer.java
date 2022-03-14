@@ -86,10 +86,15 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
             matrixStack.popPose();
         }
 
+        System.out.println("trying to render shits and farts");
 
-        for (CSModifier.Instance instance : thisSoldier.getModifiers()){
-            if(instance != null){
-                instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
+        if(!thisSoldier.getModifiers().isEmpty()){
+            for (CSModifier.Instance instance : thisSoldier.getModifiers()){
+                System.out.println(instance);
+                if(instance != null){
+                    System.out.println("get rendered bitch " + instance);
+                    instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
+                }
             }
         }
     }

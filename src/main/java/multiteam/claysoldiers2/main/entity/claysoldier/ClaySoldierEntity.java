@@ -391,4 +391,6 @@ public class ClaySoldierEntity extends ClayEntityBase {
 
         super.die(damageSource);
     }
+
+
 }

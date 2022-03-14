@@ -99,7 +99,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
     public abstract void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
 
     public void additionalModifierRenderComponent(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
-
+        System.out.println("okay man");
     }
 
 
