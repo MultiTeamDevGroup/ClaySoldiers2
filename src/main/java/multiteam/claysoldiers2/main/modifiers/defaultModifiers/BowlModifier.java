@@ -1,7 +1,6 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierRenderer;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
@@ -36,7 +35,7 @@ public class BowlModifier extends NonStackingCSModifier {
 
     @Override
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
-        Random rand = damageSource.getEntity().getLevel().getRandom();
+        Random rand = thisSoldier.getLevel().getRandom();
         int chance = rand.nextInt(100);
         if(chance > 50){
             damageAmount = 0;

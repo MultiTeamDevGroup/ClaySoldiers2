@@ -1,15 +1,11 @@
 package multiteam.claysoldiers2.main.networking;
 
-import com.google.common.base.Function;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateClientSoldierPacket {
