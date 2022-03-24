@@ -1,15 +1,12 @@
 package multiteam.claysoldiers2.main.entity.ai;
 
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.pathfinder.Path;
-import oshi.util.tuples.Pair;
 
 import java.util.EnumSet;
 
@@ -31,7 +28,7 @@ public class ClaySoldierAttackGoal extends Goal {
         this.mob = mob;
         this.speedModifier = speedModifier;
         this.followingTargetEvenIfNotSeen = followingTargetEvenIfNotSeen;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.TARGET, Goal.Flag.JUMP));
     }
 
     public boolean canUse() {
@@ -93,23 +90,23 @@ public class ClaySoldierAttackGoal extends Goal {
     }
 
     public void tick() {
-        LivingEntity livingentity = this.mob.getTarget();
-        if (livingentity != null) {
-            this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
-            double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
+        LivingEntity targetEntity = this.mob.getTarget();
+        if (targetEntity != null) {
+            this.mob.getLookControl().setLookAt(targetEntity, 30.0F, 30.0F);
+            double distanceSquare = this.mob.distanceToSqr(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
             this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
-            if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 0.1D || this.mob.getRandom().nextFloat() < 0.05F)) {
-                this.pathedTargetX = livingentity.getX();
-                this.pathedTargetY = livingentity.getY();
-                this.pathedTargetZ = livingentity.getZ();
+            if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().hasLineOfSight(targetEntity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || targetEntity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 0.01D || this.mob.getRandom().nextFloat() < 0.05F)) {
+                this.pathedTargetX = targetEntity.getX();
+                this.pathedTargetY = targetEntity.getY();
+                this.pathedTargetZ = targetEntity.getZ();
                 this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
-                if (d0 > 1024.0D) {
+                if (distanceSquare > 1024.0D) {
                     this.ticksUntilNextPathRecalculation += 10;
-                } else if (d0 > 256.0D) {
+                } else if (distanceSquare > 256.0D) {
                     this.ticksUntilNextPathRecalculation += 5;
                 }
 
-                if (!this.mob.getNavigation().moveTo(livingentity, this.speedModifier)) {
+                if (!this.mob.getNavigation().moveTo(targetEntity, this.speedModifier)) {
                     this.ticksUntilNextPathRecalculation += 5;
                 }
 
@@ -117,27 +114,16 @@ public class ClaySoldierAttackGoal extends Goal {
             }
 
             this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
-            this.checkAndPerformAttack(livingentity, d0);
+            this.checkAndPerformAttack(targetEntity, distanceSquare);
         }
     }
 
-    protected void checkAndPerformAttack(LivingEntity entity, double p_25558_) {
-        double d0 = this.getAttackReachSqr(entity);
-        if (p_25558_ <= d0 && this.ticksUntilNextAttack <= 0) {
+    protected void checkAndPerformAttack(LivingEntity entity, double distanceSquare) {
+        double reachOfTargetSquare = this.getAttackReachSqr(entity);
+        if (distanceSquare <= reachOfTargetSquare && this.ticksUntilNextAttack <= 0) {
             this.resetAttackCooldown();
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(entity);
-
-            if (this.mob.MainHandItem.getItem() != Items.AIR) {
-                for (Pair<ClaySoldierModifier, Integer> modifier : this.mob.getModifiers()) {
-                    if (modifier.getA().getModifierItem() == this.mob.MainHandItem.getItem()) {
-                        modifier.getA().ExecuteModifierOnAttack(this.mob, modifier.getA(), entity);
-                        if (modifier.getA().canBeStacked() && this.mob.MainHandItem.getCount() >= 1) {
-                            this.mob.MainHandItem.shrink(1);
-                        }
-                    }
-                }
-            }
 
         }
 
@@ -160,6 +146,6 @@ public class ClaySoldierAttackGoal extends Goal {
     }
 
     protected double getAttackReachSqr(LivingEntity entity) {
-        return this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + entity.getBbWidth();
+        return this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + 1;
     }
 }

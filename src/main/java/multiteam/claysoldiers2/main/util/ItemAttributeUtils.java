@@ -1,7 +1,7 @@
 package multiteam.claysoldiers2.main.util;
 
 import multiteam.claysoldiers2.main.Registration;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -18,19 +18,19 @@ public final class ItemAttributeUtils {
         throw ExceptionUtils.utilityClassException();
     }
 
-    public static @NotNull List<ClaySoldierModifier.Instance> getModifiers(ItemStack stack) {
+    public static @NotNull List<CSModifier.Instance> getModifiers(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null) return Collections.emptyList();
 
         ListTag modifiers = tag.getList("Modifiers", Tag.TAG_COMPOUND);
-        List<ClaySoldierModifier.Instance> output = new ArrayList<>();
+        List<CSModifier.Instance> output = new ArrayList<>();
         for (Tag modifierTag : modifiers) {
             if (modifierTag instanceof CompoundTag compoundTag) {
                 ResourceLocation type = new ResourceLocation(compoundTag.getString("Type"));
-                ClaySoldierModifier modifier = Registration.getModifierRegistry().getValue(type);
+                CSModifier modifier = Registration.getModifierRegistry().getValue(type);
                 int amount = compoundTag.getInt("Amount");
 
-                output.add(new ClaySoldierModifier.Instance(modifier, amount));
+                output.add(new CSModifier.Instance(modifier, amount));
             }
         }
 

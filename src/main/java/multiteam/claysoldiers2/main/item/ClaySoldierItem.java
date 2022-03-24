@@ -2,16 +2,20 @@ package multiteam.claysoldiers2.main.item;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierAPI;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierEntity;
-import multiteam.claysoldiers2.main.entity.clay.soldier.ClaySoldierModifier;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.modifiers.CSAPI;
+import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,9 +31,9 @@ import java.util.List;
 
 public class ClaySoldierItem extends Item {
 
-    public ClaySoldierAPI.ClaySoldierMaterial material;
+    public CSAPI.ClaySoldierMaterial material;
 
-    public ClaySoldierItem(Properties properties, ClaySoldierAPI.ClaySoldierMaterial material_) {
+    public ClaySoldierItem(Properties properties, CSAPI.ClaySoldierMaterial material_) {
         super(properties);
         this.material = material_;
     }
@@ -47,22 +51,14 @@ public class ClaySoldierItem extends Item {
 
         if (levelIn.getBlockState(soldierSummonPos) == Blocks.AIR.defaultBlockState() && !levelIn.isClientSide) {
 
-            List<ClaySoldierModifier.Instance> modifiers = ItemAttributeUtils.getModifiers(stack);
+            List<CSModifier.Instance> modifiers = ItemAttributeUtils.getModifiers(stack);
             if (player.isShiftKeyDown()) {
                 int stackSize = stack.getCount();
                 for (int i = 0; i < stackSize; i++) {
                     ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
-                    for (ClaySoldierModifier.Instance instance : modifiers) {
+                    for (CSModifier.Instance instance : modifiers) {
                         soldierEntity.addModifier(instance);
                     }
-
-                    // Todo: remove out-commented code at some point.
-//                    CompoundTag tag = stack.getTag();
-//                    if (tag != null) {
-//                        for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-//                            soldierEntity.addModifier(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
-//                        }
-//                    }
                 }
                 stack.shrink(stackSize);
 
@@ -71,17 +67,9 @@ public class ClaySoldierItem extends Item {
             } else {
                 ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
 
-                for (ClaySoldierModifier.Instance instance : modifiers) {
+                for (CSModifier.Instance instance : modifiers) {
                     soldierEntity.addModifier(instance);
                 }
-
-                // Todo: remove out-commented code at some point.
-//                CompoundTag tag = stack.getTag();
-//                if (tag != null) {
-//                    for (int j = 0; j < tag.getIntArray("Modifiers").length; j++) {
-//                        soldierEntity.addModifier(ClaySoldierModifier.values()[tag.getIntArray("Modifiers")[j]], tag.getIntArray("ModifiersAmounts")[j]);
-//                    }
-//                }
 
                 if (!player.isCreative()) {
                     stack.shrink(1);
@@ -98,10 +86,18 @@ public class ClaySoldierItem extends Item {
     }
 
     public ClaySoldierEntity placeSoldier(Level level, UseOnContext context) {
-        ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), level);
+        ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), level, this.material);
         level.addFreshEntity(soldierEntity);
         soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
-        soldierEntity.setMaterial(this.material);
+
+        CompoundTag tag = context.getItemInHand().getTag();
+
+        if(tag != null){
+            String offHandString = tag.getString("OffHandItem");
+            String mainHandString = tag.getString("MainHandItem");
+            soldierEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(mainHandString))));
+            soldierEntity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(offHandString))));
+        }
         return soldierEntity;
     }
 

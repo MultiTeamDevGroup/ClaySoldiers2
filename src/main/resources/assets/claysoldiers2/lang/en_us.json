@@ -1,5 +1,8 @@
 {
   "BLOCKS": "MOD BLOCKS",
+
+
+
   "ITEMS": "MOD ITEMS",
   "item.claysoldiers2.clay_soldier": "Clay Soldier",
   "item.claysoldiers2.basic_remote": "Basic Remote",
@@ -26,9 +29,17 @@
   "item.claysoldiers2.apple_clay_soldier": "Clay Soldier",
   "item.claysoldiers2.melon_clay_soldier": "Clay Soldier",
   "item.claysoldiers2.bricked_soldier": "Bricked Soldier",
+
+
+
   "ENTITIES": "MOD ENTITIES",
+  "entity.claysoldiers2.clay_soldier": "Clay Soldier",
+
+
+
   "GUI": "MOD GUI",
   "itemGroup.claysoldiers2_creative_tab": "Clay Soldiers 2",
+
   "tooltip.claysoldiers2.material": "Material: ",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.clay": "Clay",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.white_clay": "White Clay",
@@ -75,6 +86,7 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.blinding": "Blinding",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.sticker": "Sticker",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.glowing": "Glowing",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fluorescent": "Fluorescent",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.cancel": "Cancel",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.explosive": "Explosive",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_fuel": "Fiery Fuel",
@@ -87,6 +99,12 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.egg_cover": "Egg-Covered",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_hands": "Fiery Hands",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.crazy_warted": "Crazy",
-  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.shroomer": "Shroomed",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.red_shroomer": "Shroomed",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.brown_shroomer": "Shroomed",
+
+
+
   "SOUND": "MOD SOUND"
+
+
 }
