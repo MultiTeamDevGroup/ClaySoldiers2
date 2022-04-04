@@ -19,11 +19,7 @@ public class UpdateClientSoldierPacket {
     private final ResourceKey<Level> type;
 
     public UpdateClientSoldierPacket(FriendlyByteBuf buf){
-        this.modifiers = buf.readList((something) ->{
-            CSModifier modifier = something.get;
-            int amount = something.readVarInt();
-            return new CSModifier.Instance(modifier, amount);
-        });
+        this.modifiers = ; //QBOI HELP ME
         this.isInvisibleToOthers = buf.readBoolean();
         this.canSeeInvisibleToOthers = buf.readBoolean();
         this.hostileAgainstItsOwnKind = buf.readBoolean();
