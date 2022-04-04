@@ -12,6 +12,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -204,20 +207,20 @@ public class ClaySoldierEntity extends ClayEntityBase {
                 }
 
             }
-        }
 
-        //Calling on Modifier Tick
-        if (!this.getModifiers().isEmpty()) {
-            for (int i = 0; i < this.getModifiers().size(); i++) {
-                CSModifier.Instance instance = this.getModifiers().get(i);
-                if (instance != null) {
-                    if(instance.getAmount() <= 0){
-                        this.removeModifier(instance);
+            //Calling on Modifier Tick
+            if (!this.getModifiers().isEmpty()) {
+                for (int i = 0; i < this.getModifiers().size(); i++) {
+                    CSModifier.Instance instance = this.getModifiers().get(i);
+                    if (instance != null) {
+                        if(instance.getAmount() <= 0){
+                            this.removeModifier(instance);
+                            break;
+                        }
+                        instance.getModifier().onModifierTick(soldier, instance);
+                    } else {
                         break;
                     }
-                    instance.getModifier().onModifierTick(soldier, instance);
-                } else {
-                    break;
                 }
             }
         }

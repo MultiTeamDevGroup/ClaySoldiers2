@@ -117,7 +117,7 @@ dependencies {
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
-    runtimeOnly fg.deobf("curse.maven:neat-238372:3593906")
+    //runtimeOnly fg.deobf("curse.maven:neat-238372:3593906")
 }
 
 jar {
