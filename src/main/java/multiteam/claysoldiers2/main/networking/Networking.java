@@ -18,11 +18,11 @@ public class Networking {
 
     private static final String VERSION = "1.0";
 
-    private static int nextId(){
+    private static int nextId() {
         return id++;
     }
 
-    public static void registerMessages(){
+    public static void registerMessages() {
         channel = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(ClaySoldiers2.MOD_ID, "claysoldiers2"),
                 () -> VERSION, s -> Objects.equals(s, VERSION), s -> Objects.equals(s, VERSION)

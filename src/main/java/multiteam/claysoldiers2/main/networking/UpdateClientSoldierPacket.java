@@ -51,7 +51,13 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        NetworkUtils.writeModifierList(buf);
+        NetworkUtils.writeModifierList(buf, modifiers)
+        buf.writeBoolean(isInvisibleToOthers);
+        buf.writeBoolean(canSeeInvisibleToOthers);
+        buf.writeBoolean(hostileAgainstItsOwnKind);
+        buf.writeBoolean(shouldStickToPosition);
+        buf.writeBoolean(shouldBeFuckingGlowing);
+        buf.writeResourceLocation(type.location());
     }
 
     @Override
