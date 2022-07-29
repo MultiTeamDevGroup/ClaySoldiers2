@@ -394,4 +394,12 @@ public class ClaySoldierEntity extends ClayEntityBase {
     }
 
 
+    public boolean hasModifier(CSModifier csModifier) {
+        for (CSModifier.Instance modifier : modifiers) {
+            if (modifier.getModifier() == csModifier) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

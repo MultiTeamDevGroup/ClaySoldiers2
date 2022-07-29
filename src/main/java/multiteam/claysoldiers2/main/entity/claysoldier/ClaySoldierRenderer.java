@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
@@ -30,8 +31,8 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
 
-    private static List<CSModifier> modifierRenderExceptionsOffhand = new ArrayList<>();
-    private static List<CSModifier> modifierRenderExceptionsMainHand = new ArrayList<>();
+    private static final List<CSModifier> modifierRenderExceptionsOffhand = new ArrayList<>();
+    private static final List<CSModifier> modifierRenderExceptionsMainHand = new ArrayList<>();
 
     public ClaySoldierRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ClaySoldierModel());
@@ -100,9 +101,6 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     @Override
     public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(thisSoldier, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
-
-
-
     }
 
 
@@ -137,8 +135,8 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
     @Override
-    protected int getBlockLightLevel(ClaySoldierEntity soldierEntity, BlockPos blockPos) {
-        boolean flag = soldierEntity.getModifiers().contains(ModModifiers.GLOW_INK_BOOST.get());
+    protected int getBlockLightLevel(ClaySoldierEntity soldierEntity, @NotNull BlockPos blockPos) {
+        boolean flag = soldierEntity.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
         //System.out.println("block light level " + flag + " - " + soldierEntity.getModifiers());
         //QBOI this instance of the soldier still doesnt see new modifiers
         if(flag){
