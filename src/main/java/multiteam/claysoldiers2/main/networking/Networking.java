@@ -12,17 +12,35 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.Objects;
 
+/**
+ * Clay Soldiers 2 networking class.
+ *
+ * @author MultiTeam
+ */
 public class Networking {
     private static SimpleChannel channel;
+
     private static int id = 0;
 
+    /**
+     * Network channel version..
+     */
     private static final String VERSION = "1.0";
 
+    /**
+     * Advances the packet ID, and returns the new ID.
+     *
+     * @return the next ID to use for a packet.
+     * @author Laz
+     */
     private static int nextId() {
         return id++;
     }
 
-    public static void registerMessages() {
+    /**
+     * Initialize networking channel.
+     */
+    public static void init() {
         channel = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(ClaySoldiers2.MOD_ID, "claysoldiers2"),
                 () -> VERSION, s -> Objects.equals(s, VERSION), s -> Objects.equals(s, VERSION)
@@ -35,14 +53,32 @@ public class Networking {
                 .add();
     }
 
+    /**
+     * Send a packet to the server.
+     *
+     * @param packet the packet to send to the server.
+     */
     public static void sendToServer(BasePacket<?> packet) {
         channel.sendToServer(packet);
     }
 
+    /**
+     * Send a packet to a client player.
+     *
+     * @param packet The packet to send to the client.
+     * @param player The player to send the packet to.
+     * @author Qboi123
+     */
     public static void sendToClient(BasePacket<?> packet, ServerPlayer player) {
         channel.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 
+    /**
+     * Sends a packet to all connected clients.
+     *
+     * @param packet The packet to send to all clients.
+     * @author Qboi123
+     */
     public static void sendAll(BasePacket<?> packet) {
         channel.send(PacketDistributor.ALL.with(() -> null), packet);
     }
