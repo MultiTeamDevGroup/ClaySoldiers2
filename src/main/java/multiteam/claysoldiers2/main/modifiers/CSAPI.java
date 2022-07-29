@@ -12,6 +12,7 @@ public class CSAPI {
         public static int stackablesLimit = 32;
         public static int soldierViewDistance = 32;
         public static int handUsageChance = 50;
+        public static int basicRemoteRadius = 16;
     }
 
     public enum ClaySoldierMaterial {
