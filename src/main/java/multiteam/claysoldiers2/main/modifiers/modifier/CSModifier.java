@@ -2,7 +2,7 @@ package multiteam.claysoldiers2.main.modifiers.modifier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import multiteam.claysoldiers2.ClaySoldiers2;
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -92,13 +92,13 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         return ret;
     }
 
-    public abstract void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
-    public abstract void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
-    public abstract void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance);
-    public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance);
-    public abstract void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance);
+    public abstract void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance);
+    public abstract void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance);
+    public abstract void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance);
+    public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance);
+    public abstract void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance);
 
-    public void additionalModifierRenderComponent(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
         System.out.println("okay man");
     }
 
@@ -128,7 +128,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
             this.amount = amount;
         }
 
-        public void shrink(int amount, ClaySoldierEntity thisSoldier){
+        public void shrink(int amount, ClaySoldier thisSoldier){
             this.amount--;
         }
 

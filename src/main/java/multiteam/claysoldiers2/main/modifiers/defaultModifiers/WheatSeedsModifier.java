@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,27 +20,27 @@ public class WheatSeedsModifier extends CSModifier {
     }
 
     @Override
-    public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
+    public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
+    public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
     }
 
     @Override
-    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 }

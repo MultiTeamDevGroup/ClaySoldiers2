@@ -2,7 +2,7 @@ package multiteam.claysoldiers2.main.entity;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.Registration;
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierRenderer;
 import multiteam.multicore_lib.setup.utilities.generic.MathF;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(modid = ClaySoldiers2.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEntities {
 
-    public static final RegistryObject<EntityType<ClaySoldierEntity>> CLAY_SOLDIER = buildEntity("clay_soldier", ClaySoldierEntity::new, MathF.BlockToFloatScale(4), MathF.BlockToFloatScale(8), MobCategory.CREATURE, 8, 3); //8, 3 is default
+    public static final RegistryObject<EntityType<ClaySoldier>> CLAY_SOLDIER = buildEntity("clay_soldier", ClaySoldier::new, MathF.BlockToFloatScale(4), MathF.BlockToFloatScale(8), MobCategory.CREATURE, 8, 3); //8, 3 is default
 
 
     @SubscribeEvent
@@ -27,7 +27,7 @@ public class ModEntities {
     }
 
     public static void applyAttributes(EntityAttributeCreationEvent event) {
-        event.put(CLAY_SOLDIER.get(), ClaySoldierEntity.createAttributes().build());
+        event.put(CLAY_SOLDIER.get(), ClaySoldier.createAttributes().build());
     }
 
 

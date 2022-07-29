@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.entity.ai;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.pathfinder.Path;
 import java.util.EnumSet;
 
 public class ClaySoldierAttackGoal extends Goal {
-    protected final ClaySoldierEntity mob;
+    protected final ClaySoldier mob;
     private final double speedModifier;
     private final boolean followingTargetEvenIfNotSeen;
     private Path path;
@@ -24,7 +24,7 @@ public class ClaySoldierAttackGoal extends Goal {
     private long lastCanUseCheck;
     private static final long COOLDOWN_BETWEEN_CAN_USE_CHECKS = 20L;
 
-    public ClaySoldierAttackGoal(ClaySoldierEntity mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
+    public ClaySoldierAttackGoal(ClaySoldier mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         this.mob = mob;
         this.speedModifier = speedModifier;
         this.followingTargetEvenIfNotSeen = followingTargetEvenIfNotSeen;

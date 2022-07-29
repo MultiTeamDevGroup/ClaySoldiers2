@@ -2,7 +2,7 @@ package multiteam.claysoldiers2.main.item;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.ModEntities;
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
@@ -55,7 +55,7 @@ public class ClaySoldierItem extends Item {
             if (player.isShiftKeyDown()) {
                 int stackSize = stack.getCount();
                 for (int i = 0; i < stackSize; i++) {
-                    ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
+                    ClaySoldier soldierEntity = placeSoldier(levelIn, context);
                     for (CSModifier.Instance instance : modifiers) {
                         soldierEntity.addModifier(instance);
                     }
@@ -65,7 +65,7 @@ public class ClaySoldierItem extends Item {
                 levelIn.playSound(player, soldierSummonPos, SoundEvents.GRAVEL_BREAK, SoundSource.PLAYERS, 1.0f, 1.0f);
 
             } else {
-                ClaySoldierEntity soldierEntity = placeSoldier(levelIn, context);
+                ClaySoldier soldierEntity = placeSoldier(levelIn, context);
 
                 for (CSModifier.Instance instance : modifiers) {
                     soldierEntity.addModifier(instance);
@@ -85,8 +85,8 @@ public class ClaySoldierItem extends Item {
         tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.material")).append((new TranslatableComponent("tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.material." + this.material.getMaterialName().replace(" ", "_"))).withStyle(Style.EMPTY.withColor(this.material.getMaterialColor().getRGB()))));
     }
 
-    public ClaySoldierEntity placeSoldier(Level level, UseOnContext context) {
-        ClaySoldierEntity soldierEntity = new ClaySoldierEntity(ModEntities.CLAY_SOLDIER.get(), level, this.material);
+    public ClaySoldier placeSoldier(Level level, UseOnContext context) {
+        ClaySoldier soldierEntity = new ClaySoldier(ModEntities.CLAY_SOLDIER.get(), level, this.material);
         level.addFreshEntity(soldierEntity);
         soldierEntity.setPos(context.getClickLocation().x, context.getClickLocation().y, context.getClickLocation().z);
 

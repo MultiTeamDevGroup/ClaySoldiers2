@@ -1,7 +1,7 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,33 +25,33 @@ public class GunpowderModifier extends CSModifier {
     }
 
     @Override
-    public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
+    public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
+    public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance) {
         thisModifierInstance.shrink(1, thisSoldier);
         thisSoldier.getLevel().explode(thisSoldier, thisSoldier.getX(), thisSoldier.getY(), thisSoldier.getZ(), 3.0F, Explosion.BlockInteraction.NONE);
     }
 
     @Override
-    public void additionalModifierRenderComponent(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
         //super.additionalModifierRenderComponent(thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
 
         matrixStack.pushPose();

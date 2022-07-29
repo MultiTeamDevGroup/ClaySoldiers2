@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
+public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
 
     private static final List<CSModifier> modifierRenderExceptionsOffhand = new ArrayList<>();
     private static final List<CSModifier> modifierRenderExceptionsMainHand = new ArrayList<>();
@@ -39,7 +39,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
     @Override
-    public RenderType getRenderType(ClaySoldierEntity animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+    public RenderType getRenderType(ClaySoldier animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 
@@ -73,7 +73,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
     @Override
-    public void renderLate(ClaySoldierEntity thisSoldier, PoseStack matrixStack, float ticks, MultiBufferSource bufferIn, VertexConsumer vertexConsumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+    public void renderLate(ClaySoldier thisSoldier, PoseStack matrixStack, float ticks, MultiBufferSource bufferIn, VertexConsumer vertexConsumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
         super.renderLate(thisSoldier, matrixStack, ticks, bufferIn, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
 
         if(thisSoldier.shouldStickToPosition){
@@ -99,8 +99,11 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
     @Override
-    public void render(ClaySoldierEntity thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
-        super.render(thisSoldier, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
+    public void render(ClaySoldier soldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
+        System.out.println("packedLightIn = " + packedLightIn);
+
+        boolean flag = soldier.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
+        super.render(soldier, entityYaw, partialTicks, matrixStack, bufferIn, flag ? 0xf00000 : packedLightIn);
     }
 
 
@@ -135,7 +138,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
     }
 
     @Override
-    protected int getBlockLightLevel(ClaySoldierEntity soldierEntity, @NotNull BlockPos blockPos) {
+    protected int getBlockLightLevel(ClaySoldier soldierEntity, @NotNull BlockPos blockPos) {
         boolean flag = soldierEntity.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
         //System.out.println("block light level " + flag + " - " + soldierEntity.getModifiers());
         //QBOI this instance of the soldier still doesnt see new modifiers

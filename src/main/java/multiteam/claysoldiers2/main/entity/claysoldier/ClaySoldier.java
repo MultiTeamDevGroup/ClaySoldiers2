@@ -12,9 +12,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -40,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ClaySoldierEntity extends ClayEntityBase {
+public class ClaySoldier extends ClayEntityBase {
 
     private List<CSModifier.Instance> modifiers = new ArrayList<>();
 
@@ -50,12 +47,12 @@ public class ClaySoldierEntity extends ClayEntityBase {
     public boolean shouldStickToPosition = false;
     public Vec3 stickingPosition = new Vec3(0, 0, 0);
 
-    public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
+    public ClaySoldier(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
         this.setMaterial(material);
     }
 
-    public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world) {
+    public ClaySoldier(EntityType<? extends PathfinderMob> entity, Level world) {
         super(entity, world, CSAPI.ClaySoldierMaterial.CLAY_SOLDIER);
     }
 
@@ -66,8 +63,8 @@ public class ClaySoldierEntity extends ClayEntityBase {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new ClaySoldierAttackGoal(this, 2, true));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoalModified<>(this, ClaySoldierEntity.class, 0, true, false, (targetEntity) -> {
-            if (targetEntity instanceof ClaySoldierEntity targetedSoldier) {
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoalModified<>(this, ClaySoldier.class, 0, true, false, (targetEntity) -> {
+            if (targetEntity instanceof ClaySoldier targetedSoldier) {
                 return (!targetedSoldier.isMatchingMaterial(this) || this.hostileAgainstItsOwnKind) && (!targetedSoldier.isInvisibleToOthers || this.canSeeInvisibleToOthers);
             }
             return false;
@@ -177,7 +174,7 @@ public class ClaySoldierEntity extends ClayEntityBase {
     public void tick() {
         super.tick();
 
-        ClaySoldierEntity soldier = this;
+        ClaySoldier soldier = this;
         Level level = soldier.getLevel();
 
         //Picking up items

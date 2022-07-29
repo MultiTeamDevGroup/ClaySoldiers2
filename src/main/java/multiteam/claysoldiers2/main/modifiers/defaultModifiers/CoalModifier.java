@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
@@ -22,22 +22,22 @@ public class CoalModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         thisSoldier.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(this.getModifierItem()));
     }
 
     @Override
-    public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
+    public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
+    public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         Instance blazeRodModifier = null;
         for (Instance instance : thisSoldier.getModifiers()){
             if(instance.getModifier() == ModModifiers.BLAZEROD_MAIN.get()){
@@ -52,7 +52,7 @@ public class CoalModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 }

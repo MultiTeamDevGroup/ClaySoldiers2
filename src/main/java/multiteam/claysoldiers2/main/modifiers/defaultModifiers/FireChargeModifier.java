@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,28 +20,28 @@ public class FireChargeModifier extends CSModifier {
     }
 
     @Override
-    public void onModifierAdded(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         thisSoldier.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getModifierItem()));
     }
 
     @Override
-    public void onModifierAttack(ClaySoldierEntity thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
+    public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
         targetEntity.setSecondsOnFire(5);
         thisModifierInstance.shrink(1, thisSoldier);
     }
 
     @Override
-    public Pair<DamageSource, Float> onModifierHurt(ClaySoldierEntity thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
+    public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         return new Pair<>(damageSource, damageAmount);
     }
 
     @Override
-    public void onModifierTick(ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 
     @Override
-    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
     }
 }

@@ -12,7 +12,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import javax.annotation.Nullable;
 
-public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implements IAnimatable {
+public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldier> implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
     @Override
@@ -26,22 +26,22 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldierEntity> implem
     }
 
     @Override
-    public ResourceLocation getModelLocation(ClaySoldierEntity claySoldierEntity) {
+    public ResourceLocation getModelLocation(ClaySoldier claySoldier) {
         return new ResourceLocation(ClaySoldiers2.MOD_ID, "geo/entity/clay/clayman.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ClaySoldierEntity claySoldierEntity) {
-        return new ResourceLocation(ClaySoldiers2.MOD_ID, "textures/entity/clayman/soldier_" + claySoldierEntity.getMaterial().getMaterialName().replace(" ", "_") + ".png");
+    public ResourceLocation getTextureLocation(ClaySoldier claySoldier) {
+        return new ResourceLocation(ClaySoldiers2.MOD_ID, "textures/entity/clayman/soldier_" + claySoldier.getMaterial().getMaterialName().replace(" ", "_") + ".png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ClaySoldierEntity claySoldierEntity) {
+    public ResourceLocation getAnimationFileLocation(ClaySoldier claySoldier) {
         return new ResourceLocation(ClaySoldiers2.MOD_ID, "animations/entity/clay/clayman.animation.json");
     }
 
     @Override
-    public void setLivingAnimations(ClaySoldierEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
+    public void setLivingAnimations(ClaySoldier entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("head");
 

@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.item;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -19,9 +19,9 @@ public class BasicRemoteItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        List<ClaySoldierEntity> entities = level.getEntitiesOfClass(ClaySoldierEntity.class, new AABB(player.getX() - 16, player.getY() - 16, player.getZ() - 16, player.getX() + 16, player.getY() + 16, player.getZ() + 16));
+        List<ClaySoldier> entities = level.getEntitiesOfClass(ClaySoldier.class, new AABB(player.getX() - 16, player.getY() - 16, player.getZ() - 16, player.getX() + 16, player.getY() + 16, player.getZ() + 16));
 
-        for (ClaySoldierEntity soldier : entities) {
+        for (ClaySoldier soldier : entities) {
             soldier.removeSoldier();
         }
 

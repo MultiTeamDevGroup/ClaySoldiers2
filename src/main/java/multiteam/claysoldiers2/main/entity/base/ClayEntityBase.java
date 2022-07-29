@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.entity.base;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,7 +27,7 @@ public abstract class ClayEntityBase extends PathfinderMob implements IAnimatabl
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldierEntity.class, EntityDataSerializers.INT);
+    static final EntityDataAccessor<Integer> DATA_MATERIAL = SynchedEntityData.defineId(ClaySoldier.class, EntityDataSerializers.INT);
     final CSAPI.ClaySoldierMaterial material;
 
 

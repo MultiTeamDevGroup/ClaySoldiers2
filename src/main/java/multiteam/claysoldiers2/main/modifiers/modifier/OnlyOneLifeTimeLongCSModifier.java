@@ -1,6 +1,6 @@
 package multiteam.claysoldiers2.main.modifiers.modifier;
 
-import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldierEntity;
+import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,7 +15,7 @@ public abstract class OnlyOneLifeTimeLongCSModifier extends NonStackingCSModifie
     }
 
     @Override
-    public void onModifierDeath(DamageSource damageSource, ClaySoldierEntity thisSoldier, Instance thisModifierInstance) {
+    public void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance) {
         thisSoldier.removeModifier(thisModifierInstance);
     }
 }
