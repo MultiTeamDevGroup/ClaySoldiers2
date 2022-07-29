@@ -144,6 +144,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         boolean flag = soldierEntity.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
         //System.out.println("block light level " + flag + " - " + soldierEntity.getModifiers());
         //QBOI this instance of the soldier still doesnt see new modifiers
+        //This still prints the same: "block light level false - []"
         if (flag) {
             return 15;
         } else {
