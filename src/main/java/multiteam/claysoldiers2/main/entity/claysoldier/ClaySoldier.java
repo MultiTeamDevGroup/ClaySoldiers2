@@ -146,7 +146,6 @@ public class ClaySoldier extends ClayEntityBase {
 
     private ListTag getModifiersAsTag() {
         final ListTag list = new ListTag();
-        System.out.println("getModifiers() = " + getModifiers());
         for (CSModifier.Instance entry : getModifiers()) {
             CompoundTag modifierTag = new CompoundTag();
             modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());

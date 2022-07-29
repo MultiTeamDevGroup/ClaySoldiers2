@@ -125,6 +125,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
     public int hashCode() {
         return Objects.hash(getRegistryName());
     }
+
     public static class Instance {
         private final CSModifier modifier;
         private int amount;
