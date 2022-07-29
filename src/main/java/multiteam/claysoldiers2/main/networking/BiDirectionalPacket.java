@@ -24,7 +24,7 @@ public abstract class BiDirectionalPacket<T extends BiDirectionalPacket<T>> exte
         return true;
     }
 
-    protected abstract void handleClient(Connection manager);
+    protected abstract void handleClient(Connection conn);
 
-    protected abstract void handleServer(Connection manager, ServerPlayer sender);
+    protected abstract void handleServer(Connection conn, ServerPlayer sender);
 }

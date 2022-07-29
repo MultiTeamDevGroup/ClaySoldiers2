@@ -14,8 +14,6 @@ public class ModItems {
     public static final RegistryObject<Item> RENDERING_DISPLAY_MINI_SHIELD = Registration.ITEMS.register("soldier_shield_model", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RENDERING_DISPLAY_SLIME_SPLOTCH = Registration.ITEMS.register("slime_footing", () -> new Item(new Item.Properties()));
 
-
-
     public static final RegistryObject<Item> CLAY_SOLDIER = Registration.ITEMS.register("clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), CSAPI.ClaySoldierMaterial.CLAY_SOLDIER));
     public static final RegistryObject<Item> WHITE_CLAY_SOLDIER = Registration.ITEMS.register("white_clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), CSAPI.ClaySoldierMaterial.WHITE_CLAY_SOLDIER));
     public static final RegistryObject<Item> YELLOW_CLAY_SOLDIER = Registration.ITEMS.register("yellow_clay_soldier", () -> new ClaySoldierItem(new Item.Properties().tab(ClaySoldiers2.CLAY_MENU).stacksTo(16), CSAPI.ClaySoldierMaterial.YELLOW_CLAY_SOLDIER));

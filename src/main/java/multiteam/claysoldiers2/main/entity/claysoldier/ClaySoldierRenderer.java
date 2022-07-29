@@ -90,7 +90,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
 
         if(!thisSoldier.getModifiers().isEmpty()){
             for (CSModifier.Instance instance : thisSoldier.getModifiers()){
-                System.out.println(instance);
+//                System.out.println(instance);
                     if(instance != null){
                     instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
                 }

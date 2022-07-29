@@ -23,7 +23,7 @@ public class NearestAttackableTargetGoalModified<T extends LivingEntity> extends
     protected TargetingConditions targetConditions;
 
     public NearestAttackableTargetGoalModified(Mob mob, Class<T> targetType, boolean mustSee) {
-        this(mob, targetType, 10, mustSee, false, (Predicate<LivingEntity>)null);
+        this(mob, targetType, 10, mustSee, false, null);
     }
 
     public NearestAttackableTargetGoalModified(Mob mob, Class<T> targetType, boolean mustSee, Predicate<LivingEntity> targetCondition) {
@@ -31,7 +31,7 @@ public class NearestAttackableTargetGoalModified<T extends LivingEntity> extends
     }
 
     public NearestAttackableTargetGoalModified(Mob mob, Class<T> targetType, boolean mustSee, boolean mustReach) {
-        this(mob, targetType, 10, mustSee, mustReach, (Predicate<LivingEntity>)null);
+        this(mob, targetType, 10, mustSee, mustReach, null);
     }
 
     public NearestAttackableTargetGoalModified(Mob mob, Class<T> targetType, int randomInterval, boolean mustSee, boolean mustReach, @javax.annotation.Nullable Predicate<LivingEntity> targetCondition) {

@@ -1,6 +1,7 @@
 package multiteam.claysoldiers2.main.networking;
 
 import multiteam.claysoldiers2.ClaySoldiers2;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +12,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Clay Soldiers 2 networking class.
@@ -46,10 +48,17 @@ public class Networking {
                 () -> VERSION, s -> Objects.equals(s, VERSION), s -> Objects.equals(s, VERSION)
         );
 
-        channel.messageBuilder(UpdateClientSoldierPacket.class, nextId())
-                .encoder(UpdateClientSoldierPacket::toBytes)
-                .decoder(UpdateClientSoldierPacket::new)
-                .consumer(UpdateClientSoldierPacket::handlePacket)
+        register(UpdateClientSoldierPacket.class, UpdateClientSoldierPacket::new);
+        register(SoldierPipelinePacket.class, SoldierPipelinePacket::new);
+    }
+
+    private static <T extends BasePacket<T>> void register(Class<T> clazz, Function<FriendlyByteBuf, T> construct) {
+        channel.messageBuilder(clazz, nextId())
+                .encoder(BasePacket::toBytes)
+                .decoder(construct)
+                .consumer((first, second) -> {
+                    return first.handlePacket(second);
+                })
                 .add();
     }
 

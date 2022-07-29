@@ -8,10 +8,16 @@ import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
+import multiteam.claysoldiers2.main.networking.Networking;
+import multiteam.claysoldiers2.main.networking.SoldierPipelinePacket;
+import multiteam.claysoldiers2.main.networking.UpdateClientSoldierPacket;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -39,6 +45,7 @@ import java.util.Objects;
 
 public class ClaySoldier extends ClayEntityBase {
 
+    private final CompoundTag pipeline = new CompoundTag();
     private List<CSModifier.Instance> modifiers = new ArrayList<>();
 
     public boolean isInvisibleToOthers = false;
@@ -46,10 +53,14 @@ public class ClaySoldier extends ClayEntityBase {
     public boolean hostileAgainstItsOwnKind = false;
     public boolean shouldStickToPosition = false;
     public Vec3 stickingPosition = new Vec3(0, 0, 0);
+    private static final EntityDataAccessor<CompoundTag> PIPELINE_ACCESSOR = SynchedEntityData.defineId(ClaySoldier.class, EntityDataSerializers.COMPOUND_TAG);
+    private boolean fullBright;
 
     public ClaySoldier(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
         this.setMaterial(material);
+
+        entityData.define(PIPELINE_ACCESSOR, pipeline);
     }
 
     public ClaySoldier(EntityType<? extends PathfinderMob> entity, Level world) {
@@ -82,8 +93,12 @@ public class ClaySoldier extends ClayEntityBase {
 
         if (!this.getModifiers().isEmpty()) {
             for (CSModifier.Instance entry : getModifiers()) {
+                // Better readable exceptions if registry name is null. (Better for addon developers)
+                ResourceLocation modifierKey = entry.getModifier().getRegistryName();
+                Objects.requireNonNull(modifierKey, "Registry name is null for modifier " + entry.getModifier().getClass().getName());
+
                 CompoundTag modifierTag = new CompoundTag();
-                modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());
+                modifierTag.putString("Type", modifierKey.toString());
                 modifierTag.putInt("Amount", entry.getAmount());
                 list.add(modifierTag);
             }
@@ -92,8 +107,14 @@ public class ClaySoldier extends ClayEntityBase {
             itemForm.setTag(tag);
         }
 
-        tag.putString("MainHandItem", this.getMainHandItem().getItem().getRegistryName().toString());
-        tag.putString("OffHandItem", this.getOffhandItem().getItem().getRegistryName().toString());
+        // Better readable exceptions if registry names are null. (Better for addon developers)
+        ResourceLocation mainHandKey = this.getMainHandItem().getItem().getRegistryName();
+        ResourceLocation offhandKey = this.getOffhandItem().getItem().getRegistryName();
+        Objects.requireNonNull(mainHandKey, "Registry name is null for main hand item " + this.getMainHandItem().getItem().getClass().getName());
+        Objects.requireNonNull(offhandKey, "Registry name is null for offhand item " + this.getOffhandItem().getItem().getClass().getName());
+
+        tag.putString("MainHandItem", mainHandKey.toString());
+        tag.putString("OffHandItem", offhandKey.toString());
 
         return itemForm;
     }
@@ -111,10 +132,23 @@ public class ClaySoldier extends ClayEntityBase {
 
     public void addModifier(CSModifier.Instance modifierToAdd) {
         this.modifiers.add(modifierToAdd);
+        pipeline.put("Modifiers", getModifiersAsTag());
     }
 
     public void removeModifier(CSModifier.Instance modifierToRemove) {
         this.modifiers.remove(modifierToRemove);
+        pipeline.put("Modifiers", getModifiersAsTag());
+    }
+
+    private ListTag getModifiersAsTag() {
+        final ListTag list = new ListTag();
+        for (CSModifier.Instance entry : getModifiers()) {
+            CompoundTag modifierTag = new CompoundTag();
+            modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());
+            modifierTag.putInt("Amount", entry.getAmount());
+            list.add(modifierTag);
+        }
+        return list;
     }
 
 
@@ -224,6 +258,39 @@ public class ClaySoldier extends ClayEntityBase {
         //Handle shouldStickToPosition
         if(this.shouldStickToPosition){
             soldier.setPos(this.stickingPosition);
+        }
+
+        syncToClient();
+    }
+
+    private void syncToClient() {
+        if (pipeline != null && !pipeline.isEmpty()) {
+            Networking.sendAll(new SoldierPipelinePacket(this, pipeline));
+        }
+    }
+
+    public void onPipeline(CompoundTag pipeline) {
+        if (pipeline.contains("Modifiers", Tag.TAG_LIST)) {
+            pipeline.getList("Modifiers", Tag.TAG_COMPOUND).forEach(tag -> {
+                if (tag instanceof CompoundTag modifierTag) {
+                    ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
+                    CSModifier modifier = Registration.getModifierRegistry().getValue(type);
+                    int amount = modifierTag.getInt("Amount");
+                    this.addModifier(new CSModifier.Instance(modifier, amount));
+                }
+            });
+        }
+        if (pipeline.contains("ShouldStickToPosition", Tag.TAG_BYTE)) {
+            this.shouldStickToPosition = pipeline.getBoolean("ShouldStickToPosition");
+        }
+        if (pipeline.contains("StickingPosition", Tag.TAG_COMPOUND)) {
+            this.stickingPosition = new Vec3(pipeline.getCompound("StickingPosition").getFloat("X"), pipeline.getCompound("StickingPosition").getFloat("Y"), pipeline.getCompound("StickingPosition").getFloat("Z"));
+        }
+        if (pipeline.contains("HostileAgainstItsOwnKind", Tag.TAG_BYTE)) {
+            this.hostileAgainstItsOwnKind = pipeline.getBoolean("HostileAgainstItsOwnKind");
+        }
+        if (pipeline.contains("FullBright", Tag.TAG_BYTE)) {
+            this.fullBright = pipeline.getBoolean("FullBright");
         }
     }
 
@@ -356,7 +423,12 @@ public class ClaySoldier extends ClayEntityBase {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float damageAmount) {
+    public SynchedEntityData getEntityData() {
+        return super.getEntityData();
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource damageSource, float damageAmount) {
         DamageSource newSource = damageSource;
         float newDamage = damageAmount;
         if(!this.getModifiers().isEmpty()){
@@ -398,5 +470,13 @@ public class ClaySoldier extends ClayEntityBase {
             }
         }
         return false;
+    }
+
+    public boolean isFullBright() {
+        return fullBright;
+    }
+
+    public void setFullBright(boolean fullBright) {
+        this.fullBright = fullBright;
     }
 }

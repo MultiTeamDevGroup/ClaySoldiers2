@@ -2,7 +2,9 @@ package multiteam.claysoldiers2;
 
 import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ModEntities;
+import multiteam.claysoldiers2.main.networking.Networking;
 import multiteam.multicore_lib.setup.utilities.generic.ItemGroupTool;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +18,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
@@ -27,10 +30,11 @@ public class ClaySoldiers2 {
 
     public static final ItemGroupTool CLAY_MENU = new ItemGroupTool(MOD_ID + "_creative_tab", () -> new ItemStack(Items.CLAY_BALL));
 
-
     public ClaySoldiers2() {
         GeckoLib.initialize();
         Registration.register();
+
+        Networking.init();
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
