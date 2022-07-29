@@ -14,6 +14,7 @@ import oshi.util.tuples.Pair;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
 
@@ -111,6 +112,19 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
         return "tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + getModifierName();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CSModifier modifier = (CSModifier) o;
+        return getRegistryName() == modifier.getRegistryName();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRegistryName());
+    }
     public static class Instance {
         private final CSModifier modifier;
         private int amount;
@@ -136,8 +150,25 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
             this.amount--;
         }
 
+        public void grow(int amount, ClaySoldier thisSoldier) {
+            this.amount++;
+        }
+
         public Instance copy() {
             return new Instance(modifier, amount);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Instance instance = (Instance) o;
+            return amount == instance.amount && modifier.equals(instance.modifier);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(modifier, amount);
         }
     }
 }

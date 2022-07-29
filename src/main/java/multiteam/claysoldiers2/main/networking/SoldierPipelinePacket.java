@@ -30,7 +30,7 @@ public class SoldierPipelinePacket extends BiDirectionalPacket<SoldierPipelinePa
     public SoldierPipelinePacket(FriendlyByteBuf buf) {
         this.dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, buf.readResourceLocation());
         this.id = buf.readInt();
-        this.pipeline = buf.readNbt();
+        this.pipeline = buf.readAnySizeNbt();
     }
 
     /**

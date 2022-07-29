@@ -69,6 +69,8 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
             bufferIn = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
         }
 
+//        System.out.println("RECURSION");
+
         super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
@@ -100,7 +102,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
 
     @Override
     public void render(ClaySoldier soldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
-        System.out.println("packedLightIn = " + packedLightIn);
+//        System.out.println("packedLightIn = " + packedLightIn);
 
         boolean flag = soldier.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
         super.render(soldier, entityYaw, partialTicks, matrixStack, bufferIn, flag ? 0xf00000 : packedLightIn);

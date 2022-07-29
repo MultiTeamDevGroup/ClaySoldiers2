@@ -44,7 +44,7 @@ import java.util.Objects;
 
 public class ClaySoldier extends ClayEntityBase {
 
-    private final CompoundTag pipeline = new CompoundTag();
+    private CompoundTag pipeline = new CompoundTag();
     private final List<CSModifier.Instance> modifiers = new ArrayList<>();
 
     public boolean isInvisibleToOthers = false;
@@ -54,6 +54,8 @@ public class ClaySoldier extends ClayEntityBase {
     public Vec3 stickingPosition = new Vec3(0, 0, 0);
     private static final EntityDataAccessor<CompoundTag> PIPELINE_ACCESSOR = SynchedEntityData.defineId(ClaySoldier.class, EntityDataSerializers.COMPOUND_TAG);
     private boolean fullBright;
+    private boolean modifiersChanged = false;
+    private final Object lock = new Object();
 
     public ClaySoldier(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);
@@ -130,16 +132,21 @@ public class ClaySoldier extends ClayEntityBase {
 
     public void addModifier(CSModifier.Instance modifierToAdd) {
         this.modifiers.add(modifierToAdd);
-        pipeline.put("Modifiers", getModifiersAsTag());
+        this.modifiersChanged = true;
     }
 
     public void removeModifier(CSModifier.Instance modifierToRemove) {
         this.modifiers.remove(modifierToRemove);
+        this.modifiersChanged = true;
+    }
+
+    public void cacheModifiersForSending() {
         pipeline.put("Modifiers", getModifiersAsTag());
     }
 
     private ListTag getModifiersAsTag() {
         final ListTag list = new ListTag();
+        System.out.println("getModifiers() = " + getModifiers());
         for (CSModifier.Instance entry : getModifiers()) {
             CompoundTag modifierTag = new CompoundTag();
             modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());
@@ -178,16 +185,19 @@ public class ClaySoldier extends ClayEntityBase {
     public void readAdditionalSaveData(@NotNull CompoundTag data) {
         super.readAdditionalSaveData(data);
 
-        // Data structure:
-        // + "Modifier" (Compound)
-        // |-  "Type" (String)
-        // |-  "Amount" (Int)
-        for (Tag tag : data.getList("Modifiers", Tag.TAG_STRING)) {
-            if (tag instanceof CompoundTag modifierTag) {
-                ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
-                CSModifier modifier = Registration.getModifierRegistry().getValue(type);
-                int amount = modifierTag.getInt("Amount");
-                this.addModifier(new CSModifier.Instance(modifier, amount));
+        synchronized (lock) {
+            modifiers.clear();
+            // Data structure:
+            // + "Modifier" (Compound)
+            // |-  "Type" (String)
+            // |-  "Amount" (Int)
+            for (Tag tag : data.getList("Modifiers", Tag.TAG_STRING)) {
+                if (tag instanceof CompoundTag modifierTag) {
+                    ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
+                    CSModifier modifier = Registration.getModifierRegistry().getValue(type);
+                    int amount = modifierTag.getInt("Amount");
+                    this.addModifier(new CSModifier.Instance(modifier, amount));
+                }
             }
         }
 
@@ -256,25 +266,37 @@ public class ClaySoldier extends ClayEntityBase {
             soldier.setPos(this.stickingPosition);
         }
 
-        syncToClient();
+        if (modifiersChanged) {
+            cacheModifiersForSending();
+            modifiersChanged = false;
+        }
+
+        if (!level.isClientSide()) {
+            syncToClient();
+        }
     }
 
     private void syncToClient() {
         if (pipeline != null && !pipeline.isEmpty()) {
+//            System.out.println("pipeline = " + pipeline);
             Networking.sendAll(new SoldierPipelinePacket(this, pipeline));
+            pipeline = new CompoundTag();
         }
     }
 
     public void onPipeline(CompoundTag pipeline) {
         if (pipeline.contains("Modifiers", Tag.TAG_LIST)) {
-            pipeline.getList("Modifiers", Tag.TAG_COMPOUND).forEach(tag -> {
-                if (tag instanceof CompoundTag modifierTag) {
-                    ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
-                    CSModifier modifier = Registration.getModifierRegistry().getValue(type);
-                    int amount = modifierTag.getInt("Amount");
-                    this.addModifier(new CSModifier.Instance(modifier, amount));
-                }
-            });
+            synchronized (lock) {
+                modifiers.clear();
+                pipeline.getList("Modifiers", Tag.TAG_COMPOUND).forEach(tag -> {
+                    if (tag instanceof CompoundTag modifierTag) {
+                        ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
+                        CSModifier modifier = Registration.getModifierRegistry().getValue(type);
+                        int amount = modifierTag.getInt("Amount");
+                        this.addModifier(new CSModifier.Instance(modifier, amount));
+                    }
+                });
+            }
         }
         if (pipeline.contains("ShouldStickToPosition", Tag.TAG_BYTE)) {
             this.shouldStickToPosition = pipeline.getBoolean("ShouldStickToPosition");
