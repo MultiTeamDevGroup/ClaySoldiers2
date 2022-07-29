@@ -49,7 +49,6 @@ public class ClaySoldierEntity extends ClayEntityBase {
     public boolean hostileAgainstItsOwnKind = false;
     public boolean shouldStickToPosition = false;
     public Vec3 stickingPosition = new Vec3(0, 0, 0);
-    public boolean shouldBeFuckingGlowing = false;
 
     public ClaySoldierEntity(EntityType<? extends PathfinderMob> entity, Level world, CSAPI.ClaySoldierMaterial material) {
         super(entity, world, material);

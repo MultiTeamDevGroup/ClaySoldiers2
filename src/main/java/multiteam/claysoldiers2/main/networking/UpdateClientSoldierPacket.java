@@ -17,7 +17,6 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
     private final boolean canSeeInvisibleToOthers;
     private final boolean hostileAgainstItsOwnKind;
     private final boolean shouldStickToPosition;
-    private final boolean shouldBeFuckingGlowing;
     private final ResourceKey<Level> type;
 
     /**
@@ -32,7 +31,6 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
         this.canSeeInvisibleToOthers = buf.readBoolean();
         this.hostileAgainstItsOwnKind = buf.readBoolean();
         this.shouldStickToPosition = buf.readBoolean();
-        this.shouldBeFuckingGlowing = buf.readBoolean();
         this.type = ResourceKey.create(Registry.DIMENSION_REGISTRY, buf.readResourceLocation());
     }
 
@@ -44,7 +42,6 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
         this.isInvisibleToOthers = isInvisibleToOthers;
         this.canSeeInvisibleToOthers = canSeeInvisibleToOthers;
         this.hostileAgainstItsOwnKind = hostileAgainstItsOwnKind;
-        this.shouldBeFuckingGlowing = shouldBeFuckingGlowing;
         this.shouldStickToPosition = shouldStickToPosition;
         this.type = type;
     }
@@ -56,7 +53,6 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
         buf.writeBoolean(canSeeInvisibleToOthers);
         buf.writeBoolean(hostileAgainstItsOwnKind);
         buf.writeBoolean(shouldStickToPosition);
-        buf.writeBoolean(shouldBeFuckingGlowing);
         buf.writeResourceLocation(type.location());
     }
 

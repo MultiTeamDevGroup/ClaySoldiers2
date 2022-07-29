@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import multiteam.claysoldiers2.main.item.ModItems;
+import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -137,7 +138,10 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldierEntity> {
 
     @Override
     protected int getBlockLightLevel(ClaySoldierEntity soldierEntity, BlockPos blockPos) {
-        if(soldierEntity.shouldBeFuckingGlowing){
+        boolean flag = soldierEntity.getModifiers().contains(ModModifiers.GLOW_INK_BOOST.get());
+        //System.out.println("block light level " + flag + " - " + soldierEntity.getModifiers());
+        //QBOI this instance of the soldier still doesnt see new modifiers
+        if(flag){
             return 15;
         }else{
             return soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
