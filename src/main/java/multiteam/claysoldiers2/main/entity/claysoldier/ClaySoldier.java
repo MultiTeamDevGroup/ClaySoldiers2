@@ -162,7 +162,7 @@ public class ClaySoldier extends ClayEntityBase {
 
         ListTag list = new ListTag();
         for (CSModifier.Instance entry : this.getModifiers()) {
-            Integer amount = entry.getAmount();
+            int amount = entry.getAmount();
             ResourceLocation modifier = entry.getModifier().getRegistryName();
             CompoundTag modifierTag = new CompoundTag();
             modifierTag.putString("Type", Objects.requireNonNull(modifier).toString());
