@@ -21,16 +21,16 @@ public class SlimeModifier extends CSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
-        if(thisSoldier.getOffhandItem().isEmpty()){
+        if (thisSoldier.getOffhandItem().isEmpty()) {
             thisSoldier.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(this.getModifierItem()));
-        }else if(thisSoldier.getMainHandItem().isEmpty()){
+        } else if (thisSoldier.getMainHandItem().isEmpty()) {
             thisSoldier.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getModifierItem()));
         }
     }
 
     @Override
     public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
-        if(targetEntity instanceof ClaySoldier targetSoldier){
+        if (targetEntity instanceof ClaySoldier targetSoldier) {
             thisModifierInstance.shrink(1, thisSoldier);
             targetSoldier.stickingPosition = targetSoldier.position();
             targetSoldier.shouldStickToPosition = true;

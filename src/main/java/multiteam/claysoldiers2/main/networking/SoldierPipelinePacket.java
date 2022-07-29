@@ -27,7 +27,7 @@ public class SoldierPipelinePacket extends BiDirectionalPacket<SoldierPipelinePa
      * @param buf byte buffer to read the packet from.
      * @see NetworkUtils#readModifierList(FriendlyByteBuf)
      */
-    public SoldierPipelinePacket(FriendlyByteBuf buf){
+    public SoldierPipelinePacket(FriendlyByteBuf buf) {
         this.dim = ResourceKey.create(Registry.DIMENSION_REGISTRY, buf.readResourceLocation());
         this.id = buf.readInt();
         this.pipeline = buf.readNbt();

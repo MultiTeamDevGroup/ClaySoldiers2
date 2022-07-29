@@ -35,13 +35,13 @@ public class BlazeRodModifier extends NonStackingCSModifier {
         targetEntity.setSecondsOnFire(Math.max(modifiedFireSeconds, defaultFireSeconds));
 
         Instance coalModifier = null;
-        for (Instance instance : thisSoldier.getModifiers()){
-            if(instance.getModifier() == ModModifiers.COAL_BOOST.get()){
+        for (Instance instance : thisSoldier.getModifiers()) {
+            if (instance.getModifier() == ModModifiers.COAL_BOOST.get()) {
                 coalModifier = instance;
                 break;
             }
         }
-        if(coalModifier != null){
+        if (coalModifier != null) {
             coalModifier.shrink(1, thisSoldier);
         }
     }

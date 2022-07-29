@@ -86,19 +86,23 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
 
     public List<CSModifier> getIncompatibleModifiers() {
         List<CSModifier> ret = new ArrayList<>();
-        for (RegistryObject<CSModifier> obj : this.incompatibleModifiers ) {
+        for (RegistryObject<CSModifier> obj : this.incompatibleModifiers) {
             ret.add(obj.get());
         }
         return ret;
     }
 
     public abstract void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance);
+
     public abstract void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance);
+
     public abstract void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance);
+
     public abstract Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance);
+
     public abstract void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance);
 
-    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
 //        System.out.println("okay man");
     }
 
@@ -128,7 +132,7 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
             this.amount = amount;
         }
 
-        public void shrink(int amount, ClaySoldier thisSoldier){
+        public void shrink(int amount, ClaySoldier thisSoldier) {
             this.amount--;
         }
 

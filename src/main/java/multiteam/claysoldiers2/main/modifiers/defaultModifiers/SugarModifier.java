@@ -22,7 +22,7 @@ public class SugarModifier extends OnlyOneLifeTimeLongCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
-        thisSoldier.getAttributes().getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(thisSoldier.getAttributes().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue()+0.2F);
+        thisSoldier.getAttributes().getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(thisSoldier.getAttributes().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue() + 0.2F);
     }
 
     @Override

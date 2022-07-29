@@ -25,7 +25,7 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
      * @param buf byte buffer to read the packet from.
      * @see NetworkUtils#readModifierList(FriendlyByteBuf)
      */
-    public UpdateClientSoldierPacket(FriendlyByteBuf buf){
+    public UpdateClientSoldierPacket(FriendlyByteBuf buf) {
         this.modifiers = NetworkUtils.readModifierList(buf); //QBOI HELP ME
         this.isInvisibleToOthers = buf.readBoolean();
         this.canSeeInvisibleToOthers = buf.readBoolean();
@@ -37,7 +37,7 @@ public class UpdateClientSoldierPacket extends PacketToServer<UpdateClientSoldie
     /**
      * Constructor for sending a packet.
      */
-    public UpdateClientSoldierPacket(List<CSModifier.Instance> modifiers, boolean isInvisibleToOthers, boolean canSeeInvisibleToOthers, boolean hostileAgainstItsOwnKind, boolean shouldStickToPosition, boolean shouldBeFuckingGlowing, ResourceKey<Level> type){
+    public UpdateClientSoldierPacket(List<CSModifier.Instance> modifiers, boolean isInvisibleToOthers, boolean canSeeInvisibleToOthers, boolean hostileAgainstItsOwnKind, boolean shouldStickToPosition, boolean shouldBeFuckingGlowing, ResourceKey<Level> type) {
         this.modifiers = modifiers;
         this.isInvisibleToOthers = isInvisibleToOthers;
         this.canSeeInvisibleToOthers = canSeeInvisibleToOthers;

@@ -11,7 +11,7 @@ import oshi.util.tuples.Pair;
 import java.awt.*;
 import java.util.List;
 
-public class InfEffectCSModifier extends NonStackingCSModifier{
+public class InfEffectCSModifier extends NonStackingCSModifier {
 
     public final MobEffectInstance effectInstance;
 

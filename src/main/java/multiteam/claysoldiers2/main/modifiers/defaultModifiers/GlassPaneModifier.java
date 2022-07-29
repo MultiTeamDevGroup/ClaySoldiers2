@@ -22,7 +22,7 @@ public class GlassPaneModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
-        thisSoldier.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(CSAPI.Settings.soldierViewDistance*1.5f);
+        thisSoldier.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(CSAPI.Settings.soldierViewDistance * 1.5f);
     }
 
     @Override

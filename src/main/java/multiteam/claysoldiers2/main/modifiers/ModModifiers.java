@@ -30,7 +30,7 @@ public final class ModModifiers {
             "damage_boost_fire_aspect",
             new Color(0xff8000),
             new ArrayList<>()
-            ));
+    ));
 
     public static final RegistryObject<CSModifier> BOWL_SECOND = register("bowl_second", () -> new BowlModifier(
             CSModifier.ModifierType.OFF_HAND,

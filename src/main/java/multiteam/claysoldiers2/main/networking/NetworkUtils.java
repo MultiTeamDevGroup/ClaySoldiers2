@@ -59,7 +59,7 @@ public final class NetworkUtils {
     /**
      * Write a modifier list to Minecraft's byte buffer.
      *
-     * @param buf byte buffer to write the modifiers to.
+     * @param buf  byte buffer to write the modifiers to.
      * @param list modifiers to write.
      */
     public static void writeModifierList(FriendlyByteBuf buf, List<CSModifier.Instance> list) {
@@ -72,7 +72,7 @@ public final class NetworkUtils {
     /**
      * Write a single modifier instance.
      *
-     * @param buf byte buffer to write the modifier instance to.
+     * @param buf      byte buffer to write the modifier instance to.
      * @param instance instance to write.
      */
     private static void writeModifierInstance(FriendlyByteBuf buf, CSModifier.Instance instance) {

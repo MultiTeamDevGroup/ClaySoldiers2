@@ -22,9 +22,9 @@ public class MagmaCreamModifier extends DamageBonusCSModifier {
 
     @Override
     public float getDamageBonus() {
-        if(canCrit){
+        if (canCrit) {
             return 0.5f;
-        }else{
+        } else {
             return 0;
         }
     }

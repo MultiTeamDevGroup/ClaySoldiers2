@@ -24,16 +24,16 @@ public class RedstoneModifier extends CSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
-        if(thisSoldier.getOffhandItem().isEmpty()){
+        if (thisSoldier.getOffhandItem().isEmpty()) {
             thisSoldier.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(this.getModifierItem()));
-        }else if(thisSoldier.getMainHandItem().isEmpty()){
+        } else if (thisSoldier.getMainHandItem().isEmpty()) {
             thisSoldier.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getModifierItem()));
         }
     }
 
     @Override
     public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
-        if(targetEntity instanceof LivingEntity livingTarget && thisSoldier.getLevel().getRandom().nextInt(100) >= 60){
+        if (targetEntity instanceof LivingEntity livingTarget && thisSoldier.getLevel().getRandom().nextInt(100) >= 60) {
             livingTarget.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200));
             thisModifierInstance.shrink(1, thisSoldier);
         }

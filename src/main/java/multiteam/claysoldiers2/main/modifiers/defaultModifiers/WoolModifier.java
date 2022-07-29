@@ -16,7 +16,6 @@ import java.util.List;
 public class WoolModifier extends NonStackingCSModifier {
 
 
-
     public WoolModifier(ModifierType modifierType, Item modifierItem, String modifierName, Color modifierColor, List<RegistryObject<CSModifier>> incompatibleModifiers) {
         super(modifierType, modifierItem, modifierName, modifierColor, incompatibleModifiers);
     }

@@ -40,7 +40,7 @@ public class HealingModifier extends CSModifier {
     @Override
     public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         int rand = thisSoldier.getLevel().getRandom().nextInt(100);
-        if(rand > CSAPI.Settings.handUsageChance && thisSoldier.getHealth() < thisSoldier.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue()){
+        if (rand > CSAPI.Settings.handUsageChance && thisSoldier.getHealth() < thisSoldier.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue()) {
             thisSoldier.heal(this.healAmount);
             thisModifierInstance.shrink(1, thisSoldier);
         }

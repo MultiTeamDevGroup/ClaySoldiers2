@@ -10,7 +10,6 @@ import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
 import multiteam.claysoldiers2.main.networking.Networking;
 import multiteam.claysoldiers2.main.networking.SoldierPipelinePacket;
-import multiteam.claysoldiers2.main.networking.UpdateClientSoldierPacket;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -46,7 +45,7 @@ import java.util.Objects;
 public class ClaySoldier extends ClayEntityBase {
 
     private final CompoundTag pipeline = new CompoundTag();
-    private List<CSModifier.Instance> modifiers = new ArrayList<>();
+    private final List<CSModifier.Instance> modifiers = new ArrayList<>();
 
     public boolean isInvisibleToOthers = false;
     public boolean canSeeInvisibleToOthers = false;
@@ -125,7 +124,6 @@ public class ClaySoldier extends ClayEntityBase {
     }
 
 
-
     public List<CSModifier.Instance> getModifiers() {
         return this.modifiers;
     }
@@ -150,7 +148,6 @@ public class ClaySoldier extends ClayEntityBase {
         }
         return list;
     }
-
 
 
     @Override
@@ -198,10 +195,9 @@ public class ClaySoldier extends ClayEntityBase {
         this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(data.getString("OffHandItem")))));
 
         this.shouldStickToPosition = data.getBoolean("ShouldStickToPosition");
-        this.stickingPosition = new Vec3( data.getFloat("StickingPositionX"),  data.getFloat("StickingPositionY"),  data.getFloat("StickingPositionZ"));
+        this.stickingPosition = new Vec3(data.getFloat("StickingPositionX"), data.getFloat("StickingPositionY"), data.getFloat("StickingPositionZ"));
 
     }
-
 
 
     @Override
@@ -218,15 +214,15 @@ public class ClaySoldier extends ClayEntityBase {
             for (ItemEntity itemEntity : itemsAround) {
                 Pair<CSModifier.Instance, Integer> pickUpModifier = shouldPickUp(itemEntity.getItem());
 
-                if(pickUpModifier.getB() > 0 && pickUpModifier.getA() != null){
-                    if(this.getModifiers().contains(pickUpModifier.getA())){ //If we are adding more to a contained modifier
+                if (pickUpModifier.getB() > 0 && pickUpModifier.getA() != null) {
+                    if (this.getModifiers().contains(pickUpModifier.getA())) { //If we are adding more to a contained modifier
                         int indexOfOldModifier = this.getModifiers().indexOf(pickUpModifier.getA());
                         CSModifier.Instance oldModifier = this.getModifiers().get(indexOfOldModifier);
 
-                        int newAmount = oldModifier.getAmount()+pickUpModifier.getB();
+                        int newAmount = oldModifier.getAmount() + pickUpModifier.getB();
 
                         this.getModifiers().set(indexOfOldModifier, new CSModifier.Instance(oldModifier.getModifier(), newAmount));
-                    }else{ // If we are adding a new modifier
+                    } else { // If we are adding a new modifier
                         this.getModifiers().add(pickUpModifier.getA());
                     }
 
@@ -243,7 +239,7 @@ public class ClaySoldier extends ClayEntityBase {
                 for (int i = 0; i < this.getModifiers().size(); i++) {
                     CSModifier.Instance instance = this.getModifiers().get(i);
                     if (instance != null) {
-                        if(instance.getAmount() <= 0){
+                        if (instance.getAmount() <= 0) {
                             this.removeModifier(instance);
                             break;
                         }
@@ -256,7 +252,7 @@ public class ClaySoldier extends ClayEntityBase {
         }
 
         //Handle shouldStickToPosition
-        if(this.shouldStickToPosition){
+        if (this.shouldStickToPosition) {
             soldier.setPos(this.stickingPosition);
         }
 
@@ -302,22 +298,22 @@ public class ClaySoldier extends ClayEntityBase {
             if (modifier.getModifierItem() == stack.getItem()) {
                 CSModifier.Instance thisModifierInstance = null;
                 for (CSModifier.Instance inst : this.getModifiers()) {
-                    if(inst.getModifier() == modifier){
+                    if (inst.getModifier() == modifier) {
                         thisModifierInstance = inst;
                     }
                 }
 
                 if (canEquip(modifier)) {
-                    if (this.getModifiers().contains(thisModifierInstance)){
-                        if(modifier.canBeStacked()){
-                            pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit()-thisModifierInstance.getAmount());
+                    if (this.getModifiers().contains(thisModifierInstance)) {
+                        if (modifier.canBeStacked()) {
+                            pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit() - thisModifierInstance.getAmount());
                             retInstance = thisModifierInstance;
                         }
-                    }else{
-                        if(modifier.canBeStacked()){
+                    } else {
+                        if (modifier.canBeStacked()) {
                             pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit());
                             retInstance = new CSModifier.Instance(modifier, pickUpAmount);
-                        }else{
+                        } else {
                             pickUpAmount = 1;
                             retInstance = new CSModifier.Instance(modifier, pickUpAmount);
                         }
@@ -329,7 +325,7 @@ public class ClaySoldier extends ClayEntityBase {
         return new Pair<>(retInstance, pickUpAmount);
     }
 
-    public boolean canEquip(CSModifier modifier){
+    public boolean canEquip(CSModifier modifier) {
         boolean ret = true;
 
         //Testing if the soldier has modifiers that are incompatible by default with this modifier
@@ -351,27 +347,27 @@ public class ClaySoldier extends ClayEntityBase {
         boolean canBeStackedFlagOffHand = false;
 
 
-        switch (modifier.getModifierType()){
+        switch (modifier.getModifierType()) {
             case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
-                    if(modifier.canBeStacked() && this.getMainHandItem().is(modifier.getModifierItem())){
-                        canBeStackedFlagMainHand = true;
-                    }
-                    if(!this.getMainHandItem().isEmpty() && !canBeStackedFlagMainHand){
-                        ret = false;
-                    }
+                if (modifier.canBeStacked() && this.getMainHandItem().is(modifier.getModifierItem())) {
+                    canBeStackedFlagMainHand = true;
+                }
+                if (!this.getMainHandItem().isEmpty() && !canBeStackedFlagMainHand) {
+                    ret = false;
+                }
                 break;
             case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
-                    if(modifier.canBeStacked() && this.getOffhandItem().is(modifier.getModifierItem())){
-                        canBeStackedFlagOffHand = true;
-                    }
-                    if(!this.getOffhandItem().isEmpty() && !canBeStackedFlagOffHand){
-                        ret = false;
-                    }
+                if (modifier.canBeStacked() && this.getOffhandItem().is(modifier.getModifierItem())) {
+                    canBeStackedFlagOffHand = true;
+                }
+                if (!this.getOffhandItem().isEmpty() && !canBeStackedFlagOffHand) {
+                    ret = false;
+                }
                 break;
             case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM, BOTH_HANDS:
-                    if(!this.getMainHandItem().isEmpty() && !this.getOffhandItem().isEmpty()){
-                        ret = false;
-                    }
+                if (!this.getMainHandItem().isEmpty() && !this.getOffhandItem().isEmpty()) {
+                    ret = false;
+                }
                 break;
         }
 
@@ -386,31 +382,31 @@ public class ClaySoldier extends ClayEntityBase {
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        float attackDamage = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float knockbackAmount = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+        float attackDamage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float knockbackAmount = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
-        if(!this.getModifiers().isEmpty()){
+        if (!this.getModifiers().isEmpty()) {
             for (CSModifier.Instance inst : this.getModifiers()) {
-                if(inst !=null){
+                if (inst != null) {
                     inst.getModifier().onModifierAttack(this, entity, inst);
-                    if(inst.getModifier() instanceof DamageBonusCSModifier){
-                        attackDamage+=((DamageBonusCSModifier)inst.getModifier()).getDamageBonus();
+                    if (inst.getModifier() instanceof DamageBonusCSModifier) {
+                        attackDamage += ((DamageBonusCSModifier) inst.getModifier()).getDamageBonus();
                     }
-                }else{
+                } else {
                     break;
                 }
             }
         }
 
         if (entity instanceof LivingEntity) {
-            attackDamage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)entity).getMobType());
-            knockbackAmount += (float)EnchantmentHelper.getKnockbackBonus(this);
+            attackDamage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity) entity).getMobType());
+            knockbackAmount += (float) EnchantmentHelper.getKnockbackBonus(this);
         }
 
         boolean flag = entity.hurt(DamageSource.mobAttack(this), attackDamage);
         if (flag) {
             if (knockbackAmount > 0.0F && entity instanceof LivingEntity) {
-                ((LivingEntity)entity).knockback((double)(knockbackAmount * 0.5F), (double) Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), (double)(-Mth.cos(this.getYRot() * ((float)Math.PI / 180F))));
+                ((LivingEntity) entity).knockback(knockbackAmount * 0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
             }
 
@@ -431,15 +427,15 @@ public class ClaySoldier extends ClayEntityBase {
     public boolean hurt(@NotNull DamageSource damageSource, float damageAmount) {
         DamageSource newSource = damageSource;
         float newDamage = damageAmount;
-        if(!this.getModifiers().isEmpty()){
+        if (!this.getModifiers().isEmpty()) {
             for (CSModifier.Instance inst : this.getModifiers()) {
-                if(inst !=null){
+                if (inst != null) {
                     Pair<DamageSource, Float> pair = inst.getModifier().onModifierHurt(this, damageSource, damageAmount, inst);
-                    if(pair.getA() != null && pair.getB() != null){
+                    if (pair.getA() != null && pair.getB() != null) {
                         newSource = pair.getA();
                         newDamage = pair.getB();
                     }
-                }else{
+                } else {
                     break;
                 }
             }
@@ -449,11 +445,11 @@ public class ClaySoldier extends ClayEntityBase {
 
     @Override
     public void die(@NotNull DamageSource damageSource) {
-        if(!this.getModifiers().isEmpty()){
+        if (!this.getModifiers().isEmpty()) {
             for (CSModifier.Instance inst : this.getModifiers()) {
-                if(inst !=null){
+                if (inst != null) {
                     inst.getModifier().onModifierDeath(damageSource, this, inst);
-                }else{
+                } else {
                     break;
                 }
             }

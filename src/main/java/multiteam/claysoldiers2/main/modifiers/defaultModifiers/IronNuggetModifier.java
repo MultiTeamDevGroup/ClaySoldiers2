@@ -23,9 +23,9 @@ public class IronNuggetModifier extends DamageBonusCSModifier {
 
     @Override
     public float getDamageBonus() {
-        if(isCombinedWithStick){
+        if (isCombinedWithStick) {
             return 1.5f;
-        }else{
+        } else {
             return 0f;
         }
     }
@@ -48,13 +48,13 @@ public class IronNuggetModifier extends DamageBonusCSModifier {
     @Override
     public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         CSModifier.Instance stickModifier = null;
-        for (Instance instance : thisSoldier.getModifiers()){
-            if(instance.getModifier() == ModModifiers.STICK_MAIN.get()){
+        for (Instance instance : thisSoldier.getModifiers()) {
+            if (instance.getModifier() == ModModifiers.STICK_MAIN.get()) {
                 stickModifier = instance;
             }
         }
 
-        if(stickModifier != null){
+        if (stickModifier != null) {
             isCombinedWithStick = true;
         }
     }

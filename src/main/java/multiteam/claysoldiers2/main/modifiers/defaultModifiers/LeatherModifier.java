@@ -31,12 +31,12 @@ public class LeatherModifier extends NonStackingCSModifier {
     @Override
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         float newDamageAmount = damageAmount;
-        if(damageAmount > 0.5f){
+        if (damageAmount > 0.5f) {
             newDamageAmount = damageAmount - 0.5f;
         }
 
         int damageBlockingChance = thisSoldier.getLevel().getRandom().nextInt(100);
-        if(damageBlockingChance >= 99){
+        if (damageBlockingChance >= 99) {
             newDamageAmount = 0;
         }
         return new Pair<>(damageSource, newDamageAmount);

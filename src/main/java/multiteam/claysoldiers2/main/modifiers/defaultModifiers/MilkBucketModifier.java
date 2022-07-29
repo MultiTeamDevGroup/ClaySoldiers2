@@ -26,12 +26,12 @@ public class MilkBucketModifier extends NonStackingCSModifier {
     public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         List<ItemStack> dropsList = new ArrayList<>();
 
-        for (Instance instance : thisSoldier.getModifiers()){
-            if(instance != null && instance != thisModifierInstance){
+        for (Instance instance : thisSoldier.getModifiers()) {
+            if (instance != null && instance != thisModifierInstance) {
                 int amount;
-                if(instance.getModifier().canBeStacked()){
+                if (instance.getModifier().canBeStacked()) {
                     amount = instance.getAmount();
-                }else{
+                } else {
                     amount = 1;
                 }
                 dropsList.add(new ItemStack(instance.getModifier().getModifierItem(), amount));
@@ -40,7 +40,7 @@ public class MilkBucketModifier extends NonStackingCSModifier {
 
         dropsList.add(new ItemStack(Items.BUCKET));
 
-        for (ItemStack stack : dropsList){
+        for (ItemStack stack : dropsList) {
             thisSoldier.getLevel().addFreshEntity(new ItemEntity(thisSoldier.getLevel(), thisSoldier.getX(), thisSoldier.getY(), thisSoldier.getZ(), stack));
         }
 

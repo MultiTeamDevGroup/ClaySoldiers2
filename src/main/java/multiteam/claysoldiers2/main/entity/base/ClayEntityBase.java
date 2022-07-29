@@ -73,14 +73,15 @@ public abstract class ClayEntityBase extends PathfinderMob implements IAnimatabl
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         return PlayState.CONTINUE;
     }
+
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
     }
-
 
 
     @Override
@@ -104,6 +105,7 @@ public abstract class ClayEntityBase extends PathfinderMob implements IAnimatabl
     }
 
     public abstract ItemStack getItemForm();
+
     public abstract Item getBrickedForm();
 
 }

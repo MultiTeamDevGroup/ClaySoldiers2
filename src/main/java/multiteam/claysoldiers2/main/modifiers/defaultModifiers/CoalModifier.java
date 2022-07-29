@@ -39,15 +39,15 @@ public class CoalModifier extends NonStackingCSModifier {
     @Override
     public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         Instance blazeRodModifier = null;
-        for (Instance instance : thisSoldier.getModifiers()){
-            if(instance.getModifier() == ModModifiers.BLAZEROD_MAIN.get()){
+        for (Instance instance : thisSoldier.getModifiers()) {
+            if (instance.getModifier() == ModModifiers.BLAZEROD_MAIN.get()) {
                 blazeRodModifier = instance;
                 break;
             }
         }
 
-        if(blazeRodModifier != null){
-            ((BlazeRodModifier)blazeRodModifier.getModifier()).modifiedFireSeconds = ((BlazeRodModifier)blazeRodModifier.getModifier()).defaultFireSeconds+5;
+        if (blazeRodModifier != null) {
+            ((BlazeRodModifier) blazeRodModifier.getModifier()).modifiedFireSeconds = ((BlazeRodModifier) blazeRodModifier.getModifier()).defaultFireSeconds + 5;
         }
     }
 

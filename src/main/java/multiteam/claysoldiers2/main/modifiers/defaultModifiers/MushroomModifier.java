@@ -29,10 +29,10 @@ public class MushroomModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierAttack(ClaySoldier thisSoldier, Entity targetEntity, Instance thisModifierInstance) {
-        if(targetEntity instanceof LivingEntity targetLivingEntity){
+        if (targetEntity instanceof LivingEntity targetLivingEntity) {
             targetLivingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 100));
-            if(targetLivingEntity instanceof ClaySoldier targetSoldier){
-                if(targetSoldier.getMaterial() == CSAPI.ClaySoldierMaterial.POTATO_CLAY_SOLDIER){
+            if (targetLivingEntity instanceof ClaySoldier targetSoldier) {
+                if (targetSoldier.getMaterial() == CSAPI.ClaySoldierMaterial.POTATO_CLAY_SOLDIER) {
                     targetSoldier.setMaterial(CSAPI.ClaySoldierMaterial.POISONOUS_POTATO_CLAY_SOLDIER);
                 }
             }

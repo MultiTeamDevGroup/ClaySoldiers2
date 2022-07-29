@@ -40,10 +40,10 @@ public class LilypadModifier extends NonStackingCSModifier {
 
     @Override
     public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
-        if(thisSoldier.isInWater()){
+        if (thisSoldier.isInWater()) {
             thisSoldier.getNavigation().setCanFloat(true);
             thisSoldier.getJumpControl().jump();
-        }else{
+        } else {
             thisSoldier.getNavigation().setCanFloat(false);
         }
     }

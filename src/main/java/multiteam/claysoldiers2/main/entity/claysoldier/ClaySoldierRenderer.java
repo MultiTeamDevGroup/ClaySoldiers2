@@ -76,7 +76,7 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
     public void renderLate(ClaySoldier thisSoldier, PoseStack matrixStack, float ticks, MultiBufferSource bufferIn, VertexConsumer vertexConsumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
         super.renderLate(thisSoldier, matrixStack, ticks, bufferIn, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
 
-        if(thisSoldier.shouldStickToPosition){
+        if (thisSoldier.shouldStickToPosition) {
             matrixStack.pushPose();
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -88,10 +88,10 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
             matrixStack.popPose();
         }
 
-        if(!thisSoldier.getModifiers().isEmpty()){
-            for (CSModifier.Instance instance : thisSoldier.getModifiers()){
+        if (!thisSoldier.getModifiers().isEmpty()) {
+            for (CSModifier.Instance instance : thisSoldier.getModifiers()) {
 //                System.out.println(instance);
-                    if(instance != null){
+                if (instance != null) {
                     instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
                 }
             }
@@ -107,9 +107,9 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
     }
 
 
-    private boolean getRenderExceptionsForModifiersOffhand(Item item){
+    private boolean getRenderExceptionsForModifiersOffhand(Item item) {
         boolean ret = true;
-        for (CSModifier modifier : modifierRenderExceptionsOffhand){
+        for (CSModifier modifier : modifierRenderExceptionsOffhand) {
             if (modifier.getModifierItem() == item) {
                 ret = false;
                 break;
@@ -118,9 +118,9 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         return ret;
     }
 
-    private boolean getRenderExceptionsForModifiersMainHand(Item item){
+    private boolean getRenderExceptionsForModifiersMainHand(Item item) {
         boolean ret = true;
-        for (CSModifier modifier : modifierRenderExceptionsMainHand){
+        for (CSModifier modifier : modifierRenderExceptionsMainHand) {
             if (modifier.getModifierItem() == item) {
                 ret = false;
                 break;
@@ -129,11 +129,11 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         return ret;
     }
 
-    public static void addRenderExceptionForModifierOffhand(CSModifier modifier){
+    public static void addRenderExceptionForModifierOffhand(CSModifier modifier) {
         modifierRenderExceptionsOffhand.add(modifier);
     }
 
-    public static void addRenderExceptionForModifierMainHand(CSModifier modifier){
+    public static void addRenderExceptionForModifierMainHand(CSModifier modifier) {
         modifierRenderExceptionsMainHand.add(modifier);
     }
 
@@ -142,9 +142,9 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         boolean flag = soldierEntity.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
         //System.out.println("block light level " + flag + " - " + soldierEntity.getModifiers());
         //QBOI this instance of the soldier still doesnt see new modifiers
-        if(flag){
+        if (flag) {
             return 15;
-        }else{
+        } else {
             return soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
         }
     }

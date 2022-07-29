@@ -92,7 +92,7 @@ public class ClaySoldierItem extends Item {
 
         CompoundTag tag = context.getItemInHand().getTag();
 
-        if(tag != null){
+        if (tag != null) {
             String offHandString = tag.getString("OffHandItem");
             String mainHandString = tag.getString("MainHandItem");
             soldierEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Registry.ITEM.get(new ResourceLocation(mainHandString))));

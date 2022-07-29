@@ -37,7 +37,7 @@ public class BowlModifier extends NonStackingCSModifier {
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
         Random rand = thisSoldier.getLevel().getRandom();
         int chance = rand.nextInt(100);
-        if(chance > 50){
+        if (chance > 50) {
             damageAmount = 0;
 
         }
