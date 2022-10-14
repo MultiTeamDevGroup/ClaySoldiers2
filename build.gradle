@@ -96,11 +96,14 @@ repositories {
     }
     maven { url "https://github.com/MultiTeamDevGroup/MultiTeam-Maven/raw/main/" }
 
+    //Patchouli
     maven { url 'https://maven.blamejared.com' }
 
     maven {
         url "https://cursemaven.com"
     }
+
+
 }
 
 dependencies {
@@ -111,8 +114,8 @@ dependencies {
     runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
     compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
 
-    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:${geckolib_version}")
-    compileOnly fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:${geckolib_version}")
+    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
+    compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
