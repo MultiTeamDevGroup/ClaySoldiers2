@@ -85,31 +85,39 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 
-    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
+        name "Geckolib Maven"
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
     }
     maven {
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
+        name "Progwml6 maven"
+        url "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { url "https://github.com/MultiTeamDevGroup/MultiTeam-Maven/raw/main/" }
+    maven {
+        name "ModMaven"
+        url "https://modmaven.k-4u.nl"
+    }
+    maven {
+        name "MultiTeam Maven"
+        url "https://github.com/MultiTeamDevGroup/MultiTeam-Maven/raw/main/"
+    }
 
     //Patchouli
-    maven { url 'https://maven.blamejared.com' }
-
     maven {
-        url "https://cursemaven.com"
+        name "Blamejared Maven"
+        url 'https://maven.blamejared.com'
     }
 
-
+    maven {
+        name "Cursemaven"
+        url "https://cursemaven.com"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
     runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
     compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
