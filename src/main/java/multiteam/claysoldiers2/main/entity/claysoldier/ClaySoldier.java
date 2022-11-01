@@ -35,6 +35,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
 
@@ -95,7 +96,7 @@ public class ClaySoldier extends ClayEntityBase {
         if (!this.getModifiers().isEmpty()) {
             for (CSModifier.Instance entry : getModifiers()) {
                 // Better readable exceptions if registry name is null. (Better for addon developers)
-                ResourceLocation modifierKey = entry.getModifier().getRegistryName();
+                ResourceLocation modifierKey = Registration.getModifierRegistry().getKey(entry.getModifier());
                 Objects.requireNonNull(modifierKey, "Registry name is null for modifier " + entry.getModifier().getClass().getName());
 
                 CompoundTag modifierTag = new CompoundTag();
@@ -109,8 +110,8 @@ public class ClaySoldier extends ClayEntityBase {
         }
 
         // Better readable exceptions if registry names are null. (Better for addon developers)
-        ResourceLocation mainHandKey = this.getMainHandItem().getItem().getRegistryName();
-        ResourceLocation offhandKey = this.getOffhandItem().getItem().getRegistryName();
+        ResourceLocation mainHandKey = ForgeRegistries.ITEMS.getKey(this.getMainHandItem().getItem());
+        ResourceLocation offhandKey = ForgeRegistries.ITEMS.getKey(this.getOffhandItem().getItem());
         Objects.requireNonNull(mainHandKey, "Registry name is null for main hand item " + this.getMainHandItem().getItem().getClass().getName());
         Objects.requireNonNull(offhandKey, "Registry name is null for offhand item " + this.getOffhandItem().getItem().getClass().getName());
 
@@ -148,7 +149,7 @@ public class ClaySoldier extends ClayEntityBase {
         final ListTag list = new ListTag();
         for (CSModifier.Instance entry : getModifiers()) {
             CompoundTag modifierTag = new CompoundTag();
-            modifierTag.putString("Type", entry.getModifier().getRegistryName().toString());
+            modifierTag.putString("Type", Objects.requireNonNull(Registration.getModifierRegistry().getKey(entry.getModifier())).toString());
             modifierTag.putInt("Amount", entry.getAmount());
             list.add(modifierTag);
         }
@@ -163,7 +164,7 @@ public class ClaySoldier extends ClayEntityBase {
         ListTag list = new ListTag();
         for (CSModifier.Instance entry : this.getModifiers()) {
             int amount = entry.getAmount();
-            ResourceLocation modifier = entry.getModifier().getRegistryName();
+            ResourceLocation modifier = Registration.getModifierRegistry().getKey(entry.getModifier());
             CompoundTag modifierTag = new CompoundTag();
             modifierTag.putString("Type", Objects.requireNonNull(modifier).toString());
             modifierTag.putInt("Amount", amount);
@@ -171,8 +172,8 @@ public class ClaySoldier extends ClayEntityBase {
         }
         data.put("Modifiers", list);
 
-        data.putString("MainHandItem", this.getMainHandItem().getItem().getRegistryName().toString());
-        data.putString("OffHandItem", this.getOffhandItem().getItem().getRegistryName().toString());
+        data.putString("MainHandItem", ForgeRegistries.ITEMS.getKey(this.getMainHandItem().getItem()).toString());
+        data.putString("OffHandItem", ForgeRegistries.ITEMS.getKey(this.getOffhandItem().getItem()).toString());
 
         data.putBoolean("ShouldStickToPosition", this.shouldStickToPosition);
         data.putFloat("StickingPositionX", (float) this.stickingPosition.x);

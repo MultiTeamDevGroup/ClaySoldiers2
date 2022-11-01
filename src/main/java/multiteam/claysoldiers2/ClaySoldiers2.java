@@ -4,6 +4,7 @@ import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.networking.Networking;
 import multiteam.multicore_lib.setup.utilities.generic.ItemGroupTool;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -41,6 +42,10 @@ public class ClaySoldiers2 {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::applyAttributes);
 
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public static ResourceLocation res(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

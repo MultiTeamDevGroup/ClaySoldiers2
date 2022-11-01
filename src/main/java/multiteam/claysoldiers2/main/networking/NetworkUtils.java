@@ -76,7 +76,7 @@ public final class NetworkUtils {
      * @param instance instance to write.
      */
     private static void writeModifierInstance(FriendlyByteBuf buf, CSModifier.Instance instance) {
-        buf.writeResourceLocation(Objects.requireNonNull(instance.getModifier().getRegistryName()));
+        buf.writeResourceLocation(Objects.requireNonNull(Registration.getModifierRegistry().getKey(instance.getModifier())));
         buf.writeInt(instance.getAmount());
     }
 }
