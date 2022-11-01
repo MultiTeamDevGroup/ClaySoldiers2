@@ -4,11 +4,10 @@ import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ModEntities;
 import multiteam.claysoldiers2.main.networking.Networking;
 import multiteam.multicore_lib.setup.utilities.generic.ItemGroupTool;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -44,6 +43,10 @@ public class ClaySoldiers2 {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public static ResourceLocation res(String path) {
+        return new ResourceLocation(MOD_ID, path);
+    }
+
     private void doClientStuff(final FMLClientSetupEvent event) {
 
     }
@@ -72,13 +75,5 @@ public class ClaySoldiers2 {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
-    }
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-
-        }
     }
 }

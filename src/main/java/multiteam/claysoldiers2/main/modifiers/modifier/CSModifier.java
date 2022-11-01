@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
+public abstract class CSModifier {
 
     public enum ModifierType {
         MAIN_HAND, //occupies the main hand
@@ -110,20 +109,6 @@ public abstract class CSModifier extends ForgeRegistryEntry<CSModifier> {
 
     public String getDescriptionId() {
         return "tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + getModifierName();
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CSModifier modifier = (CSModifier) o;
-        return getRegistryName() == modifier.getRegistryName();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getRegistryName());
     }
 
     public static class Instance {
