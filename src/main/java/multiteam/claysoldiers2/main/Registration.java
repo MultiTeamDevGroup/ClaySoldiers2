@@ -21,7 +21,7 @@ public class Registration {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ClaySoldiers2.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ClaySoldiers2.MOD_ID);
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, ClaySoldiers2.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ClaySoldiers2.MOD_ID);
     public static final DeferredRegister<CSModifier> MODIFIERS = DeferredRegister.create(CSModifier.class, ClaySoldiers2.MOD_ID);
 
     private static Supplier<IForgeRegistry<CSModifier>> modifierRegistry;

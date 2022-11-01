@@ -4,6 +4,7 @@ import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +36,7 @@ public class BowlModifier extends NonStackingCSModifier {
 
     @Override
     public Pair<DamageSource, Float> onModifierHurt(ClaySoldier thisSoldier, DamageSource damageSource, float damageAmount, Instance thisModifierInstance) {
-        Random rand = thisSoldier.getLevel().getRandom();
+        RandomSource rand = thisSoldier.getLevel().getRandom();
         int chance = rand.nextInt(100);
         if (chance > 50) {
             damageAmount = 0;

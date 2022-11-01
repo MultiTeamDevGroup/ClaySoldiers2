@@ -6,8 +6,8 @@ import multiteam.claysoldiers2.main.item.ClaySoldierItem;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.util.ItemAttributeUtils;
 import multiteam.multicore_lib.setup.utilities.render.tooltip.itemtextcomp.ItemWithTextTooltipComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +30,7 @@ public class EventHandler {
                 stack.setCount(instance.getAmount());
                 rowList.add(new ItemWithTextTooltipComponent.ItemTextCompoundRow(
                         List.of(stack),
-                        (TranslatableComponent) new TranslatableComponent(instance.getModifier().getDescriptionId())
+                        Component.translatable(instance.getModifier().getDescriptionId())
                                 .withStyle(Style.EMPTY.withColor(instance.getModifier().getModifierColor().getRGB()))
                 ));
             }

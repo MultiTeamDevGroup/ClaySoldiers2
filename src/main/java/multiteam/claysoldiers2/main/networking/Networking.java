@@ -55,8 +55,7 @@ public class Networking {
     private static <T extends BasePacket<T>> void register(Class<T> clazz, Function<FriendlyByteBuf, T> construct) {
         channel.messageBuilder(clazz, nextId())
                 .encoder(BasePacket::toBytes)
-                .decoder(construct)
-                .consumer((first, second) -> {
+                .decoder(construct).consumerNetworkThread((first, second) -> {
                     return first.handlePacket(second);
                 })
                 .add();
