@@ -4,8 +4,6 @@ import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +36,6 @@ public class BasicRemoteItem extends Item {
     }
 
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
-        tooltip.add((new TranslatableComponent("tooltip.claysoldiers2.basic_remote_info").withStyle(Style.EMPTY.withColor(Color.gray.getRGB()))).append(new TextComponent("" + CSAPI.Settings.basicRemoteRadius)));
+        tooltip.add((Component.translatable("tooltip.claysoldiers2.basic_remote_info").withStyle(Style.EMPTY.withColor(Color.gray.getRGB()))).append(Component.literal("" + CSAPI.Settings.basicRemoteRadius)));
     }
 }

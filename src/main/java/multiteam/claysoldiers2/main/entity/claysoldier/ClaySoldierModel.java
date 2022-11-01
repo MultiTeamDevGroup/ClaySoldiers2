@@ -26,17 +26,17 @@ public class ClaySoldierModel extends AnimatedGeoModel<ClaySoldier> implements I
     }
 
     @Override
-    public ResourceLocation getModelLocation(ClaySoldier claySoldier) {
+    public ResourceLocation getModelResource(ClaySoldier claySoldier) {
         return new ResourceLocation(ClaySoldiers2.MOD_ID, "geo/entity/clay/clayman.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ClaySoldier claySoldier) {
+    public ResourceLocation getTextureResource(ClaySoldier claySoldier) {
         return new ResourceLocation(ClaySoldiers2.MOD_ID, "textures/entity/clayman/soldier_" + claySoldier.getMaterial().getMaterialName().replace(" ", "_") + ".png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ClaySoldier claySoldier) {
+    public ResourceLocation getAnimationResource(ClaySoldier claySoldier) {
         return new ResourceLocation(ClaySoldiers2.MOD_ID, "animations/entity/clay/clayman.animation.json");
     }
 
