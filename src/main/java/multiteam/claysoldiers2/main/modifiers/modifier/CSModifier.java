@@ -115,14 +115,14 @@ public abstract class CSModifier {
 
         matrixStack.translate(0.0d, height, 0.0d);
         matrixStack.scale(scale, scale, scale);
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees((180.0f) + ((entityYaw - thisSoldier.yHeadRot) * ((float) Math.PI / 180F))));
-
         //TODO make head rotation work
-        float f = Mth.rotLerp(partialTicks, thisSoldier.yBodyRotO, thisSoldier.yBodyRot);
-        float f1 = Mth.rotLerp(partialTicks, thisSoldier.yHeadRotO, thisSoldier.yHeadRot);
-        float netHeadYaw = f1 - f;
-        //matrixStack.mulPose(Vector3f.YP.rotationDegrees(-netHeadYaw * ((float) Math.PI / 180F) ));
-        //matrixStack.mulPose(Vector3f.XP.rotationDegrees(thisSoldier.getXRot()));
+        //We need that + 180 to face the item into the correct direction
+        //Straight up thisSoldier.getYHeadRot() causes to rotate with the head, but also adds the entityYaw so it rotates more than it should
+        //Subtracting the entity yaw doesnt solve it; thisSoldier.getYHeadRot() - entityYaw
+        //Also thisSoldier.getYHeadRot() needs to be reversed cuz it rotates in the wrong direction so (-thisSoldier.getYHeadRot())
+        // :(
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees((float) ((180.0f) + (entityYaw * ((float) Math.PI / 180F)) - (-thisSoldier.getYHeadRot()) ) ));
+
         Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(itemToRender), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, multiBufferSource, 0);
 
         matrixStack.popPose();
