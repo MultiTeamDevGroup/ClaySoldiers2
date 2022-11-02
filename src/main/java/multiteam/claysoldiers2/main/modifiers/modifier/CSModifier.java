@@ -1,12 +1,18 @@
 package multiteam.claysoldiers2.main.modifiers.modifier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
 
@@ -102,10 +108,25 @@ public abstract class CSModifier {
 
     public abstract void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance);
 
-    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
-//        System.out.println("okay man");
-    }
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {}
 
+    public void renderItemOnSoldierHead(Item itemToRender, float scale, double height, ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
+        matrixStack.pushPose();
+
+        matrixStack.translate(0.0d, height, 0.0d);
+        matrixStack.scale(scale, scale, scale);
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees((180.0f) + ((entityYaw - thisSoldier.yHeadRot) * ((float) Math.PI / 180F))));
+
+        //TODO make head rotation work
+        float f = Mth.rotLerp(partialTicks, thisSoldier.yBodyRotO, thisSoldier.yBodyRot);
+        float f1 = Mth.rotLerp(partialTicks, thisSoldier.yHeadRotO, thisSoldier.yHeadRot);
+        float netHeadYaw = f1 - f;
+        //matrixStack.mulPose(Vector3f.YP.rotationDegrees(-netHeadYaw * ((float) Math.PI / 180F) ));
+        //matrixStack.mulPose(Vector3f.XP.rotationDegrees(thisSoldier.getXRot()));
+        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(itemToRender), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, multiBufferSource, 0);
+
+        matrixStack.popPose();
+    }
 
     public String getDescriptionId() {
         return "tooltip." + ClaySoldiers2.MOD_ID + ".clay_soldier_item_attributes.modifier." + getModifierName();

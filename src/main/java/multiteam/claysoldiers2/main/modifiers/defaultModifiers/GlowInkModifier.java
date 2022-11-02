@@ -26,7 +26,7 @@ public class GlowInkModifier extends NonStackingCSModifier {
     @Override
     public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
         if (thisSoldier.level.getRandom().nextInt(100) > 95) {
-            thisSoldier.level.addParticle(ParticleTypes.GLOW, thisSoldier.getRandomX(0.6D), thisSoldier.getRandomY(), thisSoldier.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+            thisSoldier.level.addParticle(ParticleTypes.GLOW, thisSoldier.getRandomX(0.6D), thisSoldier.getY(), thisSoldier.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
         }
     }
 

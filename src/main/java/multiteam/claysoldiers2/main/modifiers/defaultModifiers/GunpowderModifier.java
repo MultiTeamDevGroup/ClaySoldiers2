@@ -1,6 +1,7 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
@@ -52,13 +53,9 @@ public class GunpowderModifier extends CSModifier {
 
     @Override
     public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
-        //super.additionalModifierRenderComponent(thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
-
         matrixStack.pushPose();
 
-        System.out.println("EY IM RENDERING " + this);
-
-        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.CREEPER_HEAD), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, multiBufferSource, 0);
+        renderItemOnSoldierHead(Items.CREEPER_HEAD, 0.25f, 0.5d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
 
         matrixStack.popPose();
 

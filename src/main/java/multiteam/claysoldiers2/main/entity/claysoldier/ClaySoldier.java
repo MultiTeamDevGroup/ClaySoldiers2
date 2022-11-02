@@ -2,10 +2,12 @@ package multiteam.claysoldiers2.main.entity.claysoldier;
 
 import multiteam.claysoldiers2.main.Registration;
 import multiteam.claysoldiers2.main.entity.ai.ClaySoldierAttackGoal;
+import multiteam.claysoldiers2.main.entity.ai.ClaySoldierFollowKingGoal;
 import multiteam.claysoldiers2.main.entity.ai.NearestAttackableTargetGoalModified;
 import multiteam.claysoldiers2.main.entity.base.ClayEntityBase;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.CSAPI;
+import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.DamageBonusCSModifier;
 import multiteam.claysoldiers2.main.networking.Networking;
@@ -26,6 +28,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -84,6 +87,13 @@ public class ClaySoldier extends ClayEntityBase {
         }));
         this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new ClaySoldierFollowKingGoal(this, 3.0D, 2.0F, 30.0F, (targetEntity) ->{
+            if (targetEntity instanceof ClaySoldier targetedSoldier) {
+                return targetedSoldier.isMatchingMaterial(this) && targetedSoldier.hasModifier(ModModifiers.KING_BOOST.get()) && targetedSoldier != this;
+            }else{
+                return false;
+            }
+        }));
     }
 
     @Override
@@ -479,12 +489,14 @@ public class ClaySoldier extends ClayEntityBase {
 
 
     public boolean hasModifier(CSModifier csModifier) {
-        for (CSModifier.Instance modifier : modifiers) {
+        boolean retVal = false;
+        for (CSModifier.Instance modifier : this.getModifiers()) {
             if (modifier.getModifier() == csModifier) {
-                return true;
+                retVal = true;
+                break;
             }
         }
-        return false;
+        return retVal;
     }
 
     public boolean isFullBright() {

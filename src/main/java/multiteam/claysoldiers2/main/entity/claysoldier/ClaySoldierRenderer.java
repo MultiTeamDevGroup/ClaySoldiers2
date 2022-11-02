@@ -81,31 +81,22 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         if (thisSoldier.shouldStickToPosition) {
             matrixStack.pushPose();
 
-            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            ItemStack stack = new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get());
-            BakedModel ibakedmodel = itemRenderer.getModel(stack, thisSoldier.getLevel(), null, 0);
-
-            itemRenderer.render(stack, ItemTransforms.TransformType.FIXED, true, matrixStack, bufferIn, packedLightIn, packedLightIn, ibakedmodel);
+            //TODO make slime splotch render under the soldier
+            Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get()), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, bufferIn, 0);
 
             matrixStack.popPose();
+
+            vertexConsumer = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
         }
 
         if (!thisSoldier.getModifiers().isEmpty()) {
             for (CSModifier.Instance instance : thisSoldier.getModifiers()) {
-//                System.out.println(instance);
                 if (instance != null) {
                     instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
+                    vertexConsumer = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
                 }
             }
         }
-    }
-
-    @Override
-    public void render(ClaySoldier soldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLightIn) {
-//        System.out.println("packedLightIn = " + packedLightIn);
-
-        boolean flag = soldier.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
-        super.render(soldier, entityYaw, partialTicks, matrixStack, bufferIn, flag ? 0xf00000 : packedLightIn);
     }
 
 
@@ -142,13 +133,6 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
     @Override
     protected int getBlockLightLevel(ClaySoldier soldierEntity, @NotNull BlockPos blockPos) {
         boolean flag = soldierEntity.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
-        //System.out.println("block light level " + flag + " - " + soldierEntity.getModifiers());
-        //QBOI this instance of the soldier still doesnt see new modifiers
-        //This still prints the same: "block light level false - []"
-        if (flag) {
-            return 15;
-        } else {
-            return soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
-        }
+        return flag ? 15 : soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
     }
 }
