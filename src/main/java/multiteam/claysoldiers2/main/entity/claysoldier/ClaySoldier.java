@@ -164,15 +164,16 @@ public class ClaySoldier extends ClayEntityBase {
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag data) {
-        super.addAdditionalSaveData(data);
 
         ListTag list = new ListTag();
         for (CSModifier.Instance entry : this.getModifiers()) {
             int amount = entry.getAmount();
             ResourceLocation modifier = Registration.getModifierRegistry().getKey(entry.getModifier());
+
             CompoundTag modifierTag = new CompoundTag();
             modifierTag.putString("Type", Objects.requireNonNull(modifier).toString());
             modifierTag.putInt("Amount", amount);
+
             list.add(modifierTag);
         }
         data.put("Modifiers", list);
@@ -184,25 +185,25 @@ public class ClaySoldier extends ClayEntityBase {
         data.putFloat("StickingPositionX", (float) this.stickingPosition.x);
         data.putFloat("StickingPositionY", (float) this.stickingPosition.y);
         data.putFloat("StickingPositionZ", (float) this.stickingPosition.z);
+
+        super.addAdditionalSaveData(data);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag data) {
-        super.readAdditionalSaveData(data);
-
-        synchronized (lock) {
-            modifiers.clear();
-            // Data structure:
-            // + "Modifier" (Compound)
-            // |-  "Type" (String)
-            // |-  "Amount" (Int)
-            for (Tag tag : data.getList("Modifiers", Tag.TAG_STRING)) {
-                if (tag instanceof CompoundTag modifierTag) {
-                    ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
-                    CSModifier modifier = Registration.getModifierRegistry().getValue(type);
-                    int amount = modifierTag.getInt("Amount");
-                    this.addModifier(new CSModifier.Instance(modifier, amount));
-                }
+        modifiers.clear();
+        // Data structure:
+        // + "Modifier" (Compound)
+        // |-  "Type" (String)
+        // |-  "Amount" (Int)
+        for (Tag tag : data.getList("Modifiers", Tag.TAG_COMPOUND)) {
+            System.out.println();
+            if (tag instanceof CompoundTag modifierTag) {
+                ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
+                CSModifier modifier = Registration.getModifierRegistry().getValue(type);
+                int amount = modifierTag.getInt("Amount");
+                this.addModifier(new CSModifier.Instance(modifier, amount));
+                System.out.println(modifier.getModifierName());
             }
         }
 
@@ -212,6 +213,7 @@ public class ClaySoldier extends ClayEntityBase {
         this.shouldStickToPosition = data.getBoolean("ShouldStickToPosition");
         this.stickingPosition = new Vec3(data.getFloat("StickingPositionX"), data.getFloat("StickingPositionY"), data.getFloat("StickingPositionZ"));
 
+        super.readAdditionalSaveData(data);
     }
 
 
