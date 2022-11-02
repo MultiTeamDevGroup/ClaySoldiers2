@@ -219,11 +219,9 @@ public class ClaySoldier extends ClayEntityBase {
     public void tick() {
         super.tick();
 
-        Level level = this.getLevel();
-
         //Picking up items
-        if (!level.isClientSide) {
-            List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(this.getX() - 1, this.getY() - 1, this.getZ() - 1, this.getX() + 1, this.getY() + 1, this.getZ() + 1));
+        if (!this.getLevel().isClientSide) {
+            List<ItemEntity> itemsAround = this.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(this.getX() - 1, this.getY() - 1, this.getZ() - 1, this.getX() + 1, this.getY() + 1, this.getZ() + 1));
 
             for (ItemEntity itemEntity : itemsAround) {
                 CSModifier.Instance pickUpModifier = shouldPickUpModifierItem(itemEntity.getItem());
@@ -249,7 +247,7 @@ public class ClaySoldier extends ClayEntityBase {
 
                     pickUpModifier.getModifier().onModifierAdded(this, pickUpModifier);
                     itemEntity.getItem().shrink(pickUpModifier.getAmount());
-                    level.playSound(null, this.blockPosition (), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                    this.getLevel().playSound(null, this.blockPosition (), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
 
                 }
             }
@@ -276,19 +274,19 @@ public class ClaySoldier extends ClayEntityBase {
             this.setPos(this.stickingPosition);
         }
 
-        if (modifiersChanged) {
+        if (this.modifiersChanged && !this.getLevel().isClientSide) {
             cacheModifiersForSending();
-            modifiersChanged = false;
+            this.modifiersChanged = false;
         }
 
-        if (!level.isClientSide()) {
+        if (!this.getLevel().isClientSide()) {
             syncToClient();
         }
     }
 
     private void syncToClient() {
         if (pipeline != null && !pipeline.isEmpty()) {
-//            System.out.println("pipeline = " + pipeline);
+            //System.out.println("pipeline = " + pipeline);
             Networking.sendAll(new SoldierPipelinePacket(this, pipeline));
             pipeline = new CompoundTag();
         }
@@ -323,7 +321,7 @@ public class ClaySoldier extends ClayEntityBase {
     }
 
     public CSModifier.Instance shouldPickUpModifierItem(ItemStack pickUpStack){
-        int pickUpAmount = 0;
+        int pickUpAmount;
         CSModifier pickUpModifier = null;
 
         //find modifier for the item
