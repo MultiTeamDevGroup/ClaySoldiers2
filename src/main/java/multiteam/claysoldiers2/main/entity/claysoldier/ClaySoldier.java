@@ -136,6 +136,11 @@ public class ClaySoldier extends ClayEntityBase {
         this.modifiersChanged = true;
     }
 
+    public void stackModifier(CSModifier.Instance modifierToAdd, CSModifier.Instance modifierOnSoldier){
+        modifierOnSoldier.setAmount(modifierOnSoldier.getAmount()+modifierToAdd.getAmount());
+        this.modifiersChanged = true;
+    }
+
     public void removeModifier(CSModifier.Instance modifierToRemove) {
         this.modifiers.remove(modifierToRemove);
         this.modifiersChanged = true;
@@ -214,34 +219,39 @@ public class ClaySoldier extends ClayEntityBase {
     public void tick() {
         super.tick();
 
-        ClaySoldier soldier = this;
-        Level level = soldier.getLevel();
+        Level level = this.getLevel();
 
         //Picking up items
         if (!level.isClientSide) {
-            List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(soldier.getX() - 1, soldier.getY() - 1, soldier.getZ() - 1, soldier.getX() + 1, soldier.getY() + 1, soldier.getZ() + 1));
+            List<ItemEntity> itemsAround = level.getEntitiesOfClass(ItemEntity.class, new AABB(this.getX() - 1, this.getY() - 1, this.getZ() - 1, this.getX() + 1, this.getY() + 1, this.getZ() + 1));
 
             for (ItemEntity itemEntity : itemsAround) {
-                Pair<CSModifier.Instance, Integer> pickUpModifier = shouldPickUp(itemEntity.getItem());
+                CSModifier.Instance pickUpModifier = shouldPickUpModifierItem(itemEntity.getItem());
+                //Pair<CSModifier.Instance, Integer> pickUpModifier = shouldPickUpModifierItem(itemEntity.getItem());
 
-                if (pickUpModifier.getB() > 0 && pickUpModifier.getA() != null) {
-                    if (this.getModifiers().contains(pickUpModifier.getA())) { //If we are adding more to a contained modifier
-                        int indexOfOldModifier = this.getModifiers().indexOf(pickUpModifier.getA());
-                        CSModifier.Instance oldModifier = this.getModifiers().get(indexOfOldModifier);
+                if(pickUpModifier != null){
 
-                        int newAmount = oldModifier.getAmount() + pickUpModifier.getB();
-
-                        this.getModifiers().set(indexOfOldModifier, new CSModifier.Instance(oldModifier.getModifier(), newAmount));
-                    } else { // If we are adding a new modifier
-                        this.getModifiers().add(pickUpModifier.getA());
+                    //finding the modifier on the soldier to apply
+                    CSModifier.Instance modifierInstanceOnSoldier = null;
+                    for (CSModifier.Instance inst : this.getModifiers()) {
+                        if (inst.getModifier() == pickUpModifier.getModifier()) {
+                            modifierInstanceOnSoldier = inst;
+                        }
                     }
 
-                    pickUpModifier.getA().getModifier().onModifierAdded(soldier, pickUpModifier.getA());
+                    //if null, we are adding a new modifier. if not, we are stacking it.
+                    //the shouldPickUp() checks for stacking, so we dont have to do that here
+                    if(modifierInstanceOnSoldier == null){
+                        this.addModifier(pickUpModifier);
+                    }else{
+                        this.stackModifier(pickUpModifier, modifierInstanceOnSoldier);
+                    }
 
-                    itemEntity.getItem().shrink(pickUpModifier.getB());
-                    level.playSound(null, soldier.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+                    pickUpModifier.getModifier().onModifierAdded(this, pickUpModifier);
+                    itemEntity.getItem().shrink(pickUpModifier.getAmount());
+                    level.playSound(null, this.blockPosition (), SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1, 1);
+
                 }
-
             }
 
             //Calling on Modifier Tick
@@ -253,7 +263,7 @@ public class ClaySoldier extends ClayEntityBase {
                             this.removeModifier(instance);
                             break;
                         }
-                        instance.getModifier().onModifierTick(soldier, instance);
+                        instance.getModifier().onModifierTick(this, instance);
                     } else {
                         break;
                     }
@@ -263,7 +273,7 @@ public class ClaySoldier extends ClayEntityBase {
 
         //Handle shouldStickToPosition
         if (this.shouldStickToPosition) {
-            soldier.setPos(this.stickingPosition);
+            this.setPos(this.stickingPosition);
         }
 
         if (modifiersChanged) {
@@ -312,89 +322,76 @@ public class ClaySoldier extends ClayEntityBase {
         }
     }
 
-    public Pair<CSModifier.Instance, Integer> shouldPickUp(ItemStack stack) {
+    public CSModifier.Instance shouldPickUpModifierItem(ItemStack pickUpStack){
         int pickUpAmount = 0;
-        CSModifier.Instance retInstance = null;
+        CSModifier pickUpModifier = null;
 
-        for (CSModifier modifier : Registration.getModifierRegistry().getValues()) {
-            if (modifier.getModifierItem() == stack.getItem()) {
-                CSModifier.Instance thisModifierInstance = null;
-                for (CSModifier.Instance inst : this.getModifiers()) {
-                    if (inst.getModifier() == modifier) {
-                        thisModifierInstance = inst;
-                    }
-                }
-
-                if (canEquip(modifier)) {
-                    if (this.getModifiers().contains(thisModifierInstance)) {
-                        if (modifier.canBeStacked()) {
-                            pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit() - thisModifierInstance.getAmount());
-                            retInstance = thisModifierInstance;
-                        }
-                    } else {
-                        if (modifier.canBeStacked()) {
-                            pickUpAmount = Math.min(stack.getCount(), modifier.getMaxStackingLimit());
-                            retInstance = new CSModifier.Instance(modifier, pickUpAmount);
-                        } else {
-                            pickUpAmount = 1;
-                            retInstance = new CSModifier.Instance(modifier, pickUpAmount);
-                        }
-                    }
-                }
-
+        //find modifier for the item
+        for (CSModifier modifierFromRegistry : Registration.getModifierRegistry().getValues()){
+            if(modifierFromRegistry.getModifierItem() == pickUpStack.getItem()){
+                //found modifier for item
+                pickUpModifier = modifierFromRegistry;
             }
         }
-        return new Pair<>(retInstance, pickUpAmount);
+
+        //if there is no modifier for the item, return null, no need to further code execution
+        if(pickUpModifier == null){
+            return null;
+        }
+
+        // check if the soldier has the modifier already
+        CSModifier.Instance modifierInstanceOnSoldier = null;
+        for (CSModifier.Instance inst : this.getModifiers()) {
+            if (inst.getModifier() == pickUpModifier) {
+                modifierInstanceOnSoldier = inst;
+            }
+        }
+
+        //if there is a modifier, decide if soldier can pick up, if can't return null
+        if(canEquipModifier(pickUpModifier, modifierInstanceOnSoldier)){
+
+            if(modifierInstanceOnSoldier != null){ //soldier contains the modifier
+                if(pickUpModifier.canBeStacked()){
+                    pickUpAmount = Math.min(pickUpStack.getCount(), pickUpModifier.getMaxStackingLimit() - modifierInstanceOnSoldier.getAmount());
+                }else{ // if it has the modifier but cant be stacked.... no pickup return null
+                    return null;
+                }
+            }else{ //soldier doesn't have this modifier yet
+                if(pickUpModifier.canBeStacked()){
+                    pickUpAmount = Math.min(pickUpStack.getCount(), pickUpModifier.getMaxStackingLimit());
+                }else{
+                    pickUpAmount = 1;
+                }
+            }
+        }else{
+            return null;
+        }
+
+
+        return new CSModifier.Instance(pickUpModifier, pickUpAmount);
     }
 
-    public boolean canEquip(CSModifier modifier) {
-        boolean ret = true;
-
-        //Testing if the soldier has modifiers that are incompatible by default with this modifier
-        if (!modifier.getIncompatibleModifiers().isEmpty()) {
-            for (CSModifier.Instance modif : this.getModifiers()) {
-                if (modifier.getIncompatibleModifiers().contains(modif.getModifier())) {
-                    ret = false;
-                }
+    public boolean canEquipModifier(CSModifier modifier, CSModifier.Instance modifierOnSoldier){
+        //check if the soldier has the modifier, if it cant be stacked it cant be picked up
+        if(modifierOnSoldier != null){
+            if(!modifierOnSoldier.getModifier().canBeStacked()){
+                return false;
+            }else{
+                //check if it has space to stack; if it can be stacked but doesnt have more space to fit, dont pick up
+                return modifierOnSoldier.getAmount() < modifierOnSoldier.getModifier().getMaxStackingLimit();
+            }
+        }else{
+            switch (modifier.getModifierType()) {
+                case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
+                    return this.getMainHandItem().isEmpty();
+                case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
+                    return this.getOffhandItem().isEmpty();
+                case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM, BOTH_HANDS:
+                    return this.getMainHandItem().isEmpty() || this.getOffhandItem().isEmpty();
             }
         }
 
-        //TODO testing the type of the modifier if it can be picked up (aka hand slot is occupied or something)
-        //switch (modifier.getModifierType())
-        //also if its a main hand item or an off hand item, setting the handslot to have the item of the modifier
-
-        //This has been already started, but i think its incomplete yet!
-
-        boolean canBeStackedFlagMainHand = false;
-        boolean canBeStackedFlagOffHand = false;
-
-
-        switch (modifier.getModifierType()) {
-            case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
-                if (modifier.canBeStacked() && this.getMainHandItem().is(modifier.getModifierItem())) {
-                    canBeStackedFlagMainHand = true;
-                }
-                if (!this.getMainHandItem().isEmpty() && !canBeStackedFlagMainHand) {
-                    ret = false;
-                }
-                break;
-            case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
-                if (modifier.canBeStacked() && this.getOffhandItem().is(modifier.getModifierItem())) {
-                    canBeStackedFlagOffHand = true;
-                }
-                if (!this.getOffhandItem().isEmpty() && !canBeStackedFlagOffHand) {
-                    ret = false;
-                }
-                break;
-            case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM, BOTH_HANDS:
-                if (!this.getMainHandItem().isEmpty() && !this.getOffhandItem().isEmpty()) {
-                    ret = false;
-                }
-                break;
-        }
-
-
-        return ret;
+        return true;
     }
 
     @Override
