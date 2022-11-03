@@ -43,7 +43,7 @@ public class GravelModifier extends CSModifier {
     }
 
     public void throwProjectile(){
-        
+
     }
 
     @Override

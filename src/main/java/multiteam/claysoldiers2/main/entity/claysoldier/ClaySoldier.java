@@ -249,7 +249,7 @@ public class ClaySoldier extends ClayEntityBase {
                     }
 
                     //if null, we are adding a new modifier. if not, we are stacking it.
-                    //the shouldPickUp() checks for stacking, so we dont have to do that here
+                    //the shouldPickUp() checks for stacking, so we don't have to do that here
                     if(modifierInstanceOnSoldier == null){
                         this.addModifier(pickUpModifier);
                     }else{
@@ -356,13 +356,13 @@ public class ClaySoldier extends ClayEntityBase {
             }
         }
 
-        //if there is a modifier, decide if soldier can pick up, if can't return null
+        //if there is a modifier, decide if soldier can pick up, if it can't then return null
         if(canEquipModifier(pickUpModifier, modifierInstanceOnSoldier)){
 
             if(modifierInstanceOnSoldier != null){ //soldier contains the modifier
                 if(pickUpModifier.canBeStacked()){
                     pickUpAmount = Math.min(pickUpStack.getCount(), pickUpModifier.getMaxStackingLimit() - modifierInstanceOnSoldier.getAmount());
-                }else{ // if it has the modifier but cant be stacked.... no pickup return null
+                }else{ // if it has the modifier but can't be stacked.... no pickup return null
                     return null;
                 }
             }else{ //soldier doesn't have this modifier yet
@@ -381,12 +381,19 @@ public class ClaySoldier extends ClayEntityBase {
     }
 
     public boolean canEquipModifier(CSModifier modifier, CSModifier.Instance modifierOnSoldier){
-        //check if the soldier has the modifier, if it cant be stacked it cant be picked up
+        //First check if the soldier has any incompatible modifiers
+        for (CSModifier entry : modifier.getIncompatibleModifiers()) {
+            if(this.hasModifier(entry)){
+                return false;
+            }
+        }
+
+        //check if the soldier has the modifier, if it can't be stacked it can't be picked up
         if(modifierOnSoldier != null){
             if(!modifierOnSoldier.getModifier().canBeStacked()){
                 return false;
             }else{
-                //check if it has space to stack; if it can be stacked but doesnt have more space to fit, dont pick up
+                //check if it has space to stack; if it can be stacked but doesn't have more space to fit, don't pick up
                 return modifierOnSoldier.getAmount() < modifierOnSoldier.getModifier().getMaxStackingLimit();
             }
         }else{
