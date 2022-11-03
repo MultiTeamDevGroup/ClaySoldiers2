@@ -1,13 +1,17 @@
 package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
+import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import multiteam.claysoldiers2.main.modifiers.modifier.NonStackingCSModifier;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 
 import java.awt.*;
 import java.util.List;
@@ -42,5 +46,15 @@ public class ScuteModifier extends NonStackingCSModifier {
         if (thisSoldier.isUnderWater()) {
             thisSoldier.setAirSupply(thisSoldier.getMaxAirSupply());
         }
+    }
+
+    @Override
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {
+        matrixStack.pushPose();
+
+        renderItemOnSoldierHead(ModItems.RENDERING_DISPLAY_SCUTE_HELMET.get(), 0.33f, 0.0d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn, model);
+
+        matrixStack.popPose();
+
     }
 }

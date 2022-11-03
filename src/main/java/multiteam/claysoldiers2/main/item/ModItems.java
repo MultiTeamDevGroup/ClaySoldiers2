@@ -14,6 +14,7 @@ public class ModItems {
     public static final RegistryObject<Item> RENDERING_DISPLAY_MINI_SHIELD = Registration.ITEMS.register("soldier_shield_model", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RENDERING_DISPLAY_CROWN = Registration.ITEMS.register("soldier_crown_model", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RENDERING_DISPLAY_LEATHER_CHESTPLATE = Registration.ITEMS.register("soldier_leather_chestplate_model", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RENDERING_DISPLAY_SCUTE_HELMET = Registration.ITEMS.register("soldier_scute_helm_model", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RENDERING_DISPLAY_CREEPER = Registration.ITEMS.register("soldier_creeper_model", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RENDERING_DISPLAY_SLIME_SPLOTCH = Registration.ITEMS.register("slime_footing", () -> new Item(new Item.Properties()));
 
