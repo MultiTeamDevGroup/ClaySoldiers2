@@ -3,6 +3,7 @@ package multiteam.claysoldiers2.main.entity.claysoldier;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import multiteam.claysoldiers2.ClaySoldiers2;
 import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.ModModifiers;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
@@ -22,6 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 import javax.annotation.Nullable;
@@ -92,7 +94,8 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         if (!thisSoldier.getModifiers().isEmpty()) {
             for (CSModifier.Instance instance : thisSoldier.getModifiers()) {
                 if (instance != null) {
-                    instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn);
+                    GeoModel model = this.getGeoModelProvider().getModel(new ResourceLocation(ClaySoldiers2.MOD_ID, "geo/entity/clay/clayman.geo.json"));
+                    instance.getModifier().additionalModifierRenderComponent(thisSoldier, thisSoldier.getYRot(), partialTicks, matrixStack, bufferIn, packedLightIn, model);
                     vertexConsumer = rtb.getBuffer(RenderType.entityTranslucent(whTexture));
                 }
             }

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 
 import java.awt.*;
 import java.util.List;
@@ -46,8 +47,8 @@ public class PaperModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
-        super.additionalModifierRenderComponent(thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {
+        super.additionalModifierRenderComponent(thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn, model);
         //TODO: do the rendering part of this bruh lmao xDD :D haha funny jokes on you jkjk sheeeesh skibidi ba pum dada
     }
 }

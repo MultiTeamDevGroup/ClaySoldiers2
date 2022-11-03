@@ -3,6 +3,7 @@ package multiteam.claysoldiers2.main.modifiers.defaultModifiers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import multiteam.claysoldiers2.main.entity.claysoldier.ClaySoldier;
+import multiteam.claysoldiers2.main.item.ModItems;
 import multiteam.claysoldiers2.main.modifiers.modifier.CSModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 
 import java.awt.*;
 import java.util.List;
@@ -52,10 +54,10 @@ public class GunpowderModifier extends CSModifier {
     }
 
     @Override
-    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {
         matrixStack.pushPose();
 
-        renderItemOnSoldierHead(Items.CREEPER_HEAD, 0.25f, 0.5d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
+        renderItemOnSoldierHead(ModItems.RENDERING_DISPLAY_CREEPER.get(), 0.25f, 0.5d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn, model);
 
         matrixStack.popPose();
 
