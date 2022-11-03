@@ -27,8 +27,10 @@
   "item.claysoldiers2.melon_clay_soldier": "Gliniany żołnierz",
   "item.claysoldiers2.bricked_soldier": "Cegłowany żołnierz",
   "ENTITIES": "Obiekty Modyfikacji",
+  "entity.claysoldiers2.clay_soldier": "Clay Soldier",
   "GUI": "Gui modyfikacji",
   "itemGroup.claysoldiers2_creative_tab": "Gliniani Żołnierze 2",
+  "tooltip.claysoldiers2.basic_remote_info": "Removes soldiers in a radius of: ",
   "tooltip.claysoldiers2.material": "Materiał: ",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.clay": "Glina",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.white_clay": "Biała Glina",
@@ -75,6 +77,7 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.blinding": "Oślepianie",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.sticker": "Naklejka",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.glowing": "Świecący",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fluorescent": "Fluorescent",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.cancel": "Anuluj",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.explosive": "Materiał wybuchowy",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_fuel": "Płynne paliwo",
@@ -87,6 +90,7 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.egg_cover": "Pokryty-jajkiem",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_hands": "Ogniste ręce",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.crazy_warted": "Szalony",
-  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.shroomer": "Ogrzybiony",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.red_shroomer": "Shroomed",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.brown_shroomer": "Shroomed",
   "SOUND": "Dzwięki modyfikacji"
 }
