@@ -24,7 +24,7 @@ public class GravelModifier extends CSModifier {
 
     @Override
     public void onModifierAdded(ClaySoldier thisSoldier, Instance thisModifierInstance) {
-        thisSoldier.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getModifierItem()));
+        thisSoldier.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getModifierItem(), 16));
     }
 
     @Override
@@ -40,6 +40,10 @@ public class GravelModifier extends CSModifier {
     @Override
     public void onModifierTick(ClaySoldier thisSoldier, Instance thisModifierInstance) {
 
+    }
+
+    public void throwProjectile(){
+        
     }
 
     @Override

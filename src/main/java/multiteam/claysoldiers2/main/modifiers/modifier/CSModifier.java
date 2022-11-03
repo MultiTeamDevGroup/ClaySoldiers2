@@ -28,21 +28,21 @@ public abstract class CSModifier {
 
     public enum ModifierType {
         MAIN_HAND, //occupies the main hand
-        MAIN_HAND_BOOST_ITEM, //occupies the main hand, while having a single use per item
-        MAIN_HAND_AMOUNT_BOOST_ITEM, //occupies the main hand, while having an amount of uses per item
+        MAIN_HAND_CONSUMABLE, //occupies the main hand, while having a single use per item
+        MAIN_HAND_CONSUMABLE_AMOUNT, //occupies the main hand, while having an amount of uses per item
         OFF_HAND, //occupies the offhand
-        OFF_HAND_BOOST_ITEM, //occupies the offhand, while having a single use per item
+        OFF_HAND_CONSUMABLE, //occupies the offhand, while having a single use per item
         OFF_HAND_INF_BOOST_COMBINED, //occupies the offhand, and applies an effect as long as its combined with another modifier
-        ANY_HAND_BOOST_ITEM, //can be equipped in any hand, while having a single use per item
-        ANY_HAND_AMOUNT_BOOST_ITEM, //occupies any hand, while having an amount of uses per item
+        ANY_HAND_CONSUMABLE, //can be equipped in any hand, while having a single use per item
+        ANY_HAND_CONSUMABLE_AMOUNT, //occupies any hand, while having an amount of uses per item
         BOTH_HANDS, //occupies both hands
-        BOOST_ITEM, //has a single use per item
+        CONSUMABLE, //has a single use per item
         INF_BOOST, //applies an effect infinitely
-        INF_BOOST_COSMETIC, //applies a cosmetic only effect infinitely
+        COSMETIC, //applies a cosmetic only effect infinitely
         INF_BOOST_COMBINED, //applies an effect as long as its combined with another modifier
         EFFECT, //applies effect for a period of time
         INF_EFFECT, //applies status effect infinitely
-        CANCEL; //cancels any modifier on the soldier
+        CANCEL; //makes the soldier drop its modifiers
 
         public boolean anyOf(List<ModifierType> type) {
             return type.contains(this);
@@ -113,14 +113,14 @@ public abstract class CSModifier {
 
     public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {}
 
-    public void renderItemOnSoldierHead(Item itemToRender, float scale, double height, ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model){
+    public void renderItemOnSoldierHead(Item itemToRender, float scale, double heightAdjust, ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model){
         matrixStack.pushPose();
 
         Optional<GeoBone> head = model.getBone("head");
         if (head.isPresent()) {
             GeoBone trueHead = head.get();
 
-            matrixStack.translate((double)(trueHead.rotationPointX / 16.0F), (double)((trueHead.rotationPointY) / 16.0F), (double)(trueHead.rotationPointZ / 16.0F));
+            matrixStack.translate((double)(trueHead.rotationPointX / 16.0F), (double)((trueHead.rotationPointY) / 16.0F)+heightAdjust, (double)(trueHead.rotationPointZ / 16.0F));
             matrixStack.scale(scale, scale, scale);
             matrixStack.mulPose(Vector3f.ZP.rotation(trueHead.getRotationZ()));
             matrixStack.mulPose(Vector3f.YP.rotation(trueHead.getRotationY()));

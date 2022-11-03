@@ -49,7 +49,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> CLAY_HEAL_SECOND = register("clay_heal_second", () -> new HealingModifier(
-            CSModifier.ModifierType.OFF_HAND_BOOST_ITEM,
+            CSModifier.ModifierType.OFF_HAND_CONSUMABLE,
             Items.CLAY_BALL,
             "clay_healer",
             new Color(0x9499a4),
@@ -171,7 +171,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> GLISTERING_HEAL_SECOND = register("glistering_heal_second", () -> new HealingModifier(
-            CSModifier.ModifierType.OFF_HAND_BOOST_ITEM,
+            CSModifier.ModifierType.OFF_HAND_CONSUMABLE,
             Items.GLISTERING_MELON_SLICE,
             "glistering_healer",
             new Color(0xFFF97E),
@@ -189,7 +189,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> GRAVEL_MAIN = register("gravel_main", () -> new GravelModifier(
-            CSModifier.ModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM,
+            CSModifier.ModifierType.MAIN_HAND_CONSUMABLE_AMOUNT,
             Items.GRAVEL,
             "gravel_ranged",
             new Color(0x3B3C3D),
@@ -215,7 +215,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> PAPER_BOOST = register("paper_boost", () -> new PaperModifier(
-            CSModifier.ModifierType.INF_BOOST_COSMETIC,
+            CSModifier.ModifierType.COSMETIC,
             Items.PAPER,
             "cape",
             new Color(0xDEE1E8),
@@ -239,7 +239,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> SEEDS_MAIN = register("seeds_main", () -> new WheatSeedsModifier(
-            CSModifier.ModifierType.MAIN_HAND_AMOUNT_BOOST_ITEM,
+            CSModifier.ModifierType.MAIN_HAND_CONSUMABLE_AMOUNT,
             Items.WHEAT_SEEDS,
             "seeds_ranged",
             new Color(0x30812A),
@@ -281,7 +281,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> REDSTONE_ANY = register("redstone_any", () -> new RedstoneModifier(
-            CSModifier.ModifierType.ANY_HAND_BOOST_ITEM,
+            CSModifier.ModifierType.ANY_HAND_CONSUMABLE,
             Items.REDSTONE,
             "blinding",
             new Color(0xFF0000),
@@ -291,7 +291,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> SLIME_ANY = register("slime_any", () -> new SlimeModifier(
-            CSModifier.ModifierType.ANY_HAND_BOOST_ITEM,
+            CSModifier.ModifierType.ANY_HAND_CONSUMABLE,
             Items.SLIME_BALL,
             "sticker",
             new Color(0x69AF11),
@@ -325,7 +325,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> GUNPOWDER_BOOST = register("gunpowder_boost", () -> new GunpowderModifier(
-            CSModifier.ModifierType.BOOST_ITEM,
+            CSModifier.ModifierType.CONSUMABLE,
             Items.GUNPOWDER,
             "explosive",
             new Color(0x5D5A5A),
@@ -399,7 +399,7 @@ public final class ModModifiers {
     ));
 
     public static final RegistryObject<CSModifier> FIRECHARGE_MAIN = register("firecharge_main", () -> new FireChargeModifier(
-            CSModifier.ModifierType.MAIN_HAND_BOOST_ITEM,
+            CSModifier.ModifierType.MAIN_HAND_CONSUMABLE,
             Items.FIRE_CHARGE,
             "fiery_hands",
             new Color(0x9D3907),

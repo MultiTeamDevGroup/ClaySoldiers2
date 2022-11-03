@@ -391,11 +391,11 @@ public class ClaySoldier extends ClayEntityBase {
             }
         }else{
             switch (modifier.getModifierType()) {
-                case MAIN_HAND, MAIN_HAND_AMOUNT_BOOST_ITEM, MAIN_HAND_BOOST_ITEM:
+                case MAIN_HAND, MAIN_HAND_CONSUMABLE_AMOUNT, MAIN_HAND_CONSUMABLE:
                     return this.getMainHandItem().isEmpty();
-                case OFF_HAND, OFF_HAND_BOOST_ITEM, OFF_HAND_INF_BOOST_COMBINED:
+                case OFF_HAND, OFF_HAND_CONSUMABLE, OFF_HAND_INF_BOOST_COMBINED:
                     return this.getOffhandItem().isEmpty();
-                case ANY_HAND_AMOUNT_BOOST_ITEM, ANY_HAND_BOOST_ITEM, BOTH_HANDS:
+                case ANY_HAND_CONSUMABLE_AMOUNT, ANY_HAND_CONSUMABLE, BOTH_HANDS:
                     return this.getMainHandItem().isEmpty() || this.getOffhandItem().isEmpty();
             }
         }
