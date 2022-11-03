@@ -30,6 +30,7 @@
   "entity.claysoldiers2.clay_soldier": "Soldat d'argile",
   "GUI": "GUIS DU MOD",
   "itemGroup.claysoldiers2_creative_tab": "Clay Soldiers 2",
+  "tooltip.claysoldiers2.basic_remote_info": "Enlève les soldats dans un rayon de : ",
   "tooltip.claysoldiers2.material": "Matériel : ",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.clay": "Argile",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.material.white_clay": "Argile blanche",
@@ -76,6 +77,7 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.blinding": "Aveuglant",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.sticker": "Autocollant",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.glowing": "Brillant",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fluorescent": "Fluorescent",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.cancel": "Annuler",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.explosive": "Explosif",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_fuel": "Carburant ardent",
@@ -85,9 +87,10 @@
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.scissor_hands": "Mains de ciseaux",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.allseeing_sight": "La vue imprenable",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.speedey": "Rapide",
-  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.egg_cover": "Oeuf recouvert",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.egg_cover": "Œuf recouvert",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.fiery_hands": "Mains ardentes",
   "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.crazy_warted": "Fou",
-  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.shroomer": "Champis",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.red_shroomer": "Champis",
+  "tooltip.claysoldiers2.clay_soldier_item_attributes.modifier.brown_shroomer": "Champis",
   "SOUND": "SONS DU MOD"
 }
