@@ -1,6 +1,6 @@
-![CS2 Logo](https://raw.githubusercontent.com/MultiTeamDevGroup/ClaySoldiers2/main/src/main/resources/ClaySoldiers2Logo.png?token=AH6UCII523ECGGZI3EHX7M3BLILJC)
+![CS2 Logo](https://raw.githubusercontent.com/MultiTeamDevGroup/ClaySoldiers2/1.19.2/src/main/resources/ClaySoldiers2Logo.png)
 
-### Clay Soldiers 2 - for Forge 1.17.1 - by MultiTeam
+### Clay Soldiers 2 - for Forge 1.19.2 - by MultiTeam
 
 ## About
 
@@ -10,7 +10,7 @@ the original version.
 ## Credits
 
 - LazTheArtist [Code - Art]
-- Viper_ [Art]
+- Qboi [Code]
 
 ## Community
 
