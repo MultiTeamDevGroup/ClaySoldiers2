@@ -4,7 +4,7 @@
 
 ## About
 
-ClaySoldiers2 is the true successor of the origianl mod. This version tho adds on top of it, and expands the contents of
+ClaySoldiers2 is the true successor of the original mod. This version tho adds on top of it, and expands the contents of
 the original version.
 
 ## Credits
@@ -17,4 +17,3 @@ the original version.
 
 If you want to be part of our community, join the discord server!
 [[Discord Invite Link]](https://discord.gg/dbM85ahNvn)
-
