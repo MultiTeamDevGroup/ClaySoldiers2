@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "claysoldiers2:item/soldier_glasspane_model",
+		"particle": "claysoldiers2:item/soldier_glasspane_model"
+	},
+	"elements": [
+		{
+			"from": [6.9, 9, 7],
+			"to": [6.9, 11, 9],
+			"faces": {
+				"west": {"uv": [1, 1, 7, 7], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"head": {
+			"rotation": [0, -90, 0],
+			"translation": [0, -3.25, 0],
+			"scale": [3.5, 3.5, 3.5]
+		}
+	}
+}

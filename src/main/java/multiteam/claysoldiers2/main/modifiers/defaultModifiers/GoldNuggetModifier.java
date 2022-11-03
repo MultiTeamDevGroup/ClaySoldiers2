@@ -52,7 +52,7 @@ public class GoldNuggetModifier extends NonStackingCSModifier {
     public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {
         matrixStack.pushPose();
 
-        renderItemOnSoldierHead(ModItems.RENDERING_DISPLAY_CROWN.get(), 0.25f, 0.0d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn, model);
+        renderItemOnSoldierHead(ModItems.RENDERING_DISPLAY_CROWN.get(), 0.33f, 0.0d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn, model);
 
         matrixStack.popPose();
 

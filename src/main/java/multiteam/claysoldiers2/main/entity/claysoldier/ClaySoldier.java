@@ -206,13 +206,11 @@ public class ClaySoldier extends ClayEntityBase {
         // |-  "Type" (String)
         // |-  "Amount" (Int)
         for (Tag tag : data.getList("Modifiers", Tag.TAG_COMPOUND)) {
-            System.out.println();
             if (tag instanceof CompoundTag modifierTag) {
                 ResourceLocation type = new ResourceLocation(modifierTag.getString("Type"));
                 CSModifier modifier = Registration.getModifierRegistry().getValue(type);
                 int amount = modifierTag.getInt("Amount");
                 this.addModifier(new CSModifier.Instance(modifier, amount));
-                System.out.println(modifier.getModifierName());
             }
         }
 
