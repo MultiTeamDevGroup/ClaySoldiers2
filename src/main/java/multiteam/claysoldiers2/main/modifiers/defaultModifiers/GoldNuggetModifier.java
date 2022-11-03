@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 
 import java.awt.*;
 import java.util.List;
@@ -48,10 +49,10 @@ public class GoldNuggetModifier extends NonStackingCSModifier {
     }
 
     @Override
-    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {
         matrixStack.pushPose();
 
-        renderItemOnSoldierHead(ModItems.RENDERING_DISPLAY_CROWN.get(), 0.25f, 0.5d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn);
+        renderItemOnSoldierHead(ModItems.RENDERING_DISPLAY_CROWN.get(), 0.25f, 0.5d, thisSoldier, entityYaw, partialTicks, matrixStack, multiBufferSource, packedLightIn, model);
 
         matrixStack.popPose();
 

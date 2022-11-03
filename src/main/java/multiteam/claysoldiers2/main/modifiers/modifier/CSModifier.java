@@ -15,11 +15,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 import oshi.util.tuples.Pair;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class CSModifier {
 
@@ -108,22 +111,23 @@ public abstract class CSModifier {
 
     public abstract void onModifierDeath(DamageSource damageSource, ClaySoldier thisSoldier, Instance thisModifierInstance);
 
-    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn) {}
+    public void additionalModifierRenderComponent(ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model) {}
 
-    public void renderItemOnSoldierHead(Item itemToRender, float scale, double height, ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn){
+    public void renderItemOnSoldierHead(Item itemToRender, float scale, double height, ClaySoldier thisSoldier, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource multiBufferSource, int packedLightIn, GeoModel model){
         matrixStack.pushPose();
 
-        matrixStack.translate(0.0d, height, 0.0d);
-        matrixStack.scale(scale, scale, scale);
-        //TODO make head rotation work
-        //We need that + 180 to face the item into the correct direction
-        //Straight up thisSoldier.getYHeadRot() causes to rotate with the head, but also adds the entityYaw so it rotates more than it should
-        //Subtracting the entity yaw doesnt solve it; thisSoldier.getYHeadRot() - entityYaw
-        //Also thisSoldier.getYHeadRot() needs to be reversed cuz it rotates in the wrong direction so (-thisSoldier.getYHeadRot())
-        // :(
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees((float) ((180.0f) + (entityYaw * ((float) Math.PI / 180F)) - (-thisSoldier.getYHeadRot()) ) ));
+        Optional<GeoBone> head = model.getBone("head");
+        if (head.isPresent()) {
+            GeoBone trueHead = head.get();
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(itemToRender), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, multiBufferSource, 0);
+            matrixStack.translate((double)(trueHead.rotationPointX / 16.0F), (double)((trueHead.rotationPointY) / 16.0F), (double)(trueHead.rotationPointZ / 16.0F));
+            matrixStack.scale(scale, scale, scale);
+            matrixStack.mulPose(Vector3f.ZP.rotation(trueHead.getRotationZ()));
+            matrixStack.mulPose(Vector3f.YP.rotation(trueHead.getRotationY()));
+            matrixStack.mulPose(Vector3f.XP.rotation(trueHead.getRotationX()));
+            Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(itemToRender), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, multiBufferSource, 0);
+
+        }
 
         matrixStack.popPose();
     }
