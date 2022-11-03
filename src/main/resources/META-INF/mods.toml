@@ -7,12 +7,15 @@ version = "${file.jarVersion}"
 displayName = "Clay Soldiers 2"
 logoFile = "ClaySoldiers2Logo.png"
 credits = "Made by MultiTeam"
-authors = "LazTheArtist [Code - Art]"
+authors = "LazTheArtist [Code - Art], Qboi [Code], Itayfeder [Code]"
 description = '''
 Those good old days, when we had little clay people running around in our worlds... we all miss them.
 But not anymore! Here comes the reboot! But, unlike the Ben10 reboot, this one doesnt suck!
 
 Clay Soldiers 2 brings most features from the original mod to a modern version of minecraft, whilst expanding upon the features and basically improving the whole thing!
+
+-Thanks to Qboi we have custom registry for the modifiers!
+-Thanks to Itayfeder for fixing the head item rendering!
 '''
 [[dependencies.claysoldiers2]]
 modId = "forge"

@@ -11,6 +11,7 @@ the original version.
 
 - LazTheArtist [Code - Art]
 - Qboi [Code]
+- Itayfeder [Code]
 
 ## Community
 
