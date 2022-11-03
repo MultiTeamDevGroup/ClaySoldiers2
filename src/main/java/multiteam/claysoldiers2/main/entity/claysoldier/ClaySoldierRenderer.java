@@ -27,6 +27,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
@@ -76,11 +77,14 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
     public void renderLate(ClaySoldier thisSoldier, PoseStack matrixStack, float ticks, MultiBufferSource bufferIn, VertexConsumer vertexConsumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
         super.renderLate(thisSoldier, matrixStack, ticks, bufferIn, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
 
+        //System.out.println(thisSoldier.shouldStickToPosition);
         if (thisSoldier.shouldStickToPosition) {
             matrixStack.pushPose();
 
-            //TODO make slime splotch render under the soldier
+            matrixStack.translate(0, 0, 0);
+            matrixStack.scale(1, 1, 1);
             Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(ModItems.RENDERING_DISPLAY_SLIME_SPLOTCH.get()), ItemTransforms.TransformType.HEAD, packedLightIn, packedLightIn, matrixStack, bufferIn, 0);
+
 
             matrixStack.popPose();
 
