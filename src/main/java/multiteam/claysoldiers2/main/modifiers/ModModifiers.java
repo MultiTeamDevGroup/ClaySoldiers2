@@ -235,7 +235,9 @@ public final class ModModifiers {
             Items.SCUTE,
             "diver",
             new Color(0x0DBD41),
-            List.of(ModModifiers.LILYPAD_BOOST)
+            //TODO add this back when lilypad modifier gets added back
+            //List.of(ModModifiers.LILYPAD_BOOST)
+            new ArrayList<>()
     ));
 
     /**public static final RegistryObject<CSModifier> SEEDS_MAIN = register("seeds_main", () -> new WheatSeedsModifier(
