@@ -117,13 +117,13 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:${jei_version}")
 
     runtimeOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
     compileOnly fg.deobf("multiteam.multicorelib:MultiCore-Lib:${mtcl_version}")
 
-    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
-    compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
+    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19.3:${geckolib_version}")
+    compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.19.3:${geckolib_version}")
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")

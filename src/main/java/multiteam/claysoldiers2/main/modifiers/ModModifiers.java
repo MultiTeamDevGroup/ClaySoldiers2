@@ -188,7 +188,7 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> GRAVEL_MAIN = register("gravel_main", () -> new GravelModifier(
+    /**public static final RegistryObject<CSModifier> GRAVEL_MAIN = register("gravel_main", () -> new GravelModifier(
             CSModifier.ModifierType.MAIN_HAND_CONSUMABLE_AMOUNT,
             Items.GRAVEL,
             "gravel_ranged",
@@ -196,7 +196,7 @@ public final class ModModifiers {
             true,
             CSAPI.Settings.stackablesLimit,
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> LEATHER_BOOST = register("leather_boost", () -> new LeatherModifier(
             CSModifier.ModifierType.INF_BOOST,
@@ -214,13 +214,13 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> PAPER_BOOST = register("paper_boost", () -> new PaperModifier(
+    /**public static final RegistryObject<CSModifier> PAPER_BOOST = register("paper_boost", () -> new PaperModifier(
             CSModifier.ModifierType.COSMETIC,
             Items.PAPER,
             "cape",
             new Color(0xDEE1E8),
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> RABBIT_HIDE_BOOST = register("rabbit_hide_boost", () -> new LeatherModifier(
             CSModifier.ModifierType.INF_BOOST,
@@ -235,10 +235,12 @@ public final class ModModifiers {
             Items.SCUTE,
             "diver",
             new Color(0x0DBD41),
-            List.of(ModModifiers.LILYPAD_BOOST)
+            //TODO when lilypad boost is added back dont forgor this!!
+            //List.of(ModModifiers.LILYPAD_BOOST)
+            new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> SEEDS_MAIN = register("seeds_main", () -> new WheatSeedsModifier(
+    /**public static final RegistryObject<CSModifier> SEEDS_MAIN = register("seeds_main", () -> new WheatSeedsModifier(
             CSModifier.ModifierType.MAIN_HAND_CONSUMABLE_AMOUNT,
             Items.WHEAT_SEEDS,
             "seeds_ranged",
@@ -246,7 +248,7 @@ public final class ModModifiers {
             true,
             CSAPI.Settings.stackablesLimit,
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> STICK_MAIN = register("stick_main", () -> new StickModifier(
             CSModifier.ModifierType.MAIN_HAND,
@@ -290,7 +292,7 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> SLIME_ANY = register("slime_any", () -> new SlimeModifier(
+    /**public static final RegistryObject<CSModifier> SLIME_ANY = register("slime_any", () -> new SlimeModifier(
             CSModifier.ModifierType.ANY_HAND_CONSUMABLE,
             Items.SLIME_BALL,
             "sticker",
@@ -298,7 +300,7 @@ public final class ModModifiers {
             true,
             CSAPI.Settings.stackablesLimit,
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> GLOWSTONE_BOOST = register("glowstone_boost", () -> new GlowstoneDustModifier(
             CSModifier.ModifierType.INF_BOOST,
@@ -308,13 +310,13 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> GLOW_INK_BOOST = register("glow_ink_boost", () -> new GlowInkModifier(
+    /**public static final RegistryObject<CSModifier> GLOW_INK_BOOST = register("glow_ink_boost", () -> new GlowInkModifier(
             CSModifier.ModifierType.INF_BOOST,
             Items.GLOW_INK_SAC,
             "fluorescent",
             new Color(0x4ADBB8),
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> MILK = register("milk", () -> new MilkBucketModifier(
             CSModifier.ModifierType.CANCEL,
@@ -342,13 +344,13 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> LILYPAD_BOOST = register("lilypad_boost", () -> new LilypadModifier(
+    /**public static final RegistryObject<CSModifier> LILYPAD_BOOST = register("lilypad_boost", () -> new LilypadModifier(
             CSModifier.ModifierType.INF_BOOST,
             Items.LILY_PAD,
             "water_walker",
             new Color(0x355D03),
             List.of(ModModifiers.SCUTE_BOOST)
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> GLASS_PANE_BOOST = register("glass_pane_boost", () -> new GlassPaneModifier(
             CSModifier.ModifierType.INF_BOOST,
@@ -358,13 +360,13 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> DIAMOND_BOOST = register("diamond_boost", () -> new DiamondModifier(
+    /**public static final RegistryObject<CSModifier> DIAMOND_BOOST = register("diamond_boost", () -> new DiamondModifier(
             CSModifier.ModifierType.INF_BOOST,
             Items.DIAMOND,
             "queen",
             new Color(0x0EC9AF),
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> SHEAR_BOTH = register("shear_both", () -> new ShearsModifier(
             CSModifier.ModifierType.BOTH_HANDS,
@@ -374,13 +376,13 @@ public final class ModModifiers {
             new ArrayList<>()
     ));
 
-    public static final RegistryObject<CSModifier> ENDEREYE_BOOST = register("endereye_boost", () -> new EnderEyeModifier(
+    /**public static final RegistryObject<CSModifier> ENDEREYE_BOOST = register("endereye_boost", () -> new EnderEyeModifier(
             CSModifier.ModifierType.INF_BOOST,
             Items.ENDER_EYE,
             "allseeing_sight",
             new Color(0xff8000),
             new ArrayList<>()
-    ));
+    ));**/
 
     public static final RegistryObject<CSModifier> SUGAR_BOOST = register("sugar_boost", () -> new SugarModifier(
             CSModifier.ModifierType.INF_EFFECT,
