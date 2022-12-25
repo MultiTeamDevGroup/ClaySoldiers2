@@ -133,9 +133,9 @@ public class ClaySoldierRenderer extends GeoEntityRenderer<ClaySoldier> {
         modifierRenderExceptionsMainHand.add(modifier);
     }
 
-    @Override
+    /**@Override
     protected int getBlockLightLevel(ClaySoldier soldierEntity, @NotNull BlockPos blockPos) {
         boolean flag = soldierEntity.hasModifier(ModModifiers.GLOW_INK_BOOST.get());
         return flag ? 15 : soldierEntity.level.getBrightness(LightLayer.BLOCK, blockPos);
-    }
+    }**/
 }
